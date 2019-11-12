@@ -1,0 +1,1 @@
+<div id="{{ $component->makeDomId('output') }}"></div>
