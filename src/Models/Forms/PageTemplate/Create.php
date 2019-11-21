@@ -14,7 +14,7 @@ class Create extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $fields['web_id']['options']['show-null-option'] = true;
+        // $fields['web_id']['options']['show-null-option'] = true;
         $fields['web_id']['options']['validation']['rules'][] = 'required';
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //

@@ -3,21 +3,20 @@
 namespace Softworx\RocXolid\CMS\Repositories\MainNavigation;
 
 // columns
-use Softworx\RocXolid\Repositories\Columns\Type\Text,
-    Softworx\RocXolid\Repositories\Columns\Type\ModelRelation,
-    Softworx\RocXolid\Repositories\Columns\Type\ContaineeRelation,
-    Softworx\RocXolid\Repositories\Columns\Type\ImageRelation,
-    Softworx\RocXolid\Repositories\Columns\Type\ButtonAnchor,
-    Softworx\RocXolid\CMS\Repositories\Columns\Type\PageRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\Text;
+use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\ContaineeRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\ButtonAnchor;
+use Softworx\RocXolid\CMS\Repositories\Columns\Type\PageRelation;
 // cms repository
 use Softworx\RocXolid\CMS\Repositories\AbstractRepository;
+
 /**
  *
  */
 class Repository extends AbstractRepository
 {
-    protected static $translation_param = 'cms-main-navigation';
-
     protected $columns = [
         'web_id' => [
             'type' => ModelRelation::class,

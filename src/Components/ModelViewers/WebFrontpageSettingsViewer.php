@@ -6,5 +6,5 @@ use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer;
 
 class WebFrontpageSettingsViewer extends CrudModelViewer
 {
-    protected $view_package = 'rocXolid:cms';
+
 }

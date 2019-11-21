@@ -25,7 +25,7 @@ class Create extends RocXolidAbstractCrudForm
         {
             $fields[sprintf('%s_url', $param)]['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%s_url,_data.%s_page_id,_data.%s_page_proxy_id', $param, $param, $param);
             //
-            $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
+            // $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
             $fields[sprintf('%s_page_id', $param)]['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%s_url,_data.%s_page_id,_data.%s_page_proxy_id', $param, $param, $param);
             $fields[sprintf('%s_page_id', $param)]['options']['collection']['filters'][] = [
                 'class' => BelongsToWeb::class,

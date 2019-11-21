@@ -16,8 +16,6 @@ use Softworx\RocXolid\CMS\Repositories\AbstractRepository;
  */
 class Repository extends AbstractRepository
 {
-    protected static $translation_param = 'cms-article';
-
     protected $columns = [
         'is_enabled' => [
             'type' => Flag::class,

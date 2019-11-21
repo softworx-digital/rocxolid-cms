@@ -24,7 +24,7 @@ class Update extends RocXolidAbstractCrudForm
         //
         foreach (['continue_shopping', 'checkout'] as $param)
         {
-            $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
+            // $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
             $fields[sprintf('%s_page_id', $param)]['options']['collection']['filters'][] = [
                 'class' => BelongsToWeb::class,
                 'data' => $this->getModel()->detectWeb($this),

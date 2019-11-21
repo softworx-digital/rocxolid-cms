@@ -41,7 +41,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'module' => 'rocXolid-cms',
             'middleware' => [ 'web' ],
             'namespace' => 'Softworx\RocXolid\CMS\Http\Controllers',
-            'prefix' => sprintf('%s/cms/preview', config('rocXolid.main.admin-path', 'rocXolid')),
+            'prefix' => sprintf('%s/cms/preview', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.frontpage.preview.'
         ], function ($router) {
             $router->group([
@@ -60,7 +60,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'module' => 'rocXolid-cms',
             'middleware' => [ 'web', 'rocXolid.auth' ],
             'namespace' => 'Softworx\RocXolid\CMS\Http\Controllers',
-            'prefix' => sprintf('%s/cms', config('rocXolid.main.admin-path', 'rocXolid')),
+            'prefix' => sprintf('%s/cms', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.',
         ], function ($router) {
             CrudRouterService::create('web-frontpage-settings', \WebFrontpageSettings\Controller::class);

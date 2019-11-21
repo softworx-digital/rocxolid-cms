@@ -32,7 +32,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new PageElementableViewer())
+        return PageElementableViewer::build($this, $this)
             ->setModel($model)
             ->setController($this);
     }
