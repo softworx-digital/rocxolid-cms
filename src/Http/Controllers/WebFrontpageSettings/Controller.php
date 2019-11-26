@@ -31,7 +31,7 @@ class Controller extends AbstractCrudController
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new WebFrontpageSettingsViewer())
+        return WebFrontpageSettingsViewer::build($this, $this)
             ->setModel($model)
             ->setController($this);
     }
@@ -44,7 +44,7 @@ class Controller extends AbstractCrudController
 
         $form = $repository->getForm($this->getFormParam($request));
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -82,7 +82,7 @@ class Controller extends AbstractCrudController
         {
             $web = Web::findOrFail($form->getFormField('web_id')->getValue());
 
-            $form_component = (new CrudFormComponent())
+            $form_component = CrudFormComponent::build($this, $this)
                 ->setForm($form)
                 ->setRepository($repository);
 
@@ -100,8 +100,8 @@ class Controller extends AbstractCrudController
 
             return $this->response
                     //->append($form_component->getDomId('output'), $model_viewer_component->fetch('output.clone-success', $assignments))
-                    //->replace($model_viewer_component->makeDomId('customer-note'), $model_viewer_component->fetch('include.customer-note', $assignments))
-                    ->modalClose($model_viewer_component->makeDomId('modal-clone-structure'))
+                    //->replace($model_viewer_component->getDomId('customer-note'), $model_viewer_component->fetch('include.customer-note', $assignments))
+                    ->modalClose($model_viewer_component->getDomId('modal-clone-structure'))
                     ->modal($this->getModelViewerComponent($web_frontpage_settings)->fetch('modal.clone-structure-success', $assignments))
                     ->get();
         }

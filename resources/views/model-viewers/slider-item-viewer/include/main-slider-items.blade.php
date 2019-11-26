@@ -1,4 +1,4 @@
-<li id="{{ $component->makeDomId('main-slider-items', md5(get_class($component->getModel())), $component->getModel()->id) }}" class="" data-containee-id="{{ $component->getModel()->id }}" data-containee-type="{{ get_class($component->getModel()) }}">
+<li id="{{ $component->getDomId('main-slider-items', md5(get_class($component->getModel())), $component->getModel()->id) }}" class="" data-containee-id="{{ $component->getModel()->id }}" data-containee-type="{{ get_class($component->getModel()) }}">
     <div class="row">
         <div class="col-xs-2 text-left actions">
             <div class="btn-group">
@@ -19,7 +19,7 @@
             <big class="d-inline-block margin-bottom-5">{!! $component->getModel()->getTitle() !!}</big>
         @endif
         @if (!empty($component->getModel()->url))
-            <p><a href="{{ $component->getModel()->url }}" target="_blank"><i class="fa fa-external-link margin-right-10"></i>{{ str_limit($component->getModel()->url, 50) }}</a></p>
+            <p><a href="{{ $component->getModel()->url }}" target="_blank"><i class="fa fa-external-link margin-right-10"></i>{{ Str::limit($component->getModel()->url, 50) }}</a></p>
         @else
             @if ($component->getModel()->page()->exists())
                 @if ($component->getModel()->userCan('read-only'))

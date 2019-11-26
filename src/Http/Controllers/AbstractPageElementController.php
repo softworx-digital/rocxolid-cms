@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Http\Controllers;
 // @todo - upratat
 use App;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Softworx\RocXolid\Components\General\Message;
 use Softworx\RocXolid\Http\Requests\FormRequest;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
@@ -86,7 +87,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
             $template_name = sprintf('include.%s', $request->_section);
 
             return $this->response
-                ->replace($page_elementable_model_viewer_component->makeDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name))
+                ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name))
                 ->get();
         }
     }
@@ -95,19 +96,20 @@ abstract class AbstractPageElementController extends AbstractCMSController
     {
         if ($request->ajax() && $request->has('_section'))
         {
-            $section_action_method = sprintf('handle%s%s', studly_case($request->get('_section')), studly_case($action));
+            $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
 
             $this->$section_action_method($request, $repository, $form, $page_element, $this->getPageElementable($request));
 
-            $form_component = (new CrudFormComponent())
+            $form_component = CrudFormComponent::build($this, $this)
                 ->setForm($form)
                 ->setRepository($this->getRepository());
 
             $model_viewer_component = $this->getModelViewerComponent($page_element);
 
+            // @todo: depracated, use notifications
             return $this->response
-                ->append($form_component->getDomId('output'), (new Message())->fetch('crud.success'))
-                ->modalClose($model_viewer_component->makeDomId(sprintf('modal-%s', $action)))
+                ->notifySuccess($model_viewer_component->translate('text.updated'))
+                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
         }
         else
@@ -142,7 +144,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
         return $this->response->redirect($page_elementable->getControllerRoute('show'))->get();
         /*
         $this->response
-            ->replace($page_elementable_model_viewer_component->makeDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name));
+            ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name));
 
         return $this;
         */

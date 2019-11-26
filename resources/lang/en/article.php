@@ -36,8 +36,11 @@ return [
         ],
     ],
     'category' => [
-        'panels' => 'Panely',
-        'containers' => 'Containery',
-        'proxy' => 'Proxy elementy',
+        'panels' => 'Panels',
+        'containers' => 'Containers',
+        'proxy' => 'Proxy elements',
+    ],
+    'action' => [
+        'show' => 'Compose',
     ],
 ];

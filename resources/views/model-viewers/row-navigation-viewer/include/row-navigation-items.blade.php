@@ -1,4 +1,4 @@
-<div id="{{ $component->makeDomId('row-navigation-items', $component->getModel()->id) }}">
+<div id="{{ $component->getDomId('row-navigation-items', $component->getModel()->id) }}">
 @if ($component->getModel()->hasContainee('items'))
     <ul class="navigation sortable vertical ajax-overlay" data-update-url="{{ $component->getModel()->getControllerRoute('reorder', [ 'relation' => 'items' ]) }}">
     @foreach ($component->getModel()->getContainees('items') as $item)

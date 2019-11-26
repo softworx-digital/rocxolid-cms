@@ -3,8 +3,8 @@
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
 // utils
-use Softworx\RocXolid\Http\Requests\CrudRequest,
-    Softworx\RocXolid\Communication\Contracts\AjaxResponse;
+use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Softworx\RocXolid\Communication\Contracts\AjaxResponse;
 //
 use Softworx\RocXolid\Components\General\Message;
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
@@ -16,6 +16,7 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementableViewer;
+
 /**
  *
  */
@@ -91,7 +92,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         $form
             ->setPageElementShortClass($page_element_short_class);
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -119,7 +120,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->setPageElementShortClass($page_element_short_class)
             ->submit();
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -133,7 +134,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             if ($this->getModel()->hasPageElement($page_element))
             {
                 return $this->response
-                    ->replace($form_component->makeDomId('output'), (new Message())->fetch('crud.error', [ 'errors' => collect($form_component->translate('text.element-already-set')) ]))
+                    ->notifyError($model_viewer_component->translate('text.element-already-set'))
                     ->get();
             }
 
@@ -142,8 +143,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
             /*
             return $this->response
-                ->replace($model_viewer_component->makeDomId('page-elements', $this->getModel()->id), $model_viewer_component->fetch('include.page-elements'))
-                ->modalClose($model_viewer_component->makeDomId('modal-select-page-element'))
+                ->replace($model_viewer_component->getDomId('page-elements', $this->getModel()->id), $model_viewer_component->fetch('include.page-elements'))
+                ->modalClose($model_viewer_component->getDomId('modal-select-page-element'))
                 ->get();
             */
         }
@@ -164,8 +165,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->getModelViewerComponent($this->getModel());
 
         return $this->response
-            //->replace($model_viewer_component->makeDomId($request->_section), $model_viewer_component->fetch($template_name))
-            ->append($model_viewer_component->makeDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
+            //->replace($model_viewer_component->getDomId($request->_section), $model_viewer_component->fetch($template_name))
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
             ->get();
     }
 
@@ -180,7 +181,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->getModelViewerComponent($this->getModel());
 
         return $this->response
-            ->append($model_viewer_component->makeDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
             ->get();
     }
 }

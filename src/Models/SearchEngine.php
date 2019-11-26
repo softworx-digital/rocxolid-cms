@@ -2,18 +2,24 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+// rocXolid fundamentals
 use Softworx\RocXolid\Models\Contracts\Containee;
 use Softworx\RocXolid\Models\Traits\IsContained;
 // common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Image;
-use Softworx\RocXolid\Commerce\Models\Product;
+// CMS models
 use Softworx\RocXolid\CMS\Models\Advice;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
+// commerce models
+use Softworx\RocXolid\Commerce\Models\Product;
+
 /**
- *
+ * 
  */
+// @todo: cleanup / refactor
 class SearchEngine extends AbstractPageElement
 {
     protected $table = 'cms_page_element_search_engine';
@@ -42,7 +48,7 @@ class SearchEngine extends AbstractPageElement
         {
             foreach ($request->get('search-type', []) as $type)
             {
-                $method = sprintf('search%s', studly_case($type));
+                $method = sprintf('search%s', Str::studly($type));
 
                 if (method_exists($this, $method))
                 {

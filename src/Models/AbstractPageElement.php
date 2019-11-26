@@ -8,6 +8,7 @@ use Config;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // rocXolid fundamentals
+use Softworx\RocXolid\Contracts\Translatable;
 use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 use Softworx\RocXolid\Models\Traits\CanClone;
@@ -24,10 +25,11 @@ use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementViewer;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasFrontpageUrlAttribute;
 // cms models
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy,
-    Softworx\RocXolid\CMS\Models\PageTemplate,
-    Softworx\RocXolid\CMS\Models\Article;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\PageTemplate;
+use Softworx\RocXolid\CMS\Models\Article;
+
 /**
  *
  */
@@ -177,9 +179,12 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
         return $this;
     }
 
-    public function getModelViewerComponent()
+    // @todo: this is not nice
+    public function getModelViewerComponentInside(Translatable $component)
     {
-        return (new PageElementViewer())->setModel($this)->setController(App::make($this->getControllerClass()));
+        $controller = App::make($this->getControllerClass());
+
+        return PageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 
     public function setParentPageElementable(PageElementable $page_elementable)

@@ -1,6 +1,9 @@
 <?php
 
 namespace Softworx\RocXolid\CMS\Models\Traits;
+
+use Illuminate\Support\Str;
+
 /**
  *
  */
@@ -19,7 +22,7 @@ trait HasFrontpageUrlAttribute
         }
         elseif (array_key_exists($attribute_page, $this->attributes) && !empty($this->$attribute_page))
         {
-            $relation = is_null($attribute) ? 'page' : sprintf('%sPage', camel_case($attribute));
+            $relation = is_null($attribute) ? 'page' : sprintf('%sPage', Str::camel($attribute));
 
             if (!method_exists($this, $relation))
             {
@@ -37,7 +40,7 @@ trait HasFrontpageUrlAttribute
         }
         elseif (array_key_exists($attribute_page_proxy, $this->attributes) && !empty($this->$attribute_page_proxy))
         {
-            $relation = is_null($attribute) ? 'pageProxy' : sprintf('%sPageProxy', camel_case($attribute));
+            $relation = is_null($attribute) ? 'pageProxy' : sprintf('%sPageProxy', Str::camel($attribute));
 
             if (!method_exists($this, $relation))
             {

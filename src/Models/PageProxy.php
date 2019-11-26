@@ -23,6 +23,7 @@ use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 // cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Article;
+
 /**
  *
  */
@@ -111,8 +112,8 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
         foreach ($this->page_proxyable as $class)
         {
-            //$models->put(kebab_case((new \ReflectionClass($class))->getShortName()), $class);
-            //$short_name = (new \ReflectionClass($class))->getShortName();
+            // $models->put(Str::kebab((new \ReflectionClass($class))->getShortName()), $class);
+            // $short_name = (new \ReflectionClass($class))->getShortName();
             $models->put($class, $class::make()->getModelViewerComponent()->translate('model.title.singular'));
         }
 

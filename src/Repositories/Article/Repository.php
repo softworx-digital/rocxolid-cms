@@ -30,7 +30,7 @@ class Repository extends AbstractRepository
             'options' => [
                 'ajax' => true,
                 'label' => [
-                    'title' => 'web'
+                    'title' => 'web_id'
                 ],
                 'relation' => [
                     'name' => 'web',
@@ -48,7 +48,7 @@ class Repository extends AbstractRepository
             'options' => [
                 'ajax' => true,
                 'label' => [
-                    'title' => 'localization'
+                    'title' => 'localization_id'
                 ],
                 'relation' => [
                     'name' => 'localization',

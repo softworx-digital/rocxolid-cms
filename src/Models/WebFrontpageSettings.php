@@ -11,19 +11,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // model contracts
-use Softworx\RocXolid\Models\Contracts\Container,
-    Softworx\RocXolid\Models\Contracts\Containee;
+use Softworx\RocXolid\Models\Contracts\Container;
+use Softworx\RocXolid\Models\Contracts\Containee;
 // common models
-use Softworx\RocXolid\Common\Models\File,
-    Softworx\RocXolid\Common\Models\Image,
-    Softworx\RocXolid\Common\Models\Web,
-    Softworx\RocXolid\Common\Models\Traits\HasWeb,
-    Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
+use Softworx\RocXolid\Common\Models\File;
+use Softworx\RocXolid\Common\Models\Image;
+use Softworx\RocXolid\Common\Models\Web;
+use Softworx\RocXolid\Common\Models\Traits\HasWeb;
+use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 // cms models
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy,
-    Softworx\RocXolid\CMS\Models\PageTemplate;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\PageTemplate;
 // commerce models
+
 /**
  *
  */

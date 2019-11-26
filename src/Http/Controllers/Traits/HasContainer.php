@@ -44,7 +44,7 @@ trait HasContainer
         $model_viewer_component = $this->getModelViewerComponent($model);
 
         return $this->response
-            ->append($model_viewer_component->makeDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
+            ->append($model_viewer_component->getDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
             ->get();
     }
 
@@ -110,7 +110,7 @@ trait HasContainer
                 if ($this->getModel()->hasContainee('items', $containee))
                 {
                     return $this->response
-                        ->replace($form_component->makeDomId('output'), (new Message())->fetch('crud.error', [ 'errors' => collect($form_component->translate('text.element-already-set')) ]))
+                        ->replace($form_component->getDomId('output'), (new Message())->fetch('crud.error', [ 'errors' => collect($form_component->translate('text.element-already-set')) ]))
                         ->get();
                 }
             }
@@ -125,8 +125,8 @@ trait HasContainer
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
             /*
             return $this->response
-                ->replace($model_viewer_component->makeDomId('list-containee', $this->getModel()->id), $model_viewer_component->fetch('include.list-containee'))
-                ->modalClose($model_viewer_component->makeDomId('modal-select-list-containee'))
+                ->replace($model_viewer_component->getDomId('list-containee', $this->getModel()->id), $model_viewer_component->fetch('include.list-containee'))
+                ->modalClose($model_viewer_component->getDomId('modal-select-list-containee'))
                 ->get();
             */
         }

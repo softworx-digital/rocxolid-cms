@@ -59,7 +59,7 @@
             </div>
         @endif
 
-        {{ Form::open([ 'id' => $component->makeDomId('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))), 'class' => 'autosubmit ajax-overlay', 'url' => $page_elementable->getControllerRoute('setPivotData', [ 'page_elementable_type' => get_class($component->getModel()), 'page_elementable_id' => $component->getModel()->id ]) ]) }}
+        {{ Form::open([ 'id' => $component->getDomId('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))), 'class' => 'autosubmit ajax-overlay', 'url' => $page_elementable->getControllerRoute('setPivotData', [ 'page_elementable_type' => get_class($component->getModel()), 'page_elementable_id' => $component->getModel()->id ]) ]) }}
             @foreach ($component->getModel()->getPivotData() as $pivot_data => $value)
                 @if (substr($pivot_data, 0, 3) == 'is_')
                     <br />
@@ -74,7 +74,7 @@
                 </div>
                 @endif
             @endforeach
-                <button type="button" class="hidden" data-ajax-submit-form="{{ $component->makeDomIdHash('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))) }}"><i class="fa fa-search"></i></button>
+                <button type="button" class="hidden" data-ajax-submit-form="{{ $component->getDomIdHash('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))) }}"><i class="fa fa-search"></i></button>
         {{ Form::close() }}
             @endif
         </div>

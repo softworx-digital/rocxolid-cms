@@ -3,54 +3,53 @@
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
 use DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // contracts
-use Softworx\RocXolid\Models\Contracts\Container,
-    Softworx\RocXolid\Models\Contracts\Containee;
+use Softworx\RocXolid\Models\Contracts\Container;
+use Softworx\RocXolid\Models\Contracts\Containee;
 // traits
 use Softworx\RocXolid\Models\Traits\CanClone;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElement,
-    Softworx\RocXolid\CMS\Models\Contracts\PageProxyElement,
-    Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\PageElement;
+use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElement;
+use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\PreviewController;
 //
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 // page elements
-use Softworx\RocXolid\CMS\Models\Text,
-    Softworx\RocXolid\CMS\Models\Link,
-    Softworx\RocXolid\CMS\Models\Gallery,
-    Softworx\RocXolid\CMS\Models\IframeVideo,
+use Softworx\RocXolid\CMS\Models\Text;
+use Softworx\RocXolid\CMS\Models\Link;
+use Softworx\RocXolid\CMS\Models\Gallery;
+use Softworx\RocXolid\CMS\Models\IframeVideo;
     // panels
-    Softworx\RocXolid\CMS\Models\CookieConsent,
-    Softworx\RocXolid\CMS\Models\FooterNavigation,
-    Softworx\RocXolid\CMS\Models\FooterNote,
-    Softworx\RocXolid\CMS\Models\StatsPanel,
-    Softworx\RocXolid\CMS\Models\TopPanel,
+use Softworx\RocXolid\CMS\Models\CookieConsent;
+use Softworx\RocXolid\CMS\Models\FooterNavigation;
+use Softworx\RocXolid\CMS\Models\FooterNote;
+use Softworx\RocXolid\CMS\Models\StatsPanel;
+use Softworx\RocXolid\CMS\Models\TopPanel;
     // specials - forms
-    Softworx\RocXolid\CMS\Models\Newsletter,
-    Softworx\RocXolid\CMS\Models\Affiliate,
-    Softworx\RocXolid\CMS\Models\Contact,
-    Softworx\RocXolid\CMS\Models\SearchEngine,
-    Softworx\RocXolid\CMS\Models\LoginRegistration,
-    Softworx\RocXolid\CMS\Models\ForgotPassword,
-    Softworx\RocXolid\CMS\Models\ShoppingCart,
-    Softworx\RocXolid\CMS\Models\ShoppingCheckout,
-    Softworx\RocXolid\CMS\Models\ShoppingAfter,
-    Softworx\RocXolid\CMS\Models\UserProfile,
+use Softworx\RocXolid\CMS\Models\Newsletter;
+use Softworx\RocXolid\CMS\Models\Contact;
+use Softworx\RocXolid\CMS\Models\SearchEngine;
+use Softworx\RocXolid\CMS\Models\LoginRegistration;
+use Softworx\RocXolid\CMS\Models\ForgotPassword;
+use Softworx\RocXolid\CMS\Models\ShoppingCart;
+use Softworx\RocXolid\CMS\Models\ShoppingCheckout;
+use Softworx\RocXolid\CMS\Models\ShoppingAfter;
+use Softworx\RocXolid\CMS\Models\UserProfile;
     // containers
-    Softworx\RocXolid\CMS\Models\HtmlWrapper,
-    Softworx\RocXolid\CMS\Models\MainNavigation,
-    Softworx\RocXolid\CMS\Models\RowNavigation,
-    Softworx\RocXolid\CMS\Models\MainSlider,
+use Softworx\RocXolid\CMS\Models\HtmlWrapper;
+use Softworx\RocXolid\CMS\Models\MainNavigation;
+use Softworx\RocXolid\CMS\Models\RowNavigation;
+use Softworx\RocXolid\CMS\Models\MainSlider;
     //  lists
-    Softworx\RocXolid\CMS\Models\DeliveryList,
-    Softworx\RocXolid\CMS\Models\ProductList,
-    Softworx\RocXolid\CMS\Models\ArticleList,
+use Softworx\RocXolid\CMS\Models\ProductList;
+use Softworx\RocXolid\CMS\Models\ArticleList;
     // proxies
-    Softworx\RocXolid\CMS\Models\ProxyProduct,
-    Softworx\RocXolid\CMS\Models\ProxyArticle;
+use Softworx\RocXolid\CMS\Models\ProxyProduct;
+use Softworx\RocXolid\CMS\Models\ProxyArticle;
 // @todo - na zaklade tohoto potom spravit vseobecnu relationship - cize nebude treba definovat vsetky vazby (https://laravel.io/forum/02-11-2015-eloquent-polymorphic-many-to-many-morphto)
 // @todo - hodt do page, page template,... contract s tymto traitom
 // alebo skor spravit abstract triedu <<< a static access k $page_elements_relationships
@@ -65,6 +64,7 @@ trait HasPageElements
 
     private $_visible_page_elements = null;
 
+    // @todo: quite ugly, consider some nicer solution
     protected $default_page_elements_relationships = [
         // general page elements - (usually) clone from template
         'texts',
@@ -314,18 +314,18 @@ trait HasPageElements
             {
                 if ($related instanceof Container)
                 {
-                    $models['containers']->put(kebab_case((new \ReflectionClass($related))->getShortName()), $related);
+                    $models['containers']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                 }
                 elseif ($related instanceof PageProxyElement)
                 {
                     if (($this instanceof PageProxyElementable) && ($this->model_type == $related::$model_type))
                     {
-                        $models['proxy']->put(kebab_case((new \ReflectionClass($related))->getShortName()), $related);
+                        $models['proxy']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                     }
                 }
                 else
                 {
-                    $models['panels']->put(kebab_case((new \ReflectionClass($related))->getShortName()), $related);
+                    $models['panels']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                 }
             }
         }
@@ -365,7 +365,7 @@ trait HasPageElements
 
             if ($related instanceof PageElement)
             {
-                $models->put(kebab_case((new \ReflectionClass($related))->getShortName()), $related);
+                $models->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
             }
         }
 
@@ -374,7 +374,7 @@ trait HasPageElements
 
     public function getPreviewRoute()
     {
-        $action = action(sprintf('\%s@%s', PreviewController::class, camel_case((new \ReflectionClass($this))->getShortName())), $this);
+        $action = action(sprintf('\%s@%s', PreviewController::class, Str::camel((new \ReflectionClass($this))->getShortName())), $this);
         $parsed = parse_url($action);
 
         return sprintf('%s://%s/%s', $parsed['scheme'], $this->web->domain, $parsed['path']);
@@ -387,17 +387,17 @@ trait HasPageElements
 
     public function getCCRelationParam()
     {
-        return sprintf('page-element-[%s:%s]-items', kebab_case((new \ReflectionClass($this))->getShortName()), $this->id);
+        return sprintf('page-element-[%s:%s]-items', Str::kebab((new \ReflectionClass($this))->getShortName()), $this->id);
     }
 
     public function getPageElementsPivotTable()
     {
-        return sprintf('cms_%s_has_page_elements', snake_case((new \ReflectionClass($this))->getShortName()));
+        return sprintf('cms_%s_has_page_elements', Str::snake((new \ReflectionClass($this))->getShortName()));
     }
 
     public function getPageElementsPivotTableKey()
     {
-        return sprintf('%s_id', snake_case((new \ReflectionClass($this))->getShortName()));
+        return sprintf('%s_id', Str::snake((new \ReflectionClass($this))->getShortName()));
     }
 
     public function getRequestFieldParam()

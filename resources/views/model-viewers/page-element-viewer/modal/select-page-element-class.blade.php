@@ -1,4 +1,4 @@
-<div id="{{ $component->makeDomId('select-page-element-class') }}" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="{{ $component->getDomId('select-page-element-class') }}" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content ajax-overlay">
             <div class="modal-header">

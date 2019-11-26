@@ -1,1 +1,1 @@
-<div id="{{ $component->makeDomId('output') }}"></div>
+<div id="{{ $component->getDomId('output') }}"></div>

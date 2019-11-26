@@ -1,4 +1,4 @@
-<li id="{{ $component->makeDomId('row-navigation-items', md5(get_class($component->getModel())), $component->getModel()->id) }}" class="" data-containee-id="{{ $component->getModel()->id }}" data-containee-type="{{ get_class($component->getModel()) }}">
+<li id="{{ $component->getDomId('row-navigation-items', md5(get_class($component->getModel())), $component->getModel()->id) }}" class="" data-containee-id="{{ $component->getModel()->id }}" data-containee-type="{{ get_class($component->getModel()) }}">
     <div class="row">
         <div class="col-xs-2 text-left actions">
             <div class="btn-group">

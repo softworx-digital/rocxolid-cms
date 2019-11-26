@@ -22,7 +22,7 @@ class Repository extends AbstractRepository
             'options' => [
                 'ajax' => true,
                 'label' => [
-                    'title' => 'web'
+                    'title' => 'web_id'
                 ],
                 'relation' => [
                     'name' => 'web',

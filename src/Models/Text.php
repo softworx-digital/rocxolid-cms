@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use App;
+// rocXolid fundamentals
+use Softworx\RocXolid\Contracts\Translatable;
 // common traits
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
 use Softworx\RocXolid\Common\Models\Traits\HasFile;
@@ -32,6 +34,7 @@ class Text extends AbstractPageElement
         'content',
     ];
 
+    // @todo: put this into config to be project specific (and this declaration taken as default)
     protected $image_dimensions = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
@@ -41,8 +44,10 @@ class Text extends AbstractPageElement
         ],
     ];
 
-    public function getModelViewerComponent()
+    public function getModelViewerComponentInside(Translatable $component)
     {
-        return (new TextPageElementViewer())->setModel($this)->setController(App::make($this->getControllerClass()));
+        $controller = App::make($this->getControllerClass());
+
+        return TextPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 }

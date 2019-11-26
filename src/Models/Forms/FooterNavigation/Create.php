@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\FooterNavigation;
 
+use Illuminate\Support\Str;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
@@ -40,7 +41,7 @@ class Create extends RocXolidAbstractCrudForm
                 'data' => $this->getModel()->detectWeb($this),
             ];
             //
-            $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, sprintf('%sPageProxy', camel_case($param)));
+            $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, sprintf('%sPageProxy', Str::camel($param)));
             */
         }
 

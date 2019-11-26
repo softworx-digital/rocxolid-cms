@@ -2,13 +2,15 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms;
 
+use Illuminate\Support\Str;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // field types
-use Softworx\RocXolid\Forms\Fields\Type\Hidden,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\Hidden;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
+
 /**
  *
  */
@@ -101,7 +103,7 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
                 //
                 if (method_exists($this->getModel(), 'adjustPageProxyModelFieldDefinition'))
                 {
-                    $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, $param ? sprintf('%sPageProxy', camel_case($param)) : 'pageProxy');
+                    $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, $param ? sprintf('%sPageProxy', Str::camel($param)) : 'pageProxy');
                 }
             }
         }

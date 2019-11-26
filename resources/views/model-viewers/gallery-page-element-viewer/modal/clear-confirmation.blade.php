@@ -1,7 +1,7 @@
-<div id="{{ $component->makeDomId('modal-clear') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="{{ $component->getDomId('modal-clear') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content ajax-overlay">
-        {{ Form::open([ 'id' => $component->getFormComponent()->makeDomId('modal-clear'), 'url' => $component->getController()->getRoute('clear', $component->getModel()) ]) }}
+        {{ Form::open([ 'id' => $component->getFormComponent()->getDomId('modal-clear'), 'url' => $component->getController()->getRoute('clear', $component->getModel()) ]) }}
             {{ Form::hidden('_method', 'POST') }}
             {{ Form::hidden('_submit-action', null) }}
             {{ Form::hidden('_section', 'page-elements') }}
@@ -17,7 +17,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close', false) }}</button>
-                <button type="submit" class="btn btn-success pull-right" data-ajax-submit-form="{{ $component->getFormComponent()->makeDomIdHash('modal-clear') }}"><i class="fa fa-check margin-right-10"></i>{{ $component->translate('button.confirm', false) }}</button>
+                <button type="submit" class="btn btn-success pull-right" data-ajax-submit-form="{{ $component->getFormComponent()->getDomIdHash('modal-clear') }}"><i class="fa fa-check margin-right-10"></i>{{ $component->translate('button.confirm', false) }}</button>
             </div>
         {{ Form::close() }}
         </div>

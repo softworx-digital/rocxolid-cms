@@ -1,7 +1,7 @@
 @foreach ($component->getModel()->getShowAttributes() as $field => $value)
     <div class="row">
         <label class="col-xs-3 text-right">{{ $component->translate(sprintf('field.%s', $field)) }}</label>
-        <div class="col-md-8 col-xs-6 text-left">{!! str_limit(strip_tags($component->getModel()->$field), 120, ' (...)') !!}</div>
+        <div class="col-md-8 col-xs-6 text-left">{!! Str::limit(strip_tags($component->getModel()->$field), 120, ' (...)') !!}</div>
     </div>
 @endforeach
 @foreach ($component->getModel()->getRelationshipMethods() as $method)

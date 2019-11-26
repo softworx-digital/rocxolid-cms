@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Components\ModelViewers;
 
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\CrudModelViewer;
 
 class WebFrontpageSettingsViewer extends CrudModelViewer
 {

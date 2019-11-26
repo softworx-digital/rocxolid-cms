@@ -3,21 +3,23 @@
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
 use App;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid fundamentals
-use Softworx\RocXolid\Http\Requests\CrudRequest,
-    Softworx\RocXolid\Forms\AbstractCrudForm,
-    Softworx\RocXolid\Forms\Contracts\FormField,
-    Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel,
-    Softworx\RocXolid\Models\Contracts\Container,
-    Softworx\RocXolid\Models\Contracts\Containee,
-    Softworx\RocXolid\Repositories\Contracts\Repository,
-    Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Softworx\RocXolid\Forms\AbstractCrudForm;
+use Softworx\RocXolid\Forms\Contracts\FormField;
+use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
+use Softworx\RocXolid\Models\Contracts\Container;
+use Softworx\RocXolid\Models\Contracts\Containee;
+use Softworx\RocXolid\Repositories\Contracts\Repository;
+use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // general components
-use Softworx\RocXolid\Components\General\Message,
-    Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
+use Softworx\RocXolid\Components\General\Message;
+use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController as AbstractCMSController;
+
 /**
  *
  */
@@ -62,7 +64,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
             $template_name = sprintf('include.%s', $request->_section);
 
             return $this->response
-                ->destroy($this->getModel()->getModelViewerComponent()->makeDomId($request->_section, md5(get_class($this->getModel())), $this->getModel()->id))
+                ->destroy($this->getModel()->getModelViewerComponent()->getDomId($request->_section, md5(get_class($this->getModel())), $this->getModel()->id))
                 ->get();
         }
     }
@@ -71,19 +73,19 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
     {
         if ($request->ajax() && $request->has('_section'))
         {
-            $section_action_method = sprintf('handle%s%s', studly_case($request->get('_section')), studly_case($action));
+            $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
 
             $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
 
-            $form_component = (new CrudFormComponent())
+            $form_component = CrudFormComponent::build($this, $this)
                 ->setForm($form)
                 ->setRepository($this->getRepository());
 
             $model_viewer_component = $this->getModelViewerComponent($this->getModel());
 
             return $this->response
-                ->append($form_component->getDomId('output'), (new Message())->fetch('crud.success'))
-                ->modalClose($model_viewer_component->makeDomId(sprintf('modal-%s', $action)))
+                ->notifySuccess($model_viewer_component->translate('text.updated'))
+                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
         }
         else
@@ -98,7 +100,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
         $template_name = sprintf('include.%s', $request->_section);
 
         $this->response
-            ->replace($model_viewer_component->makeDomId($request->_section, md5(get_class($this->getmodel())), $this->getModel()->id), $model_viewer_component->fetch($template_name, [
+            ->replace($model_viewer_component->getDomId($request->_section, md5(get_class($this->getmodel())), $this->getModel()->id), $model_viewer_component->fetch($template_name, [
                 'container' => $container,
             ]));
 

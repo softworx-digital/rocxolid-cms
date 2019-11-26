@@ -2,11 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\FooterNavigation;
 
+use Illuminate\Support\Str;
 // fields
 use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
+
 /**
  *
  */
@@ -50,7 +52,7 @@ class Update extends RocXolidAbstractCrudForm
                 'data' => $this->getModel()->detectWeb($this),
             ];
             //
-            $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, sprintf('%sPageProxy', camel_case($param)));
+            $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, sprintf('%sPageProxy', Str::camel($param)));
             */
         }
 

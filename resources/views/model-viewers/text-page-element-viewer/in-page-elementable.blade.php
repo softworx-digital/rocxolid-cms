@@ -13,12 +13,12 @@
                 @if ($field == 'content')
                 <div class="col-xs-9">
                     <label class="col-xs-2 text-right">{{ $component->translate(sprintf('field.%s', $field)) }}</label>
-                    <div class="col-xs-10">{!! str_limit(strip_tags($component->getModel()->$field), 1024, ' (...)') !!}</div>
+                    <div class="col-xs-10">{!! Str::limit(strip_tags($component->getModel()->$field), 1024, ' (...)') !!}</div>
                 </div>
                 @elseif (strip_tags($component->getModel()->$field) !== '')
                 <div class="col-lg-3 col-md-4 col-xs-6">
                     <label class="col-xs-6 text-right">{{ $component->translate(sprintf('field.%s', $field)) }}</label>
-                    <div class="col-xs-6">{!! str_limit(strip_tags($component->getModel()->$field), 120, ' (...)') !!}</div>
+                    <div class="col-xs-6">{!! Str::limit(strip_tags($component->getModel()->$field), 120, ' (...)') !!}</div>
                 </div>
                 @endif
             @endforeach
@@ -58,10 +58,10 @@
                 <a type="button" class="btn btn-danger btn-sm margin-right-no"  title="{{ $component->translate('table-button.detach') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('detach', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->id]) }}"><i class="fa fa-minus"></i></a>
             </div>
 
-        {{ Form::open([ 'id' => $component->makeDomId('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))), 'class' => 'autosubmit ajax-overlay', 'url' => $page_elementable->getControllerRoute('setPivotData', [ 'page_elementable_type' => get_class($component->getModel()), 'page_elementable_id' => $component->getModel()->id ]) ]) }}
+        {{ Form::open([ 'id' => $component->getDomId('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))), 'class' => 'autosubmit ajax-overlay', 'url' => $page_elementable->getControllerRoute('setPivotData', [ 'page_elementable_type' => get_class($component->getModel()), 'page_elementable_id' => $component->getModel()->id ]) ]) }}
             @foreach ($component->getModel()->getPivotData() as $pivot_data => $value)
                 @if (substr($pivot_data, 0, 3) == 'is_')
-                    <label class="margin-top-5 margin-bottom-no">{{ $component->getModel()->getParentPageElementable()->getModelViewerComponent()->translate(sprintf('field.pivot-%s', $pivot_data)) }}<i class="fa fa-question-circle text-warning margin-left-5" title="{{ $component->getModel()->getParentPageElementable()->getModelViewerComponent()->translate(sprintf('field.pivot-hint-%s', $pivot_data)) }}"></i></label>
+                    <label class="margin-top-5 margin-bottom-no">{{ $component->getModel()->getParentPageElementable()->getModelViewerComponent()->translate(sprintf('field.pivot-%s', $pivot_data)) }}<i class="fa fa-question-circle text-warning margin-left-5" title="{{ $component->getModel()->getParentPageElementable()->getModelViewerComponent()->translate(sprintf('hint.%s', $pivot_data)) }}"></i></label>
                     <label class="margin-top-5 margin-bottom-no">
                         {{ Form::hidden(sprintf('_data[%s]', $pivot_data), 0) }}
                         <input type="checkbox" class="autosubmit" data-toggle="toggle" data-size="small" data-width="95" data-onstyle="success" @if ($value) checked="checked" @endif name="_data[{{ $pivot_data }}]" value="1"/>
@@ -73,7 +73,7 @@
                 </div>
                 @endif
             @endforeach
-                <button type="button" class="hidden" data-ajax-submit-form="{{ $component->makeDomIdHash('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))) }}"><i class="fa fa-search"></i></button>
+                <button type="button" class="hidden" data-ajax-submit-form="{{ $component->getDomIdHash('pivot-data', md5(sprintf('%s-%s', get_class($component->getModel()), $component->getModel()->id))) }}"><i class="fa fa-search"></i></button>
         {{ Form::close() }}
             @endif
         </div>

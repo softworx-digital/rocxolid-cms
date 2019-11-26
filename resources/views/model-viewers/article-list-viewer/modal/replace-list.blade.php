@@ -1,4 +1,4 @@
-<div id="{{ $component->makeDomId('modal-replace-list') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="{{ $component->getDomId('modal-replace-list') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content ajax-overlay">
             <div class="modal-header">
@@ -6,7 +6,7 @@
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }} {{ $component->getModel()->getTitle() }} <small>{{ $component->translate('action.listContaineeReplace') }}</small></h4>
             </div>
         @if ($component->getModel()->userCan('write'))
-            {{ Form::open([ 'id' => $component->makeDomId('replace-list'), 'url' => $component->getController()->getRoute('listContaineeReplaceSubmit', $component->getModel()) ]) }}
+            {{ Form::open([ 'id' => $component->getDomId('replace-list'), 'url' => $component->getController()->getRoute('listContaineeReplaceSubmit', $component->getModel()) ]) }}
                 {{ Form::hidden('_method', 'PUT') }}
                 {{ Form::hidden('_submit-action', 'submit-show') }}
 
@@ -23,7 +23,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close', false) }}</button>
-                    <button type="button" class="btn btn-success pull-right" data-ajax-submit-form="{{ $component->makeDomIdHash('replace-list') }}"><i class="fa fa-exchange margin-right-10"></i>{{ $component->translate('button.replace', false) }}</button>
+                    <button type="button" class="btn btn-success pull-right" data-ajax-submit-form="{{ $component->getDomIdHash('replace-list') }}"><i class="fa fa-exchange margin-right-10"></i>{{ $component->translate('button.replace', false) }}</button>
                 </div>
             {{ Form::close() }}
         @else

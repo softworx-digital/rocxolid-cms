@@ -2,15 +2,18 @@
 
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 // rocXolid contracts
-use Softworx\RocXolid\Forms\Contracts\Form,
-    Softworx\RocXolid\Forms\Contracts\FormField;
+use Softworx\RocXolid\Forms\Contracts\Form;
+use Softworx\RocXolid\Forms\Contracts\FormField;
 // field types
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 // commerce models
 use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
  *
  */
@@ -27,13 +30,13 @@ trait HasProxyPageLink
     {
         if (!isset($this->_detected_page_proxy[$relation_name]) || is_null($this->_detected_page_proxy[$relation_name]))
         {
-            $param = sprintf('%s.%s_id', FormField::SINGLE_DATA_PARAM, snake_case($relation_name));
+            $param = sprintf('%s.%s_id', FormField::SINGLE_DATA_PARAM, Str::snake($relation_name));
 
             $id = $form->getRequest()->input($param, null);
 
             if (is_null($id) && ($input = $form->getInput()))
             {
-                $id = array_get($input, $param, null);
+                $id = Arr::get($input, $param, null);
             }
 
             if (is_null($id) && ($this->$relation_name()->exists()))
@@ -79,7 +82,7 @@ trait HasProxyPageLink
                     ]]
                 ],
                 'label' => [
-                    'title' => sprintf('%s_model', snake_case($relation_name)),
+                    'title' => sprintf('%s_model', Str::snake($relation_name)),
                 ],
                 'show_null_option' => true,
                 'validation' => [
@@ -114,7 +117,7 @@ trait HasProxyPageLink
 
     public function getProxyPageModelAttribute(string $relation_name)
     {
-        return sprintf('%s_model_id', snake_case($relation_name));
+        return sprintf('%s_model_id', Str::snake($relation_name));
         //return $this->$relation_name()->getForeignKey();
     }
 }

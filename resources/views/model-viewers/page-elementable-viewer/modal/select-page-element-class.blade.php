@@ -1,4 +1,4 @@
-<div id="{{ $component->makeDomId('modal-select-page-element-class') }}" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="{{ $component->getDomId('modal-select-page-element-class') }}" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content ajax-overlay">
             <div class="modal-header">
@@ -23,7 +23,7 @@
                                 @else
                                     <i class="fa fa-puzzle-piece pull-left" style="margin-top: 2px;"></i>
                                 @endif
-                                    {{ __(sprintf('rocXolid::cms-%s.model.title.singular', $short_class)) }}
+                                    {{ __(sprintf('rocXolid:cms::%s.model.title.singular', $short_class)) }}
                                 </a>
                             </div>
                             @else
@@ -36,7 +36,7 @@
                                 @else
                                     <i class="fa fa-puzzle-piece pull-left" style="margin-top: 2px;"></i>
                                 @endif
-                                    {{ __(sprintf('rocXolid::cms-%s.model.title.singular', $short_class)) }}
+                                    {{ __(sprintf('rocXolid:cms::%s.model.title.singular', $short_class)) }}
                                 </a>
                             </div>
                             @endif

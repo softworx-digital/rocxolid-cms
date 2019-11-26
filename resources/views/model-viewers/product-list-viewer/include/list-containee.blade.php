@@ -1,8 +1,8 @@
-<div id="{{ $component->makeDomId('list-containee', $component->getModel()->id) }}">
+<div id="{{ $component->getDomId('list-containee', $component->getModel()->id) }}">
 @if ($component->getModel()->hasContainee('items'))
     <ul class="navigation sortable ajax-overlay" data-update-url="{{ $component->getModel()->getControllerRoute('reorder', [ 'relation' => 'items' ]) }}">
     @foreach ($component->getModel()->getContainees('items') as $item)
-        <li id="{{ $item->getModelViewerComponent()->makeDomId('list-containee', md5(get_class($item)), $item->id) }}" data-containee-id="{{ $item->id }}" data-containee-type="{{ get_class($item) }}" class="col-xxl-3 col-xl-4 col-lg-6 col-xs-12 height-150">
+        <li id="{{ $item->getModelViewerComponent()->getDomId('list-containee', md5(get_class($item)), $item->id) }}" data-containee-id="{{ $item->id }}" data-containee-type="{{ get_class($item) }}" class="col-xxl-3 col-xl-4 col-lg-6 col-xs-12 height-150">
             <div class="row">
                 <div class="col-xs-1 text-left actions">
                     <div class="btn-group-vertical">
