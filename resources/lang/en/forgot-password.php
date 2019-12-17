@@ -1,0 +1,90 @@
+<?php
+
+return [
+    'column' => [
+        'web' => 'Web',
+        'name' => 'Názov',
+        //
+        'form_title' => 'Nadpis',
+        'form_title_note' => 'Podnadpis',
+        'form_field_email' => 'e-mail',
+        'form_button' => 'Button',
+        'form_foot_note' => 'Poznámka v pätičke',
+        'form_error' => 'Chybová hláška',
+        'form_success' => 'Po odoslaní',
+        'reset_url' => 'Reset hesla URL',
+        'reset_page_id' => 'Reset hesla stránka',
+        'reset_form_title' => 'Reset hesla nadpis',
+        'reset_form_field_new_password' => 'Reset hesla nové heslo',
+        'reset_form_field_new_password_repeat'=> 'Reset hesla nové heslo - opakovanie',
+        'reset_form_button' => 'Reset hesla button',
+        'reset_form_error_password_required' => 'Reset hesla povinné heslo',
+        'reset_form_error_password_invalid' => 'Reset hesla neplatné heslo',
+        'reset_form_error_user_invalid' => 'Neplatný user',
+        'reset_form_success' => 'Reset hesla - po resete',
+    ],
+    'field' => [
+        'id' => 'ID',
+        'web_id' => 'Web',
+        'name' => 'Názov',
+        //
+        'form_title' => 'Nadpis',
+        'form_title_note' => 'Podnadpis',
+        'form_field_email' => 'e-mail',
+        'form_button' => 'Button',
+        'form_foot_note' => 'Poznámka v pätičke',
+        'form_error' => 'Chybová hláška',
+        'form_success' => 'Po odoslaní',
+        'reset_url' => 'Reset hesla URL',
+        'reset_page_id' => 'Reset hesla stránka',
+        'reset_form_title' => 'Reset hesla nadpis',
+        'reset_form_field_new_password' => 'Reset hesla nové heslo',
+        'reset_form_field_new_password_repeat'=> 'Reset hesla nové heslo - opakovanie',
+        'reset_form_button' => 'Reset hesla button',
+        'reset_form_error_password_required' => 'Reset hesla povinné heslo',
+        'reset_form_error_password_invalid' => 'Reset hesla neplatné heslo',
+        'reset_form_error_user_invalid' => 'Neplatný user',
+        'reset_form_success' => 'Reset hesla - po resete',
+        //
+        'web' => 'Web',
+        'resetPage' => 'Reset hesla stránka',
+        //
+        'created_at' => 'Čas vytvorenia',
+        'updated_at' => 'Čas poslednej aktualizácie',
+        'deleted_at' => 'Čas vymazania',
+        'created_by' => 'Vytvoril používateľ',
+        'updated_by' => 'Aktualizoval používateľ',
+        'deleted_by' => 'Vymazal používateľ',
+    ],
+    'table-button' => [
+        'show' => 'Zobraziť',
+        'show-modal' => 'Zobraziť v okne',
+        'edit' => 'Upraviť',
+        'delete' => 'Vymazať',
+        'detach' => 'Oddeliť',
+    ],
+    'button' => [
+    ],
+    'filter' => [
+        'web' => 'Web',
+    ],
+    'model' => [
+        'title' => [
+            'singular' => 'Formulár pre zabudnuté heslo',
+            'plural' => 'Formuláre pre zabudnuté heslo',
+        ],
+    ],
+    'action' => [
+        'index' => 'Zoznam',
+        'show' => 'Zobrazenie',
+        'repositoryOrderBy' => 'Zoznam',
+        'create' => 'Nový',
+        'edit' => 'Úprava',
+        'update' => 'Úprava',
+        'destroy' => 'Vymazanie',
+        'destroyConfirm' => 'Potvrdenie vymazania',
+    ],
+    'text' => [
+        'destroy-confirmation' => 'Naozaj vymazať',
+    ],
+];

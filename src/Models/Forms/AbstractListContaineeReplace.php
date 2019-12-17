@@ -31,7 +31,7 @@ class AbstractListContaineeReplace extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'sort_by',
                 ],
-                'show_null_option' => false,
+                // 'show_null_option' => false,
                 'validation' => [
                     'rules' => [
                         'required',

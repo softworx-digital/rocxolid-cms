@@ -61,7 +61,9 @@ class SliderItem extends AbstractPageElement implements Containee
 
     public function getModelViewerComponent()
     {
-        return (new SliderItemViewer())->setModel($this)->setController(App::make($this->getControllerClass()));
+        $controller = App::make($this->getControllerClass());
+
+        return SliderItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 
     public function fillCustom($data, $action = null)

@@ -37,7 +37,7 @@ class Controller extends AbstractPageElementContaineeController
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new SliderItemViewer())
+        return SliderItemViewer::build($this, $this)
             ->setModel($model)
             ->setController($this);
     }

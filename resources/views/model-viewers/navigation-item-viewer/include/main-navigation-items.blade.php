@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="col-xs-10">
-            <big class="d-inline-block margin-top-5">{!! $component->getModel()->getTitle() !!}</big>
+            <span class="d-inline-block margin-top-5">{!! $component->getModel()->getTitle() !!}</span>
             <span class="margin-left-10">{!! $component->render('include.link') !!}</span>
         </div>
     </div>

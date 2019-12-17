@@ -30,7 +30,7 @@ class Controller extends AbstractPageElementController
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new SliderViewer())
+        return SliderViewer::build($this, $this)
             ->setModel($model)
             ->setController($this);
     }
@@ -50,7 +50,7 @@ class Controller extends AbstractPageElementController
         $model_viewer_component = $this->getModelViewerComponent($model);
 
         return $this->response
-            ->append($model_viewer_component->getDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
             ->get();
     }
 }

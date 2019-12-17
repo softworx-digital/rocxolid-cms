@@ -29,6 +29,7 @@ class FooterNavigation extends AbstractPageElement implements Containee
         'gtc_page_id',
         'privacy',
         'privacy_page_id',
+        'text',
     ];
 
     protected $relationships = [

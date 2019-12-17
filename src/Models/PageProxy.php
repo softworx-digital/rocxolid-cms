@@ -22,7 +22,6 @@ use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 // cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
-use Softworx\RocXolid\CMS\Models\Article;
 
 /**
  *
@@ -39,8 +38,6 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
     protected $table = 'cms_page_proxy';
 
     protected $page_proxyable = [
-        //Product::class,
-        Article::class,
     ];
 
     protected $guarded = [
@@ -106,16 +103,14 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         return sprintf('//%s/%s/%s/%s', $this->web->domain, $this->localization->seo_url_slug, $this->seo_url_slug, $model->seo_url_slug);
     }
 
-    public function getPageProxyableModels()
+    public function getPageProxyableModels(): Collection
     {
         $models = new Collection();
 
-        foreach ($this->page_proxyable as $class)
+        $this->getPageProxyableModelClasses()->each(function($class) use ($models)
         {
-            // $models->put(Str::kebab((new \ReflectionClass($class))->getShortName()), $class);
-            // $short_name = (new \ReflectionClass($class))->getShortName();
             $models->put($class, $class::make()->getModelViewerComponent()->translate('model.title.singular'));
-        }
+        });
 
         return $models;
     }
@@ -169,6 +164,11 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         }
 
         return $this;
+    }
+
+    protected function getPageProxyableModelClasses(): Collection
+    {
+        return collect(config('rocXolid.cms.general.page.proxyable', $this->page_proxyable));
     }
 
     protected function assignTemplatePageElements()

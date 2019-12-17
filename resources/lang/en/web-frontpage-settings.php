@@ -22,7 +22,7 @@ return [
         'logo' => 'logo',
         'favico' => 'favico',
         'logo' => 'Logo',
-        'logo-mobile' => 'Mobile logo',
+        'logo-mobile' => 'Logo (for smaller screens)',
         'favicon' => 'Favicon',
         // relations
         'web' => 'Web',
@@ -50,7 +50,7 @@ return [
         'logo' => 'logo',
         'favico' => 'favico',
         'logo' => 'Logo',
-        'logo-mobile' => 'Mobile logo',
+        'logo-mobile' => 'Logo (for smaller screens)',
         'favicon' => 'Favicon',
         // relations
         'web' => 'Web',

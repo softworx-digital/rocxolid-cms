@@ -1,0 +1,80 @@
+<?php
+
+return [
+    'column' => [
+        'web' => 'Web',
+        'product_category_id' => 'ID Kategórie produktov',
+        'name' => 'Titulok',
+        'subtitle' => 'Podtitulok',
+        'css_class' => 'CSS trieda',
+        'button' => 'Text buttonu',
+        'url' => 'URL',
+        'productCategory' => 'Kategória produktov',
+        'page_id' => 'ID Stránky',
+        'page_proxy' => 'Proxy stránka',
+        'pageProxy' => 'Proxy stránka',
+        'page_proxy_model' => 'Priradený objekt',
+        'image' => 'Obrázok',
+        'text' => 'Text',
+    ],
+    'field' => [
+        'id' => 'ID',
+        'web_id' => 'Web',
+        'product_category_id' => 'ID Kategórie produktov',
+        'product_category' => 'Kategória produktov',
+        'name' => 'Titulok',
+        'subtitle' => 'Podtitulok',
+        'css_class' => 'CSS trieda',
+        'text' => 'Text',
+        'button' => 'Text buttonu',
+        'url' => 'URL',
+        'page_id' => 'ID Stránky',
+        'image' => 'Obrázok',
+        'page_proxy' => 'Proxy stránka',
+        'pageProxy' => 'Proxy stránka',
+        'page_proxy_model' => 'Priradený objekt',
+        //
+        'web' => 'Web',
+        'productCategory' => 'Kategória produktov',
+        'page' => 'Stránka',
+        'pageProxy' => 'Proxy stránka',
+        //
+        'created_at' => 'Čas vytvorenia',
+        'updated_at' => 'Čas poslednej aktualizácie',
+        'deleted_at' => 'Čas vymazania',
+        'created_by' => 'Vytvoril používateľ',
+        'updated_by' => 'Aktualizoval používateľ',
+        'deleted_by' => 'Vymazal používateľ',
+    ],
+    'table-button' => [
+        'show' => 'Zobraziť',
+        'show-modal' => 'Zobraziť v okne',
+        'edit' => 'Upraviť',
+        'delete' => 'Vymazať',
+        'detach' => 'Oddeliť',
+    ],
+    'button' => [
+    ],
+    'filter' => [
+        'web' => 'Web',
+    ],
+    'model' => [
+        'title' => [
+            'singular' => 'Položka navigácie',
+            'plural' => 'Položky navigácie',
+        ],
+    ],
+    'action' => [
+        'index' => 'Zoznam',
+        'show' => 'Zobrazenie',
+        'repositoryOrderBy' => 'Zoznam',
+        'create' => 'Nová',
+        'edit' => 'Úprava',
+        'update' => 'Úprava',
+        'destroy' => 'Vymazanie',
+        'destroyConfirm' => 'Potvrdenie vymazania',
+    ],
+    'text' => [
+        'destroy-confirmation' => 'Naozaj vymazať',
+    ],
+];

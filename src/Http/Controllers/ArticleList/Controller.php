@@ -55,7 +55,7 @@ class Controller extends AbstractPageElementController
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new ArticleListViewer())->setModel($model)->setController($this);
+        return ArticleListViewer::build($this, $this)->setModel($model)->setController($this);
     }
 
     protected function reattachContainees($order_by)

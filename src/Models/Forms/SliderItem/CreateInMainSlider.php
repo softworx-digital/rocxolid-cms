@@ -111,7 +111,7 @@ class CreateInMainSlider extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page',
                 ],
-                'show_null_option' => true,
+                // 'show_null_option' => true,
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -127,7 +127,7 @@ class CreateInMainSlider extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page_proxy',
                 ],
-                'show_null_option' => true,
+                // 'show_null_option' => true,
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],

@@ -13,7 +13,7 @@
                 <img src="{{ asset($component->getModel()->image->getPath('icon')) }}" alt="{{ $component->getModel()->image->alt }}"/>
             </div>
         @endif
-            <big class="d-inline-block margin-top-5">{!! $component->getModel()->getTitle() !!}</big>
+            <span class="d-inline-block margin-top-5">{!! $component->getModel()->getTitle() !!}</span>
             <span class="margin-left-10">{!! $component->render('include.link') !!}</span>
         </div>
     </div>

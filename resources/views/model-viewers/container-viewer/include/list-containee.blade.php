@@ -21,7 +21,7 @@
                         <img style="max-width: 128px;" src="{!! asset($item->imagePrimary->getPath('small-square')) !!}"/>
                     </div>
                 @endif
-                    <big class="d-inline-block margin-top-5">{!! $item->getTitle() !!}</big>
+                    <span class="d-inline-block margin-top-5">{!! $item->getTitle() !!}</span>
                 </div>
             </div>
         </li>

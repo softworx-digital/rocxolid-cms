@@ -75,7 +75,9 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     public function getModelViewerComponent()
     {
-        return (new NavigationItemViewer())->setModel($this)->setController(App::make($this->getControllerClass()));
+        $controller = App::make($this->getControllerClass());
+
+        return NavigationItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 
     public function fillCustom($data, $action = null)

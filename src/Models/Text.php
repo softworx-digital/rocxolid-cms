@@ -31,6 +31,7 @@ class Text extends AbstractPageElement
     protected $fillable = [
         'web_id',
         'name',
+        'bookmark',
         'content',
     ];
 
@@ -41,6 +42,7 @@ class Text extends AbstractPageElement
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             '1920x240' => [ 'width' => 1920, 'height' => 240, 'method' => 'fit', 'constraints' => [ ], ],
             '1920x700' => [ 'width' => 1920, 'height' => 700, 'method' => 'fit', 'constraints' => [ ], ],
+            '540x' => [ 'width' => 540, 'method' => 'fit', 'constraints' => [ ], ],
         ],
     ];
 

@@ -84,7 +84,7 @@ trait HasProxyPageLink
                 'label' => [
                     'title' => sprintf('%s_model', Str::snake($relation_name)),
                 ],
-                'show_null_option' => true,
+                // 'show_null_option' => true,
                 'validation' => [
                     'rules' => [
                         sprintf('required_with:_data.%s', $this->$relation_name()->getForeignKey()),

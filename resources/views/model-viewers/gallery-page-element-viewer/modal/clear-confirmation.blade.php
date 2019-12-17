@@ -11,7 +11,7 @@
             </div>
 
             <div class="modal-body text-center">
-                <big>{{ $component->translate('text.clear-confirmation') }}</big>
+                <span class="text-big">{{ $component->translate('text.clear-confirmation') }}</span>
                 {!! $component->getFormComponent()->render('include.fieldset') !!}
             </div>
 

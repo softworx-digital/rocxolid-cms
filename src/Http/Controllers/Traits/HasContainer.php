@@ -24,7 +24,7 @@ trait HasContainer
 
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
-        return (new ContainerViewer())
+        return ContainerViewer::build($this, $this)
             ->setModel($model)
             ->setController($this);
     }
@@ -44,7 +44,7 @@ trait HasContainer
         $model_viewer_component = $this->getModelViewerComponent($model);
 
         return $this->response
-            ->append($model_viewer_component->getDomId('output-icon'), (new Message())->fetch('input-feedback.success'))
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
             ->get();
     }
 
@@ -58,7 +58,7 @@ trait HasContainer
         $form
             ->setContaineeClass(static::$containee_class);
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -86,7 +86,7 @@ trait HasContainer
             ->setContaineeClass(static::$containee_class)
             ->submit();
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -110,7 +110,7 @@ trait HasContainer
                 if ($this->getModel()->hasContainee('items', $containee))
                 {
                     return $this->response
-                        ->replace($form_component->getDomId('output'), (new Message())->fetch('crud.error', [ 'errors' => collect($form_component->translate('text.element-already-set')) ]))
+                        ->notifyError($model_viewer_component->translate('text.element-already-set'))
                         ->get();
                 }
             }
@@ -146,7 +146,7 @@ trait HasContainer
         $form
             ->setContaineeClass(static::$containee_class);
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 
@@ -170,7 +170,7 @@ trait HasContainer
             ->setContaineeClass(static::$containee_class)
             ->submit();
 
-        $form_component = (new CrudFormComponent())
+        $form_component = CrudFormComponent::build($this, $this)
             ->setForm($form)
             ->setRepository($repository);
 

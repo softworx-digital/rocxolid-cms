@@ -317,6 +317,7 @@ class CreateCmsTables extends Migration
             $table->increments('id')->unique()->index();
             $table->unsignedInteger('web_id');
             $table->string('name')->nullable();
+            $table->string('bookmark')->nullable();
             $table->text('content')->nullable();
             $table->timestamps();
             $table->softDeletes();

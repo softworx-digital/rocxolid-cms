@@ -1,0 +1,96 @@
+<?php
+
+return [
+    'column' => [
+        'web' => 'Web',
+        'container_fill_type' => 'Spôsob priraďovania objektov',
+        'container_auto_order_by_attribute' => 'Poradie priradených objektov (podľa)',
+        'container_auto_order_by_direction' => 'Poradie priradených objektov (smer)',
+        'name' => 'Názov',
+        'title' => 'Titulok',
+        'all' => 'Všetky',
+        'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
+        'containee_button' => 'Button',
+        'assigned_models' => 'Priradené objekty',
+        'image' => 'Obrázok',
+        'filter' => '',
+    ],
+    'field' => [
+        'id' => 'ID',
+        'web_id' => 'Web',
+        'container_fill_type' => 'Spôsob priraďovania objektov',
+        'container_auto_order_by_attribute' => 'Poradie priradených objektov (podľa)',
+        'container_auto_order_by_direction' => 'Poradie priradených objektov (smer)',
+        'name' => 'Názov',
+        'title' => 'Titulok',
+        'text' => 'Text',
+        'all' => 'Všetky',
+        'containee_button' => 'Button',
+        'page_prev' => 'Predchádzajúca stránka',
+        'page_next' => 'Ďalšia stránka',
+        'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
+        'containees' => 'Objekty na priradenie',
+        'assigned_models' => 'Priradené objekty',
+        'image' => 'Obrázok',
+        'sort_by' => 'Utriediť podľa',
+        'filter' => '',
+        //
+        'web' => 'Web',
+        'containeePageProxy' => 'Proxy stránka priradených objektov',
+        //
+        'created_at' => 'Čas vytvorenia',
+        'updated_at' => 'Čas poslednej aktualizácie',
+        'deleted_at' => 'Čas vymazania',
+        'created_by' => 'Vytvoril používateľ',
+        'updated_by' => 'Aktualizoval používateľ',
+        'deleted_by' => 'Vymazal používateľ',
+    ],
+    'table-button' => [
+        'show' => 'Zobraziť',
+        'show-modal' => 'Zobraziť v okne',
+        'edit' => 'Upraviť',
+        'delete' => 'Vymazať',
+        'compose' => 'Kompozícia',
+        'detach' => 'Oddeliť',
+    ],
+    'button' => [
+        'add-select-containee-item' => 'Výber prvkov',
+        'replace-by-all-articles' => 'Nahradiť všetkými článkami',
+    ],
+    'filter' => [
+        'web' => 'Web',
+    ],
+    'model' => [
+        'title' => [
+            'singular' => 'Zoznam článkov',
+            'plural' => 'Zoznamy článkov',
+        ],
+    ],
+    'action' => [
+        'index' => 'Zoznam',
+        'show' => 'Zobrazenie',
+        'repositoryOrderBy' => 'Zoznam',
+        'listContainee' => 'Výber',
+        'listContaineeReplace' => 'Nahradenie',
+        'create' => 'Nový',
+        'edit' => 'Úprava',
+        'update' => 'Úprava',
+        'destroy' => 'Vymazanie',
+        'destroyConfirm' => 'Potvrdenie vymazania',
+    ],
+    'text' => [
+        'destroy-confirmation' => 'Naozaj vymazať',
+        'assigned-models' => 'Priradené objekty',
+        'replace-list-warning' => 'Zoznam článkov bude nahradený novým zoznamom',
+    ],
+    'choices' => [
+        'container_fill_type' => [
+            'auto' => 'Relevantné objekty budú do zoznamu priradené automaticky',
+            'manual' => 'Objekty budú do zoznamu priraďované manuálnym výberom',
+        ],
+        'container_auto_order_by_direction' => [
+            'asc' => 'Vzostupne',
+            'desc' => 'Zostupne',
+        ],
+    ],
+];

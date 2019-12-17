@@ -23,7 +23,7 @@
                     @endif
                     </div>
                     <div class="col-xs-8">
-                        <p><big>{!! $item->getTitle() !!}</big></p>
+                        <p><span class="text-big">{!! $item->getTitle() !!}</span></p>
                         <p>{{ $item->code }}</p>
                         <p>{{ $item->getFormattedPrice('price_vat') }}</p>
                     </div>

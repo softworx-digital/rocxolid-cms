@@ -16,7 +16,7 @@
         @endif
         <div class="col-xs-5">
         @if (!empty($component->getModel()->getTitle()))
-            <big class="d-inline-block margin-bottom-5">{!! $component->getModel()->getTitle() !!}</big>
+            <span class="d-inline-block margin-bottom-5">{!! $component->getModel()->getTitle() !!}</span>
         @endif
         @if (!empty($component->getModel()->url))
             <p><a href="{{ $component->getModel()->url }}" target="_blank"><i class="fa fa-external-link margin-right-10"></i>{{ Str::limit($component->getModel()->url, 50) }}</a></p>

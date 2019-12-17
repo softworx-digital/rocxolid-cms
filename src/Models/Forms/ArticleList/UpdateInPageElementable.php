@@ -47,7 +47,7 @@ class UpdateInPageElementable extends AbstractUpdateInPageElementable
 
         $fields['container_auto_order_by_attribute']['type'] = CollectionSelect::class;
         $fields['container_auto_order_by_attribute']['options']['collection'] = $collection;
-        $fields['container_auto_order_by_attribute']['options']['show_null_option'] = true;
+        // $fields['container_auto_order_by_attribute']['options']['show_null_option'] = true;
         $fields['container_auto_order_by_attribute']['options']['validation']['rules'][] = 'required_if:_data.container_fill_type,auto';
         //
         $fields['container_auto_order_by_direction']['type'] = Select::class;

@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // base contracts
 use Softworx\RocXolid\Models\Contracts\Cloneable;
