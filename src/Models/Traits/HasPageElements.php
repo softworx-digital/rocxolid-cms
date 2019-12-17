@@ -18,41 +18,7 @@ use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
 use Softworx\RocXolid\CMS\Http\Controllers\PreviewController;
 //
 use Softworx\RocXolid\CMS\Models\PageTemplate;
-// page elements
-use Softworx\RocXolid\CMS\Models\Text;
-use Softworx\RocXolid\CMS\Models\Link;
-use Softworx\RocXolid\CMS\Models\Gallery;
-use Softworx\RocXolid\CMS\Models\IframeVideo;
-    // panels
-use Softworx\RocXolid\CMS\Models\CookieConsent;
-use Softworx\RocXolid\CMS\Models\FooterNavigation;
-use Softworx\RocXolid\CMS\Models\FooterNote;
-use Softworx\RocXolid\CMS\Models\StatsPanel;
-use Softworx\RocXolid\CMS\Models\TopPanel;
-    // specials - forms
-use Softworx\RocXolid\CMS\Models\Newsletter;
-use Softworx\RocXolid\CMS\Models\Contact;
-use Softworx\RocXolid\CMS\Models\SearchEngine;
-use Softworx\RocXolid\CMS\Models\LoginRegistration;
-use Softworx\RocXolid\CMS\Models\ForgotPassword;
-use Softworx\RocXolid\CMS\Models\ShoppingCart;
-use Softworx\RocXolid\CMS\Models\ShoppingCheckout;
-use Softworx\RocXolid\CMS\Models\ShoppingAfter;
-use Softworx\RocXolid\CMS\Models\UserProfile;
-    // containers
-use Softworx\RocXolid\CMS\Models\HtmlWrapper;
-use Softworx\RocXolid\CMS\Models\MainNavigation;
-use Softworx\RocXolid\CMS\Models\RowNavigation;
-use Softworx\RocXolid\CMS\Models\MainSlider;
-    //  lists
-use Softworx\RocXolid\CMS\Models\ProductList;
-use Softworx\RocXolid\CMS\Models\ArticleList;
-    // proxies
-use Softworx\RocXolid\CMS\Models\ProxyProduct;
-use Softworx\RocXolid\CMS\Models\ProxyArticle;
-// @todo - na zaklade tohoto potom spravit vseobecnu relationship - cize nebude treba definovat vsetky vazby (https://laravel.io/forum/02-11-2015-eloquent-polymorphic-many-to-many-morphto)
-// @todo - hodt do page, page template,... contract s tymto traitom
-// alebo skor spravit abstract triedu <<< a static access k $page_elements_relationships
+
 /**
  *
  */
@@ -63,43 +29,6 @@ trait HasPageElements
     private $_page_elements = null;
 
     private $_visible_page_elements = null;
-
-    // @todo: quite ugly, consider some nicer solution
-    protected $default_page_elements_relationships = [
-        // general page elements - (usually) clone from template
-        'texts',
-        //'links',
-        'galleries',
-        'iframeVideos',
-        // panels
-        'cookieConsents',
-        'footerNavigations',
-        //'footerNotes',
-        //'statsPanels',
-        //'topPanels',
-        // containers
-        //'htmlWrappers',
-        'mainNavigations',
-        'rowNavigations',
-        'mainSliders',
-        // specials
-        //'newsletters',
-        //'searchEngines',
-        //'loginRegistrations',
-        //'forgotPasswords',
-        //'shoppingCarts',
-        //'shoppingCheckouts',
-        //'shoppingAfters',
-        //'userProfiles',
-        //'contacts',
-        // lists
-        //'deliveryLists',
-        //'productLists',
-        // proxies
-        //'proxyProducts',
-        'articleLists',
-        'proxyArticles',
-    ];
 
     public static function bootHasPageElements()
     {
@@ -306,9 +235,9 @@ trait HasPageElements
             'proxy' => new Collection(),
         ];
 
-        foreach ($this->getPageElementsRelationships() as $method)
+        foreach ($this->getAvailablePageElements() as $page_element_class)
         {
-            $related = $this->$method()->getRelated();
+            $related = $this->getPageElementsRelationship($page_element_class)->getRelated();
 
             if ($related instanceof PageElement)
             {
@@ -359,9 +288,9 @@ trait HasPageElements
     {
         $models = new Collection();
 
-        foreach ($this->getPageElementsRelationships() as $method)
+        foreach ($this->getAvailablePageElements() as $page_element_class)
         {
-            $related = $this->$method()->getRelated();
+            $related = $this->getPageElementsRelationship($page_element_class)->getRelated();
 
             if ($related instanceof PageElement)
             {
@@ -380,6 +309,7 @@ trait HasPageElements
         return sprintf('%s://%s/%s', $parsed['scheme'], $this->web->domain, $parsed['path']);
     }
 
+    // @todo: reason for this?
     public function getPageElementIframeRoute()
     {
         return '';
@@ -505,23 +435,20 @@ trait HasPageElements
         return $this;
     }
 
-    // page elements relations
-    public function getPageElementsRelationships()
+    public function getAvailablePageElements()
     {
-        if (property_exists($this, 'page_elements_relationships'))
-        {
-            $page_elements_relationships = $this->page_elements_relationships;
-        }
-        elseif (property_exists($this, 'default_page_elements_relationships'))
-        {
-            $page_elements_relationships = $this->default_page_elements_relationships;
-        }
-        else
-        {
-            throw new \InvalidArgumentException(sprintf('Model [%s] has no page elements relationships definition', (new \ReflectionClass($this))->getName()));
+        $param = Str::kebab((new \ReflectionClass($this))->getShortName());
+
+        return collect(config(sprintf('rocXolid.cms.elementable.%s', $param), config('rocXolid.cms.elementable.default')));
+    }
+
+    public function getPageElementsRelationship($class)
+    {
+        if (!(new \ReflectionClass($class))->implementsInterface(PageElement::class) ) {
+            throw new \InvalidArgumentException(sprintf('Class [%s] has to implement [%s] interface to be used', $class, PageElement::class));
         }
 
-        return $page_elements_relationships;
+        return $this->morphedByMany($class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
     }
 
     public function isPageElementTemplateChoiceEnabled()
@@ -532,151 +459,5 @@ trait HasPageElements
         }
 
         return true;
-    }
-
-    public function texts()
-    {
-        return $this->morphedByMany(Text::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function links()
-    {
-        return $this->morphedByMany(Link::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function galleries()
-    {
-        return $this->morphedByMany(Gallery::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function iframeVideos()
-    {
-        return $this->morphedByMany(IframeVideo::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function htmlWrappers()
-    {
-        return $this->morphedByMany(HtmlWrapper::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function cookieConsents()
-    {
-        return $this->morphedByMany(CookieConsent::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function topPanels()
-    {
-        return $this->morphedByMany(TopPanel::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function mainNavigations()
-    {
-        return $this->morphedByMany(MainNavigation::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function rowNavigations()
-    {
-        return $this->morphedByMany(RowNavigation::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function mainSliders()
-    {
-        return $this->morphedByMany(MainSlider::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function socialFooters()
-    {
-        return $this->morphedByMany(SocialFooter::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function footerNavigations()
-    {
-        return $this->morphedByMany(FooterNavigation::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function footerNotes()
-    {
-        return $this->morphedByMany(FooterNote::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function statsPanels()
-    {
-        return $this->morphedByMany(StatsPanel::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    // specials
-
-    public function newsletters()
-    {
-        return $this->morphedByMany(Newsletter::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function searchEngines()
-    {
-        return $this->morphedByMany(SearchEngine::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function loginRegistrations()
-    {
-        return $this->morphedByMany(LoginRegistration::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function forgotPasswords()
-    {
-        return $this->morphedByMany(ForgotPassword::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function shoppingCarts()
-    {
-        return $this->morphedByMany(ShoppingCart::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function shoppingCheckouts()
-    {
-        return $this->morphedByMany(ShoppingCheckout::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function shoppingAfters()
-    {
-        return $this->morphedByMany(ShoppingAfter::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function userProfiles()
-    {
-        return $this->morphedByMany(UserProfile::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function contacts()
-    {
-        return $this->morphedByMany(Contact::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    // lists
-
-    public function deliveryLists()
-    {
-        return $this->morphedByMany(DeliveryList::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function productLists()
-    {
-        return $this->morphedByMany(ProductList::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function articleLists()
-    {
-        return $this->morphedByMany(ArticleList::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    // proxies
-
-    public function proxyProducts()
-    {
-        return $this->morphedByMany(ProxyProduct::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
-    }
-
-    public function proxyArticles()
-    {
-        return $this->morphedByMany(ProxyArticle::class, 'page_element', $this->getPageElementsPivotTable())->withPivot($this->getPivotExtra());
     }
 }

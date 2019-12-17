@@ -82,13 +82,6 @@ class Article extends AbstractCrudModel implements PageElementable
         ],
     ];
 
-    protected $page_elements_relationships = [
-        'texts',
-        //'links',
-        'galleries',
-        'iframeVideos',
-    ];
-
     public static $list_sortable_attributes = [
         'date',
         'id',
