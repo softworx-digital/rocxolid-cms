@@ -3,13 +3,19 @@
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
 // CMS models
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
- *
+ * The trait is used in models to access their (proxy page) frontpage URL and to generate appropriate final page.
  */
 trait IsProxyPaged
 {
+    public function getFrontpageUrl(array $params = [])
+    {
+        return PageProxy::where('model_type', static::class)->first()->getFrontpageUrl($this->id, $params);
+    }
+
     public function setPageAttributes(Page $page, PageProxy $page_proxy)
     {
         $page->meta_title = $this->meta_title ?: $this->name;

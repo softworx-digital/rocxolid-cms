@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\CMS\Models\Traits;
 
 use Illuminate\Support\Str;
 
+// @todo: check occurences, document well to clarify the reason and what's going on here
 /**
  *
  */
