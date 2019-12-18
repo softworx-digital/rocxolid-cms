@@ -7,8 +7,7 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 // model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // general components
-use Softworx\RocXolid\Components\General\Message,
-    Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\RowNavigationViewer;
 // cms controllers

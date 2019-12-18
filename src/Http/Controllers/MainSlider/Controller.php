@@ -9,8 +9,7 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel,
     Softworx\RocXolid\Models\Contracts\Containee,
     Softworx\RocXolid\Models\Contracts\Container;
 // general components
-use Softworx\RocXolid\Components\General\Message,
-    Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\SliderViewer;
 // cms controllers

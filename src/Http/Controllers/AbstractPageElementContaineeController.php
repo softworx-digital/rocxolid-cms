@@ -15,7 +15,6 @@ use Softworx\RocXolid\Models\Contracts\Containee;
 use Softworx\RocXolid\Repositories\Contracts\Repository;
 use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // general components
-use Softworx\RocXolid\Components\General\Message;
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController as AbstractCMSController;

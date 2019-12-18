@@ -6,7 +6,6 @@ namespace Softworx\RocXolid\CMS\Http\Controllers;
 use App;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Softworx\RocXolid\Components\General\Message;
 use Softworx\RocXolid\Http\Requests\FormRequest;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\Contracts\FormField;
