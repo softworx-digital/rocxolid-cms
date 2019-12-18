@@ -34,7 +34,6 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-
         $fields['image']['type'] = UploadImage::class;
         $fields['image']['options']['multiple'] = false;
         $fields['image']['options']['label']['title'] = 'image';
