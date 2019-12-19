@@ -4,7 +4,7 @@ namespace Softworx\RocXolid\CMS\Http\Controllers;
 
 // utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
-use Softworx\RocXolid\Communication\Contracts\AjaxResponse;
+use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
 //
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 //
