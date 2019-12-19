@@ -11,9 +11,9 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close', false) }}</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close') }}</button>
             @if ($component->getModel()->userCan('write'))
-                <a data-ajax-url="{{ $component->getModel()->getControllerRoute('edit', [ '_section' => 'main-navigation-items', '_data[container_id]' => $component->getModel()->getContainer('items')->id, '_data[container_type]' => get_class($component->getModel()->getContainer('items')), '_data[container_relation]' => 'items' ]) }}" class="btn btn-primary pull-right" type="button"><i class="fa fa-pencil margin-right-10"></i>{{ $component->translate('button.edit', false) }}</a>
+                <a data-ajax-url="{{ $component->getModel()->getControllerRoute('edit', [ '_section' => 'main-navigation-items', '_data[container_id]' => $component->getModel()->getContainer('items')->id, '_data[container_type]' => get_class($component->getModel()->getContainer('items')), '_data[container_relation]' => 'items' ]) }}" class="btn btn-primary pull-right" type="button"><i class="fa fa-pencil margin-right-10"></i>{{ $component->translate('button.edit') }}</a>
             @endif
             </div>
         </div>

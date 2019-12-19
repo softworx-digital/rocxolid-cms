@@ -15,13 +15,13 @@
     </div>
 
     <div class="x_footer">
-        <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back', false) }}</a>
+        <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back') }}</a>
          <div class="btn-group pull-right">
         @if (false)
-            <a href="{{ $component->getModel()->getControllerRoute('preview') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('preview') }}" class="btn btn-success"><i class="fa fa-binoculars margin-right-10"></i>{{ $component->translate('button.preview', false) }}</a>
+            <a href="{{ $component->getModel()->getControllerRoute('preview') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('preview') }}" class="btn btn-success"><i class="fa fa-binoculars margin-right-10"></i>{{ $component->translate('button.preview') }}</a>
         @endif
         @if ($component->getModel()->userCan('write'))
-            <a href="{{ $component->getModel()->getControllerRoute('edit') }}" class="btn btn-primary"><i class="fa fa-pencil margin-right-10"></i>{{ $component->translate('button.edit', false) }}</a>
+            <a href="{{ $component->getModel()->getControllerRoute('edit') }}" class="btn btn-primary"><i class="fa fa-pencil margin-right-10"></i>{{ $component->translate('button.edit') }}</a>
         @endif
         </div>
     </div>
