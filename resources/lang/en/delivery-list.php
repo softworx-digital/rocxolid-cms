@@ -11,7 +11,7 @@ return [
         'list' => 'Text pri zozname',
         'footer' => 'Pätička',
         'footer_note' => 'Text pod pätičkou',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
@@ -25,7 +25,7 @@ return [
         'footer' => 'Pätička',
         'footer_note' => 'Text pod pätičkou',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         //
@@ -69,6 +69,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

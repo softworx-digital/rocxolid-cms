@@ -162,6 +162,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 $router->get('/{article}/preview', 'Controller@preview');
             });
 
+            CrudRouterService::create('faq', \Faq\Controller::class);
+
             $router->group([
                 'namespace' => 'Gallery',
                 'prefix' => 'gallery',

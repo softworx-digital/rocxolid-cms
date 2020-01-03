@@ -7,22 +7,18 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Forms\Contracts\FormField;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // field types
-use Softworx\RocXolid\Forms\Fields\Type\Hidden,
-    Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\Email,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonGroup,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\Hidden;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
-// commerce models
-use Softworx\RocXolid\Commerce\Models\ProductCategory;
 // cms models
-use Softworx\RocXolid\CMS\Models\RowNavigation,
-    Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\RowNavigation;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
  *
  */
@@ -58,23 +54,7 @@ class CreateInRowNavigation extends RocXolidAbstractCrudForm
                     ],
                 ],
             ],
-        ],/*
-        'product_category_id' => [
-            'type' => CollectionSelect::class,
-            'options' => [
-                'collection' => [
-                    'model' => ProductCategory::class,
-                    'column' => 'name',
-                ],
-                'label' => [
-                    'title' => 'product_category',
-                ],
-                'show_null_option' => true,
-                'validation' => [
-                    'rules' => 'sometimes|nullable',
-                ],
-            ],
-        ],*/
+        ],
         'name' => [
             'type' => Input::class,
             'options' => [
@@ -151,7 +131,9 @@ class CreateInRowNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -167,7 +149,9 @@ class CreateInRowNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page_proxy',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -181,13 +165,6 @@ class CreateInRowNavigation extends RocXolidAbstractCrudForm
         $container = $this->getContainer();
 
         $fields['container_id']['options']['value'] = $container->id;
-        //
-        /*
-        $fields['product_category_id']['options']['collection']['filters'][] = [
-            'class' => BelongsToWeb::class,
-            'data' => $container->web,
-        ];
-        */
         //
         $fields['page_id']['options']['collection']['filters'][] = [
             'class' => BelongsToWeb::class,

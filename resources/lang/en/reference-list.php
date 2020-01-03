@@ -7,7 +7,7 @@ return [
         'title' => 'Titulok',
         'title_note' => 'Text pod titulkom',
         'button' => 'Button',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
@@ -17,7 +17,7 @@ return [
         'title_note' => 'Text pod titulkom',
         'button' => 'Button',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         //
@@ -61,6 +61,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

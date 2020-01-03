@@ -9,11 +9,10 @@ use Softworx\RocXolid\Forms\Fields\Type\Input;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
-// commerce models
-use Softworx\RocXolid\Commerce\Models\ProductCategory;
 // cms models
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
  *
  */
@@ -27,23 +26,6 @@ class UpdateInMainNavigation extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
-        /*
-        'product_category_id' => [
-            'type' => CollectionSelect::class,
-            'options' => [
-                'collection' => [
-                    'model' => ProductCategory::class,
-                    'column' => 'name',
-                ],
-                'label' => [
-                    'title' => 'product_category',
-                ],
-                'show_null_option' => true,
-                'validation' => [
-                    'rules' => 'sometimes|nullable',
-                ],
-            ],
-        ],*/
         'name' => [
             'type' => Input::class,
             'options' => [
@@ -94,7 +76,9 @@ class UpdateInMainNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -110,7 +94,9 @@ class UpdateInMainNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page_proxy',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -121,13 +107,6 @@ class UpdateInMainNavigation extends RocXolidAbstractCrudForm
     // @todo zjednotit asi do parent classy s UpdateInRowNavigation
     protected function adjustFieldsDefinition($fields)
     {
-        //
-        /*
-        $fields['product_category_id']['options']['collection']['filters'][] = [
-            'class' => BelongsToWeb::class,
-            'data' => $this->getModel()->web,
-        ];
-        */
         $fields['page_id']['options']['collection']['filters'][] = [
             'class' => BelongsToWeb::class,
             'data' => $this->getModel()->web,

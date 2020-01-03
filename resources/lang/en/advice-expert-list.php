@@ -10,7 +10,7 @@ return [
         'form_field_email' => 'e-mail (field)',
         'form_field_question' => 'Otázka (field)',
         'form_field_button' => 'Button (field)',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
@@ -23,7 +23,7 @@ return [
         'form_field_question' => 'Otázka (field)',
         'form_field_button' => 'Button (field)',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         //
@@ -67,6 +67,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

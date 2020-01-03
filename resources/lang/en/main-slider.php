@@ -55,6 +55,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

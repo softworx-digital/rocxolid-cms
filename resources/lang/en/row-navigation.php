@@ -5,7 +5,7 @@ return [
         'web' => 'Web',
         'name' => 'Názov',
         'default_template' => 'Template',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'type' => 'Typ',
         'title' => 'Titulok',
         'title_note' => 'Text pod titulkom',
@@ -18,7 +18,7 @@ return [
         'type' => 'Typ',
         'title' => 'Titulok',
         'title_note' => 'Text pod titulkom',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         //
@@ -61,6 +61,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

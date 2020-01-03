@@ -5,14 +5,14 @@ return [
         'web' => 'Web',
         'name' => 'Názov',
         'search_img_alt' => '<img[alt]> Search ikony',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
         'web_id' => 'Web',
         'name' => 'Názov',
         'search_img_alt' => '<img[alt]> Search ikony',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'search_page_id' => 'Vyhľadávanie (ID Stránky)',
         //
         'web' => 'Web',
@@ -41,7 +41,7 @@ return [
     ],
     'model' => [
         'title' => [
-            'singular' => 'Hlavná navigácia',
+            'singular' => 'Main navigation',
             'plural' => 'Hlavné navigácie',
         ],
     ],
@@ -57,6 +57,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

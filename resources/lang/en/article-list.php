@@ -11,7 +11,7 @@ return [
         'all' => 'Všetky',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
         'containee_button' => 'Button',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'image' => 'Obrázok',
         'filter' => '',
     ],
@@ -30,7 +30,7 @@ return [
         'page_next' => 'Ďalšia stránka',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'image' => 'Obrázok',
         'sort_by' => 'Utriediť podľa',
         'filter' => '',
@@ -80,7 +80,7 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
         'replace-list-warning' => 'Zoznam článkov bude nahradený novým zoznamom',
     ],
     'choices' => [

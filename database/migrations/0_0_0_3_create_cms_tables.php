@@ -24,7 +24,8 @@ class CreateCmsTables extends Migration
             ->shopping()
             ->proxies()
             ->specials()
-            ->articles();
+            ->articles()
+            ->faqs();
     }
     /**
      * Reverse the migrations.
@@ -72,6 +73,7 @@ class CreateCmsTables extends Migration
         Schema::dropIfExists('cms_page_element_container_article_list');
         Schema::dropIfExists('cms_article_has_page_elements');
         Schema::dropIfExists('cms_article');
+        Schema::dropIfExists('cms_faq');
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 
@@ -1602,7 +1604,38 @@ class CreateCmsTables extends Migration
         });
 
         return $this;
+    }
 
+    public function faqs()
+    {
+        Schema::create('cms_faq', function (Blueprint $table) {
+            $table->increments('id')->unique()->index();
+            $table->unsignedInteger('web_id');
+            $table->unsignedInteger('localization_id');
+            $table->string('model_type')->nullable();
+            $table->unsignedInteger('model_id')->nullable();
+            $table->string('question');
+            $table->string('bookmark')->nullable();
+            $table->text('answer')->nullable();
+            $table->boolean('is_enabled')->default(1);
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->foreign('web_id')
+                ->references('id')
+                ->on('webs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('localization_id')
+                ->references('id')
+                ->on('localizations')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
     }
 
     private function importDump($table, $package = 'cms')

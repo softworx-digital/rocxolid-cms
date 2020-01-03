@@ -4,17 +4,16 @@ namespace Softworx\RocXolid\CMS\Models\Forms\NavigationItem;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // field types
-use Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
-// commerce models
-use Softworx\RocXolid\Commerce\Models\ProductCategory;
 // cms models
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
  *
  */
@@ -32,24 +31,6 @@ class UpdateInRowNavigation extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
-        /*
-        'product_category_id' => [
-            'type' => CollectionSelect::class,
-            'options' => [
-                'collection' => [
-                    'model' => ProductCategory::class,
-                    'column' => 'name',
-                ],
-                'label' => [
-                    'title' => 'product_category',
-                ],
-                'show_null_option' => true,
-                'validation' => [
-                    'rules' => 'sometimes|nullable',
-                ],
-            ],
-        ],
-        */
         'name' => [
             'type' => Input::class,
             'options' => [
@@ -126,7 +107,9 @@ class UpdateInRowNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -142,7 +125,9 @@ class UpdateInRowNavigation extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'page_proxy',
                 ],
-                // 'show_null_option' => true,
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
                 'validation' => [
                     'rules' => 'sometimes|nullable|only_one:_data.url,_data.page_id,_data.page_proxy_id',
                 ],
@@ -156,13 +141,6 @@ class UpdateInRowNavigation extends RocXolidAbstractCrudForm
         $fields['image']['type'] = UploadImage::class;
         $fields['image']['options']['multiple'] = false;
         $fields['image']['options']['label']['title'] = 'image';
-        //
-        /*
-        $fields['product_category_id']['options']['collection']['filters'][] = [
-            'class' => BelongsToWeb::class,
-            'data' => $this->getModel()->web,
-        ];
-        */
         //
         $fields['page_id']['options']['collection']['filters'][] = [
             'class' => BelongsToWeb::class,

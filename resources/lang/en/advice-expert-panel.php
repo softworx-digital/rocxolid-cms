@@ -18,7 +18,7 @@ return [
         'containees' => 'Priradené',
         'imageLeft' => 'Obrázok vľavo',
         'imageRight' => 'Obrázok vpravo',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
@@ -35,7 +35,7 @@ return [
         'form_error_name_required' => 'Error - povinné meno',
         'form_error_question_required' => 'Error - povinná otázka',
         'form_success' => 'Text po submitnutí',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         'imageLeft' => 'Obrázok vľavo',

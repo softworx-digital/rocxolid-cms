@@ -9,7 +9,7 @@ return [
         'newest_article' => 'Najnovší článok',
         'button' => 'Button',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
     ],
     'field' => [
         'id' => 'ID',
@@ -21,7 +21,7 @@ return [
         'button' => 'Button',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         //
         'web' => 'Web',
         'containeePageProxy' => 'Proxy stránka priradených objektov',
@@ -66,6 +66,6 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
     ],
 ];

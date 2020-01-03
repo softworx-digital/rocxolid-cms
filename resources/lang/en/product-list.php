@@ -12,7 +12,7 @@ return [
         'all_products' => 'Všetky produkty',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
         'containee_button' => 'Button',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'image' => 'Obrázok',
     ],
     'field' => [
@@ -32,7 +32,7 @@ return [
         'page_next' => 'Ďalšia stránka',
         'containee_page_proxy_id' => 'Proxy stránka priradených objektov',
         'containees' => 'Objekty na priradenie',
-        'assigned_models' => 'Priradené objekty',
+        'assigned_models' => 'Assigned items',
         'image' => 'Obrázok',
         'sort_by' => 'Utriediť podľa',
         //
@@ -83,7 +83,7 @@ return [
     ],
     'text' => [
         'destroy-confirmation' => 'Naozaj vymazať',
-        'assigned-models' => 'Priradené objekty',
+        'assigned-models' => 'Assigned items',
         'replace-list-warning' => 'Zoznam produktov bude nahradený novým zoznamom',
     ],
     'choices' => [

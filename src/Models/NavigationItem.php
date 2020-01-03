@@ -3,16 +3,16 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use App;
-use Softworx\RocXolid\Models\Contracts\Containee,
-    Softworx\RocXolid\Models\Contracts\Container;
-use Softworx\RocXolid\Models\Traits\IsContained,
-    Softworx\RocXolid\Models\Traits\CanContain;
+use Softworx\RocXolid\Models\Contracts\Containee;
+use Softworx\RocXolid\Models\Contracts\Container;
+use Softworx\RocXolid\Models\Traits\IsContained;
+use Softworx\RocXolid\Models\Traits\CanContain;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
-use Softworx\RocXolid\Commerce\Models\ProductCategory;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;
 use Softworx\RocXolid\CMS\Components\ModelViewers\NavigationItemViewer;
+
 /**
  *
  */
@@ -28,7 +28,6 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
     protected $fillable = [
         'web_id',
         'url',
-        //'product_category_id',
         'page_id',
         'page_proxy_id',
         'page_proxy_model_id',
@@ -41,7 +40,6 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     protected $relationships = [
         'web',
-        //'productCategory',
         'page',
         'pageProxy',
     ];
@@ -60,13 +58,6 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
             '500x500' => [ 'width' => 500, 'height' => 500, 'method' => 'fit', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
         ],
     ];
-
-    /*
-    public function productCategory()
-    {
-        return $this->belongsTo(ProductCategory::class);
-    }
-    */
 
     public function page()
     {
