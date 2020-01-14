@@ -73,8 +73,7 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     public function fillCustom($data, $action = null)
     {
-        if (!$this->exists)
-        {
+        if (!$this->exists) {
             $this->web_id = $this->getContainerElement($data)->web_id;
         }
 
@@ -83,8 +82,7 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     public function afterSave($data, $action = null)
     {
-        if (!$this->hasContainer('items'))
-        {
+        if (!$this->hasContainer('items')) {
             $this->getContainerElement($data)->attachContainee('items', $this);
         }
 
@@ -93,12 +91,9 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     public function getContainerElement($data)
     {
-        if ($this->hasContainer('items'))
-        {
+        if ($this->hasContainer('items')) {
             return $this->getContainer('items');
-        }
-        else
-        {
+        } else {
             $container_class = $data['container_type'];
 
             return $container_class::findOrFail($data['container_id']);

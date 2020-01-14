@@ -11,6 +11,7 @@ use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Components\ModelViewers\SliderItemViewer;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;
+
 /**
  *
  */
@@ -68,8 +69,7 @@ class SliderItem extends AbstractPageElement implements Containee
 
     public function fillCustom($data, $action = null)
     {
-        if (!$this->exists)
-        {
+        if (!$this->exists) {
             $this->web_id = $this->getContainerElement($data)->web_id;
         }
 
@@ -78,8 +78,7 @@ class SliderItem extends AbstractPageElement implements Containee
 
     public function afterSave($data, $action = null)
     {
-        if (!$this->hasContainer('items'))
-        {
+        if (!$this->hasContainer('items')) {
             $this->getContainerElement($data)->attachContainee('items', $this);
         }
 
@@ -88,12 +87,9 @@ class SliderItem extends AbstractPageElement implements Containee
 
     public function getContainerElement($data)
     {
-        if ($this->hasContainer('items'))
-        {
+        if ($this->hasContainer('items')) {
             return $this->getContainer('items');
-        }
-        else
-        {
+        } else {
             $container_class = $data['container_type'];
 
             return $container_class::findOrFail($data['container_id']);

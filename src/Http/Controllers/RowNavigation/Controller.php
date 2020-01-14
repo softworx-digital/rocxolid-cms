@@ -16,6 +16,7 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 use Softworx\RocXolid\CMS\Repositories\RowNavigation\Repository;
 // cms models
 use Softworx\RocXolid\CMS\Models\RowNavigation;
+
 /**
  *
  */
@@ -36,10 +37,8 @@ class Controller extends AbstractPageElementController
     {
         $model = $this->getRepository($this->getRepositoryParam($request))->findOrFail($id);
 
-        if (($order = $request->input('_data', false)) && is_array($order))
-        {
-            foreach ($order as $containee_order_data)
-            {
+        if (($order = $request->input('_data', false)) && is_array($order)) {
+            foreach ($order as $containee_order_data) {
                 $model->reorderContainees('items', $containee_order_data);
             }
         }

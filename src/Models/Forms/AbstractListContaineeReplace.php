@@ -6,12 +6,13 @@ use Illuminate\Support\Collection;
 // commerce forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid fields
-use Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\Email,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonGroup,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionRadioList,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\Email;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonGroup;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionRadioList;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+
 /**
  *
  */
@@ -60,8 +61,7 @@ class AbstractListContaineeReplace extends RocXolidAbstractCrudForm
 
     public function setContaineeClass($containee_class)
     {
-        if (!property_exists($containee_class, 'list_sortable_attributes'))
-        {
+        if (!property_exists($containee_class, 'list_sortable_attributes')) {
             throw new \RuntimeException(sprintf('Class [%s] does not contain property [%s]', $containee_class, 'list_sortable_attributes'));
         }
 
@@ -69,8 +69,7 @@ class AbstractListContaineeReplace extends RocXolidAbstractCrudForm
 
         $collection = new Collection();
 
-        foreach ($containee_class::$list_sortable_attributes as $attribute)
-        {
+        foreach ($containee_class::$list_sortable_attributes as $attribute) {
             $collection->put($attribute, $containee_model_viewer_component->translate(sprintf('field.%s', $attribute)));
         }
 

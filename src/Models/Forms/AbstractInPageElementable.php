@@ -33,10 +33,8 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
 
     protected function adjustUrlFields($page_elementable, &$fields)
     {
-        foreach ($fields as $field_name => &$field_definition)
-        {
-            if (substr($field_name, -3) == 'url')
-            {
+        foreach ($fields as $field_name => &$field_definition) {
+            if (substr($field_name, -3) == 'url') {
                 $param = substr($field_name, 0, -3);
                 //
                 $field_definition['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%surl,_data.%spage_id,_data.%spage_proxy_id', $param, $param, $param);
@@ -48,10 +46,8 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
 
     protected function adjustPageFields($page_elementable, &$fields)
     {
-        foreach ($fields as $field_name => &$field_definition)
-        {
-            if (substr($field_name, -7) == 'page_id')
-            {
+        foreach ($fields as $field_name => &$field_definition) {
+            if (substr($field_name, -7) == 'page_id') {
                 $param = substr($field_name, 0, -7);
                 //
                 $field_definition['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%surl,_data.%spage_id,_data.%spage_proxy_id', $param, $param, $param);
@@ -75,10 +71,8 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
 
     protected function adjustPageProxyFields($page_elementable, &$fields)
     {
-        foreach ($fields as $field_name => &$field_definition)
-        {
-            if (substr($field_name, -13) == 'page_proxy_id')
-            {
+        foreach ($fields as $field_name => &$field_definition) {
+            if (substr($field_name, -13) == 'page_proxy_id') {
                 $param = substr($field_name, 0, -13);
                 //
                 $field_definition['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel(), [ '_section' => $this->getOption('component.section', null) ]);
@@ -96,13 +90,11 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
                     ],
                 ];
 
-                if ($field_name == 'containee_page_proxy_id') // hot"fix"
-                {
+                if ($field_name == 'containee_page_proxy_id') { // hot"fix"
                     $field_definition['options']['validation']['rules'] = 'required';
                 }
                 //
-                if (method_exists($this->getModel(), 'adjustPageProxyModelFieldDefinition'))
-                {
+                if (method_exists($this->getModel(), 'adjustPageProxyModelFieldDefinition')) {
                     $this->getModel()->adjustPageProxyModelFieldDefinition($this, $fields, $param ? sprintf('%sPageProxy', Str::camel($param)) : 'pageProxy');
                 }
             }
@@ -113,10 +105,8 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
 
     protected function adjustWysiwygFields($page_elementable, &$fields)
     {
-        foreach ($fields as $field_name => &$field_definition)
-        {
-            if (in_array($field_name, ['subtitle', 'content']))
-            {
+        foreach ($fields as $field_name => &$field_definition) {
+            if (in_array($field_name, ['subtitle', 'content'])) {
                 $field_definition['type'] = WysiwygTextarea::class;
             }
         }

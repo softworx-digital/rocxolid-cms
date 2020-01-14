@@ -10,5 +10,4 @@ use Softworx\RocXolid\CMS\Repositories\AbstractPageElementListRepository;
  */
 class Repository extends AbstractPageElementListRepository
 {
-
 }

@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Forms\SearchEngine;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+
 /**
  *
  */

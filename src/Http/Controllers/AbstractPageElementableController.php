@@ -46,14 +46,11 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         $model_viewer_component = $this
             ->getModelViewerComponent($this->getModel());
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return $this->response
                 ->modal($model_viewer_component->fetch('modal.preview'))
                 ->get();
-        }
-        else
-        {
+        } else {
             return $this
                 ->getDashboard()
                 ->setModelViewerComponent($model_viewer_component)
@@ -126,12 +123,10 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         $model_viewer_component = $this
             ->getModelViewerComponent($this->getModel());
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $page_element = $form->getPageElementModel()->find($form->getFormField('page_element_id')->getValue());
 
-            if ($this->getModel()->hasPageElement($page_element))
-            {
+            if ($this->getModel()->hasPageElement($page_element)) {
                 return $this->response
                     ->notifyError($model_viewer_component->translate('text.element-already-set'))
                     ->get();
@@ -140,15 +135,13 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             $this->getModel()->addPageElement($page_element);
 
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
-            /*
-            return $this->response
-                ->replace($model_viewer_component->getDomId('page-elements', $this->getModel()->id), $model_viewer_component->fetch('include.page-elements'))
-                ->modalClose($model_viewer_component->getDomId('modal-select-page-element'))
-                ->get();
-            */
-        }
-        else
-        {
+        /*
+        return $this->response
+            ->replace($model_viewer_component->getDomId('page-elements', $this->getModel()->id), $model_viewer_component->fetch('include.page-elements'))
+            ->modalClose($model_viewer_component->getDomId('modal-select-page-element'))
+            ->get();
+        */
+        } else {
             return $this->errorResponse($request, $repository, $form, 'update');
         }
     }

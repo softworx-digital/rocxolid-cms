@@ -33,8 +33,7 @@ class Update extends RocXolidAbstractCrudForm
         $fields['image']['options']['label']['title'] = 'image';
         //
         //foreach ([ 'delivery', 'gtc', 'privacy' ] as $param)
-        foreach ([ 'gtc', 'privacy' ] as $param)
-        {
+        foreach ([ 'gtc', 'privacy' ] as $param) {
             //$fields[sprintf('%s_url', $param)]['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%s_url,_data.%s_page_id,_data.%s_page_proxy_id', $param, $param, $param);
             //
             // $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;

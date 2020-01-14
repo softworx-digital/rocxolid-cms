@@ -20,6 +20,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\CMS\Models\Article;
+
 // @todo - cele refactornut - vzhladom na pagelementable a pageelementy, ktore mozu mat v sebe elementy (containery)
 abstract class AbstractPageElementController extends AbstractCMSController
 {
@@ -38,32 +39,23 @@ abstract class AbstractPageElementController extends AbstractCMSController
     // vid AbstractPageElementProxyController, kde sa overrideuje
     public function getPageElementable(FormRequest $request): PageElementable
     {
-        if (!$request->has(FormField::SINGLE_DATA_PARAM))
-        {
+        if (!$request->has(FormField::SINGLE_DATA_PARAM)) {
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
         $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
 
-        if ($data->has('_page_template_id'))
-        {
+        if ($data->has('_page_template_id')) {
             $page_elementable = PageTemplate::findOrFail($data->get('_page_template_id'));
-        }
-        elseif ($data->has('_page_proxy_id'))
-        {
+        } elseif ($data->has('_page_proxy_id')) {
             $page_elementable = PageProxy::findOrFail($data->get('_page_proxy_id'));
-        }
-        elseif ($data->has('_page_id'))
-        {
+        } elseif ($data->has('_page_id')) {
             $page_elementable = Page::findOrFail($data->get('_page_id'));
-        }
-        elseif ($data->has('_article_id'))
-        {
+        } elseif ($data->has('_article_id')) {
             $page_elementable = Article::findOrFail($data->get('_article_id'));
         }
 
-        if (!isset($page_elementable))
-        {
+        if (!isset($page_elementable)) {
             throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id in request or _article_id'));
         }
 
@@ -72,8 +64,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
 
     public function detach(CrudRequest $request, $id)
     {
-        if ($request->ajax() && $request->has('_section'))
-        {
+        if ($request->ajax() && $request->has('_section')) {
             $repository = $this->getRepository($this->getRepositoryParam($request));
 
             $this->setModel($repository->find($id));
@@ -93,8 +84,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
 
     protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, $action)
     {
-        if ($request->ajax() && $request->has('_section'))
-        {
+        if ($request->ajax() && $request->has('_section')) {
             $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
 
             $this->$section_action_method($request, $repository, $form, $page_element, $this->getPageElementable($request));
@@ -110,9 +100,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
                 ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
-        }
-        else
-        {
+        } else {
             return parent::successResponse($request, $repository, $form, $page_element, $action);
         }
     }

@@ -6,17 +6,18 @@ use Illuminate\Support\Collection;
 // rocXolid fundamentals
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid fields
-use Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\Email,
-    Softworx\RocXolid\Forms\Fields\Type\Switchery,
-    Softworx\RocXolid\Forms\Fields\Type\Select,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\Textarea,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonGroup,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\Email;
+use Softworx\RocXolid\Forms\Fields\Type\Switchery;
+use Softworx\RocXolid\Forms\Fields\Type\Select;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\Textarea;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonGroup;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
 // CMS forms
 use Softworx\RocXolid\CMS\Models\Forms\AbstractUpdateInPageElementable;
+
 /**
  *
  */
@@ -40,8 +41,7 @@ class UpdateInPageElementable extends AbstractUpdateInPageElementable
 
         $collection = new Collection();
 
-        foreach ($containee_class::$list_sortable_attributes as $attribute)
-        {
+        foreach ($containee_class::$list_sortable_attributes as $attribute) {
             $collection->put($attribute, $containee_model_viewer_component->translate(sprintf('field.%s', $attribute)));
         }
 

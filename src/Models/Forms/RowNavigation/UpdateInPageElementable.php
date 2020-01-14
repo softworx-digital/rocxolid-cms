@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms\RowNavigation;
 use Softworx\RocXolid\CMS\Models\Forms\AbstractUpdateInPageElementable;
 // fields
 use Softworx\RocXolid\Forms\Fields\Type\Select;
+
 /**
  *
  */

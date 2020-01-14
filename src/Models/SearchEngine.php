@@ -17,7 +17,7 @@ use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\Commerce\Models\Product;
 
 /**
- * 
+ *
  */
 // @todo: cleanup / refactor
 class SearchEngine extends AbstractPageElement
@@ -44,14 +44,11 @@ class SearchEngine extends AbstractPageElement
 
     public function handleFrontpageRequest($request, Web $web)
     {
-        if ($request->isMethod('post'))
-        {
-            foreach ($request->get('search-type', []) as $type)
-            {
+        if ($request->isMethod('post')) {
+            foreach ($request->get('search-type', []) as $type) {
                 $method = sprintf('search%s', Str::studly($type));
 
-                if (method_exists($this, $method))
-                {
+                if (method_exists($this, $method)) {
                     $this->$method($web, $request->get('q'));
                 }
             }
@@ -62,8 +59,7 @@ class SearchEngine extends AbstractPageElement
 
     public function getResults()
     {
-        if (is_null($this->results))
-        {
+        if (is_null($this->results)) {
             $this->results = new Collection();
         }
 
@@ -74,16 +70,14 @@ class SearchEngine extends AbstractPageElement
     {
         $page_proxy = PageProxy::where('model_type', Product::class)->where('web_id', $web->id)->first();
 
-        Product::where(function($q) use ($query)
-        {
+        Product::where(function ($q) use ($query) {
             $q->orWhere('title', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('short_description', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('description', 'like', sprintf('%%%s%%', $query));
         })
         ->where('web_id', $web->id)
         ->where('is_visible', 1)
-        ->each(function ($item) use ($page_proxy)
-        {
+        ->each(function ($item) use ($page_proxy) {
             $this->getResults()->push([
                 'template' => 'product',
                 'item' => $item,
@@ -98,15 +92,13 @@ class SearchEngine extends AbstractPageElement
     {
         $page_proxy = PageProxy::where('model_type', Advice::class)->where('web_id', $web->id)->first();
 
-        Advice::where(function($q) use ($query)
-        {
+        Advice::where(function ($q) use ($query) {
             $q->orWhere('name', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('perex', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('content', 'like', sprintf('%%%s%%', $query));
         })
         ->where('web_id', $web->id)
-        ->each(function ($item) use ($page_proxy)
-        {
+        ->each(function ($item) use ($page_proxy) {
             $this->getResults()->push([
                 'template' => 'advice',
                 'item' => $item,

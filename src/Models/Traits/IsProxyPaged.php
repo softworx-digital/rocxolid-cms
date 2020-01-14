@@ -27,8 +27,7 @@ trait IsProxyPaged
         $page->open_graph_type = 'article';
         $page->open_graph_site_name = $this->meta_title ?: $this->name;
 
-        if (isset($this->openGraphImage))
-        {
+        if (isset($this->openGraphImage)) {
             $page->openGraphImage = $this->openGraphImage;
         }
 

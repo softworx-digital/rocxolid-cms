@@ -7,6 +7,7 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
+
 /**
  *
  */
@@ -39,8 +40,7 @@ class Create extends RocXolidAbstractCrudForm
         ];
         //
         $fields['seo_url_slug']['options']['validation']['rules'][] = 'required';
-        $fields['seo_url_slug']['options']['validation']['rules'][] = Rule::unique($this->getModel()->getTable(), 'seo_url_slug')->where(function ($query)
-        {
+        $fields['seo_url_slug']['options']['validation']['rules'][] = Rule::unique($this->getModel()->getTable(), 'seo_url_slug')->where(function ($query) {
             $query
                 ->where('web_id', $this->getFormField('web_id')->getValue())
                 ->where('localization_id', $this->getFormField('localization_id')->getValue());

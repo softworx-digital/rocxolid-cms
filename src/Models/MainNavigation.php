@@ -2,13 +2,14 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use Softworx\RocXolid\Models\Contracts\Container,
-    Softworx\RocXolid\Models\Contracts\Containee;
-use Softworx\RocXolid\Models\Traits\CanContain,
-    Softworx\RocXolid\Models\Traits\IsContained;
+use Softworx\RocXolid\Models\Contracts\Container;
+use Softworx\RocXolid\Models\Contracts\Containee;
+use Softworx\RocXolid\Models\Traits\CanContain;
+use Softworx\RocXolid\Models\Traits\IsContained;
 // cms models
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\NavigationItem;
+
 /**
  *
  */

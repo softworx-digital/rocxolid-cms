@@ -6,5 +6,4 @@ use Softworx\RocXolid\CMS\Components\ModelViewers\NavigationViewer;
 
 class RowNavigationViewer extends NavigationViewer
 {
-
 }

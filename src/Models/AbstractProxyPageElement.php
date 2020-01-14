@@ -14,15 +14,12 @@ abstract class AbstractProxyPageElement extends AbstractPageElement implements P
 
     public function fillCustom($data, $action = null)
     {
-        if (!isset($data['web_id']))
-        {
-            if (isset($data['_page_proxy_id']))
-            {
+        if (!isset($data['web_id'])) {
+            if (isset($data['_page_proxy_id'])) {
                 $page_elementable = PageProxy::findOrFail($data['_page_proxy_id']);
             }
 
-            if (!isset($page_elementable))
-            {
+            if (!isset($page_elementable)) {
                 throw new \InvalidArgumentException(sprintf('Undefined _page_proxy_id'));
             }
 

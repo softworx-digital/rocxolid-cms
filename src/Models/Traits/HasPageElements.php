@@ -32,33 +32,27 @@ trait HasPageElements
 
     public static function bootHasPageElements()
     {
-        static::deleting(function ($model)
-        {
+        static::deleting(function ($model) {
             $model->detachAll();
         });
     }
 
     public function pageElements()
     {
-        if (is_null($this->_page_elements))
-        {
+        if (is_null($this->_page_elements)) {
             $this->_page_elements = new Collection();
 
-            $this->getPivotElements()->each(function ($pivot_data, $key)
-            {
+            $this->getPivotElements()->each(function ($pivot_data, $key) {
                 $page_element = $pivot_data->page_element_type::find($pivot_data->page_element_id);
 
-                if (is_null($page_element))
-                {
+                if (is_null($page_element)) {
                     // self cleaning beacause foreign keys use is not available
                     DB::table($this->getPageElementsPivotTable())->where([
                         $this->getPageElementsPivotTableKey() => $this->id,
                         'page_element_id' => $pivot_data->page_element_id,
                         'page_element_type' => $pivot_data->page_element_type,
                     ])->delete();
-                }
-                else
-                {
+                } else {
                     $page_element
                         ->setParentPageElementable($this)
                         ->setPivotData($pivot_data);
@@ -73,16 +67,13 @@ trait HasPageElements
 
     public function visiblePageElements($except = null, $only = null)
     {
-        if (is_null($this->_visible_page_elements))
-        {
+        if (is_null($this->_visible_page_elements)) {
             $this->_visible_page_elements = new Collection();
 
-            $this->getVisiblePivotElements()->each(function ($pivot_data, $key)
-            {
+            $this->getVisiblePivotElements()->each(function ($pivot_data, $key) {
                 $page_element = $pivot_data->page_element_type::find($pivot_data->page_element_id);
 
-                if (!is_null($page_element))
-                {
+                if (!is_null($page_element)) {
                     $page_element
                         ->setParentPageElementable($this)
                         ->setPivotData($pivot_data);
@@ -94,18 +85,14 @@ trait HasPageElements
 
         $filtered = $this->_visible_page_elements;
 
-        if (!is_null($except))
-        {
-            $filtered = $filtered->filter(function ($element, $key) use ($except)
-            {
+        if (!is_null($except)) {
+            $filtered = $filtered->filter(function ($element, $key) use ($except) {
                 return !in_array(get_class($element), $except);
             });
         }
 
-        if (!is_null($only))
-        {
-            $filtered = $filtered->filter(function ($element, $key) use ($only)
-            {
+        if (!is_null($only)) {
+            $filtered = $filtered->filter(function ($element, $key) use ($only) {
                 return in_array(get_class($element), $only);
             });
         }
@@ -137,8 +124,7 @@ trait HasPageElements
             'position' => $position,
         ];
 
-        if (isset($page_element->default_template))
-        {
+        if (isset($page_element->default_template)) {
             $pivot_data += [
                 'template' => $page_element->default_template,
             ];
@@ -151,8 +137,7 @@ trait HasPageElements
 
     public function updatePivotData($request, $page_element_type, $page_element_id)
     {
-        if (($input = $request->input('_data', false)) && is_array($input))
-        {
+        if (($input = $request->input('_data', false)) && is_array($input)) {
             $page_element = $page_element_type::findOrFail($page_element_id);
 
             DB::table($this->getPageElementsPivotTable())
@@ -165,19 +150,15 @@ trait HasPageElements
 
     public function updatePageElementsOrder($request)
     {
-        if (($input = $request->input('_data', false)) && is_array($input))
-        {
+        if (($input = $request->input('_data', false)) && is_array($input)) {
             $page_elements = $this->pageElements();
             $page_elements_attached = new Collection();
 
-            foreach ($input as $order_data)
-            {
-                foreach ($order_data as $position => $page_element_data)
-                {
+            foreach ($input as $order_data) {
+                foreach ($order_data as $position => $page_element_data) {
                     $page_element = $page_element_data['pageElementType']::findOrFail($page_element_data['pageElementId']);
 
-                    if (!$this->hasPageElement($page_element))
-                    {
+                    if (!$this->hasPageElement($page_element)) {
                         $this->addPageElement($page_element);
                     }
 
@@ -189,14 +170,11 @@ trait HasPageElements
                             'position' => $position,
                         ]);
 
-                    if ($page_element instanceof Container)
-                    {
+                    if ($page_element instanceof Container) {
                         $page_element->detachContainee($this->getCCRelationParam());
 
-                        if (isset($page_element_data['children']))
-                        {
-                            foreach ($page_element_data['children'] as $position => $children_order_data)
-                            {
+                        if (isset($page_element_data['children'])) {
+                            foreach ($page_element_data['children'] as $position => $children_order_data) {
                                 $page_element->reorderContainees($this->getCCRelationParam(), $children_order_data);
                             }
                         }
@@ -204,8 +182,7 @@ trait HasPageElements
                 }
             }
 
-            $page_elements->diff($page_elements_attached)->each(function ($page_element_to_detach, $key)
-            {
+            $page_elements->diff($page_elements_attached)->each(function ($page_element_to_detach, $key) {
                 $this->detachPageElement($page_element_to_detach);
             });
         }
@@ -235,45 +212,32 @@ trait HasPageElements
             'proxy' => new Collection(),
         ];
 
-        foreach ($this->getAvailablePageElements() as $page_element_class)
-        {
+        foreach ($this->getAvailablePageElements() as $page_element_class) {
             $related = $this->getPageElementsRelationship($page_element_class)->getRelated();
 
-            if ($related instanceof PageElement)
-            {
-                if ($related instanceof Container)
-                {
+            if ($related instanceof PageElement) {
+                if ($related instanceof Container) {
                     $models['containers']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
-                }
-                elseif ($related instanceof PageProxyElement)
-                {
-                    if (($this instanceof PageProxyElementable) && ($this->model_type == $related::$model_type))
-                    {
+                } elseif ($related instanceof PageProxyElement) {
+                    if (($this instanceof PageProxyElementable) && ($this->model_type == $related::$model_type)) {
                         $models['proxy']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                     }
-                }
-                else
-                {
+                } else {
                     $models['panels']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                 }
             }
         }
 
-        if (!($this instanceof PageProxyElementable))
-        {
+        if (!($this instanceof PageProxyElementable)) {
             unset($models['proxy']);
         }
 
-        if ($categorize)
-        {
+        if ($categorize) {
             return $models;
-        }
-        else
-        {
+        } else {
             $all = new Collection();
 
-            foreach ($models as $collection)
-            {
+            foreach ($models as $collection) {
                 $all = $all->merge($collection);
             }
 
@@ -288,12 +252,10 @@ trait HasPageElements
     {
         $models = new Collection();
 
-        foreach ($this->getAvailablePageElements() as $page_element_class)
-        {
+        foreach ($this->getAvailablePageElements() as $page_element_class) {
             $related = $this->getPageElementsRelationship($page_element_class)->getRelated();
 
-            if ($related instanceof PageElement)
-            {
+            if ($related instanceof PageElement) {
                 $models->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
             }
         }
@@ -350,38 +312,31 @@ trait HasPageElements
 
     protected function getVisiblePivotElements($except = null, $only = null, $order_by = 'position', $order_by_direction = 'asc')
     {
-        if ($this instanceof PageTemplate)
-        {
+        if ($this instanceof PageTemplate) {
             $q = DB::table($this->getPageElementsPivotTable())
                 ->where($this->getPageElementsPivotTableKey(), $this->id);
 
-            if (!is_null($except))
-            {
+            if (!is_null($except)) {
                 $q->whereNotIn('page_element_type', $except);
             }
 
-            if (!is_null($only))
-            {
+            if (!is_null($only)) {
                 $q->whereIn('page_element_type', $only);
             }
 
             return $q
                 ->orderBy($order_by, $order_by_direction)
                 ->get();
-        }
-        else
-        {
+        } else {
             $q = DB::table($this->getPageElementsPivotTable())
                 ->where($this->getPageElementsPivotTableKey(), $this->id)
                 ->where('is_visible', 1);
 
-            if (!is_null($except))
-            {
+            if (!is_null($except)) {
                 $q->whereNotIn('page_element_type', $except);
             }
 
-            if (!is_null($only))
-            {
+            if (!is_null($only)) {
                 $q->whereIn('page_element_type', $only);
             }
 
@@ -397,8 +352,7 @@ trait HasPageElements
             $this->getPageElementsPivotTableKey() => $this->id,
         ];
 
-        if (!is_null($page_element))
-        {
+        if (!is_null($page_element)) {
             $condition += [
                 'page_element_id' => $page_element->id,
                 'page_element_type' => (new \ReflectionClass($page_element))->getName(),
@@ -417,14 +371,11 @@ trait HasPageElements
     {
         $class = (new \ReflectionClass($this))->getName();
 
-        if ($original_id = array_search($this->id, $clone_log->get($class, [])))
-        {
-            static::findOrFail($original_id)->pageElements()->each(function($original_page_element, $key) use ($clone_log)
-            {
+        if ($original_id = array_search($this->id, $clone_log->get($class, []))) {
+            static::findOrFail($original_id)->pageElements()->each(function ($original_page_element, $key) use ($clone_log) {
                 $class = (new \ReflectionClass($original_page_element))->getName();
 
-                if ($clone_log->has($class) && array_key_exists($original_page_element->id, $clone_log->get($class)))
-                {
+                if ($clone_log->has($class) && array_key_exists($original_page_element->id, $clone_log->get($class))) {
                     $clone = $original_page_element::findOrFail($clone_log->get($class)[$original_page_element->id]);
 
                     $this->addPageElement($clone);
@@ -444,7 +395,7 @@ trait HasPageElements
 
     public function getPageElementsRelationship($class)
     {
-        if (!(new \ReflectionClass($class))->implementsInterface(PageElement::class) ) {
+        if (!(new \ReflectionClass($class))->implementsInterface(PageElement::class)) {
             throw new \InvalidArgumentException(sprintf('Class [%s] has to implement [%s] interface to be used', $class, PageElement::class));
         }
 
@@ -453,8 +404,7 @@ trait HasPageElements
 
     public function isPageElementTemplateChoiceEnabled()
     {
-        if (property_exists($this, 'is_page_element_template_choice_enabled'))
-        {
+        if (property_exists($this, 'is_page_element_template_choice_enabled')) {
             return $this->is_page_element_template_choice_enabled;
         }
 

@@ -7,6 +7,7 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
+
 /**
  *
  */

@@ -7,8 +7,8 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 // model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // general components
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent,
-    Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
+use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 // cms controller traits
@@ -21,6 +21,7 @@ use Softworx\RocXolid\CMS\Models\ProductList;
 use Softworx\RocXolid\CMS\Components\ModelViewers\ProductListViewer;
 // commerce models
 use Softworx\RocXolid\Commerce\Models\Product;
+
 /**
  *
  * @todo Doplnit interface 'pre' HasContainer
@@ -59,12 +60,10 @@ class Controller extends AbstractPageElementController
 
     protected function reattachContainees($order_by)
     {
-        if ($this->getModel()->productCategory()->exists())
-        {
+        if ($this->getModel()->productCategory()->exists()) {
             $this->getModel()->detachContainee('items');
 
-            $this->getModel()->productCategory->products()->orderBy($order_by)->get()->each(function(Product $product, $key)
-            {
+            $this->getModel()->productCategory->products()->orderBy($order_by)->get()->each(function (Product $product, $key) {
                 $this->getModel()->attachContainee('items', $product);
             });
 

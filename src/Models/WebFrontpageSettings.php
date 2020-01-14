@@ -23,6 +23,7 @@ use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
+
 // commerce models
 
 /**
@@ -122,8 +123,7 @@ class WebFrontpageSettings extends AbstractCrudModel
         $path = dirname(reset($views));
         $path = sprintf('%s/template-sets/*', $path);
 
-        (new Collection(LaravelFile::glob($path)))->each(function ($file_path, $key) use ($template_sets)
-        {
+        (new Collection(LaravelFile::glob($path)))->each(function ($file_path, $key) use ($template_sets) {
             $pathinfo = pathinfo($file_path);
 
             $template_sets->put($pathinfo['filename'], $pathinfo['filename']);
@@ -134,8 +134,7 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     public function destroyCmsStructure()
     {
-        Page::make()->getAllPageElementModels()->each(function($page_element_model, $short_kebab_name)
-        {
+        Page::make()->getAllPageElementModels()->each(function ($page_element_model, $short_kebab_name) {
             $this
                 ->destroyClassObjects($page_element_model);
         });
@@ -152,8 +151,7 @@ class WebFrontpageSettings extends AbstractCrudModel
     {
         $this->clone_log = new Collection();
 
-        Page::make()->getAllPageElementModels()->each(function($page_element_model, $short_kebab_name) use ($web)
-        {
+        Page::make()->getAllPageElementModels()->each(function ($page_element_model, $short_kebab_name) use ($web) {
             $this
                 ->cloneClassObjects($page_element_model, $web);
         });
@@ -168,8 +166,7 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     public function buildCmsStructure()
     {
-        Page::make()->getAllPageElementModels()->each(function($page_element_model, $short_kebab_name)
-        {
+        Page::make()->getAllPageElementModels()->each(function ($page_element_model, $short_kebab_name) {
             $this
                 ->buildClassObjects($page_element_model);
         });
@@ -229,8 +226,7 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected function destroyClassObjects($class)
     {
-        $class::where('web_id', $this->web->id)->each(function($object, $id)
-        {
+        $class::where('web_id', $this->web->id)->each(function ($object, $id) {
             $object->forceDelete();
         });
 
@@ -239,10 +235,8 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected function cloneClassObjects($class, Web $web)
     {
-        $class::where('web_id', $web->id)->each(function($object, $id)
-        {
-            if ($object instanceof Cloneable)
-            {
+        $class::where('web_id', $web->id)->each(function ($object, $id) {
+            if ($object instanceof Cloneable) {
                 $clone = $object->clone($this->clone_log, [
                     'web_id' => $this->web->id,
                 ]);
@@ -254,10 +248,8 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected function buildClassObjects($class)
     {
-        $class::where('web_id', $this->web->id)->each(function($object, $id)
-        {
-            if ($object instanceof Cloneable)
-            {
+        $class::where('web_id', $this->web->id)->each(function ($object, $id) {
+            if ($object instanceof Cloneable) {
                 $object->buildRelations($this->clone_log);
             }
         });

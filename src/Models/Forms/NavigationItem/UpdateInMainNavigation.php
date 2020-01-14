@@ -122,15 +122,15 @@ class UpdateInMainNavigation extends RocXolidAbstractCrudForm
 
         return $fields;
     }
-/*
-    public function adjustUpdateBeforeSubmit(CrudRequest $request)
-    {
-        if (!$this->hasFormField('page_proxy_model_id') && $this->getModel()->detectPageProxy($this)->exists)
+    /*
+        public function adjustUpdateBeforeSubmit(CrudRequest $request)
         {
-            $this->addFormField($this->getModel()->getPageProxyModelField($this, $this->getModel()->detectPageProxy($this)));
+            if (!$this->hasFormField('page_proxy_model_id') && $this->getModel()->detectPageProxy($this)->exists)
+            {
+                $this->addFormField($this->getModel()->getPageProxyModelField($this, $this->getModel()->detectPageProxy($this)));
+            }
+    
+            return $this;
         }
-
-        return $this;
-    }
-*/
+    */
 }

@@ -17,6 +17,7 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 use Softworx\RocXolid\CMS\Models\Gallery;
 // cms repositories
 use Softworx\RocXolid\CMS\Repositories\Gallery\Repository;
+
 /**
  *
  */
@@ -41,12 +42,10 @@ class Controller extends AbstractPageElementController
 
     public function regenerateConfirmation(CrudRequest $request, Gallery $gallery)
     {
-
     }
 
     public function regenerate(CrudRequest $request, Gallery $gallery)
     {
-
     }
 
     public function clearConfirmation(CrudRequest $request, Gallery $gallery)

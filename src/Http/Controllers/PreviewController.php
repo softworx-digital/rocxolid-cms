@@ -12,8 +12,9 @@ use Softworx\RocXolid\Common\Http\Traits\DetectsWeb;
 // user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
 // cms models
-use Softworx\RocXolid\CMS\Models\PageTemplate,
-    Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageTemplate;
+use Softworx\RocXolid\CMS\Models\Page;
+
 /**
  *
  */
@@ -29,8 +30,7 @@ class PreviewController extends BaseController
     {
         $web = $this->detectWeb($request);
 
-        if ($page_template->web != $web)
-        {
+        if ($page_template->web != $web) {
             throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->id, $web->id));
         }
 
@@ -46,8 +46,7 @@ class PreviewController extends BaseController
     {
         $web = $this->detectWeb($request);
 
-        if ($page->web != $web)
-        {
+        if ($page->web != $web) {
             throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->id, $web->id));
         }
 

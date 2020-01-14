@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Forms\ShoppingAfter;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+
 /**
  *
  */

@@ -6,6 +6,7 @@ use Softworx\RocXolid\Models\Contracts\Containee;
 use Softworx\RocXolid\Models\Traits\IsContained;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
+
 /**
  *
  */

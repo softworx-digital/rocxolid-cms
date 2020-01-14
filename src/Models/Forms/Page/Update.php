@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Page;
 use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+
 /**
  *
  */
@@ -42,14 +43,12 @@ class Update extends RocXolidAbstractCrudForm
         //
         $fields['localization_id']['options']['collection'] = $this->getModel()->detectWeb($this)->localizations->pluck('name', 'id');
         //
-        if (isset($fields['page_template_id']))
-        {
+        if (isset($fields['page_template_id'])) {
             unset($fields['page_template_id']);
         }
         //
         $fields['seo_url_slug']['options']['validation']['rules'][] = 'required';
-        $fields['seo_url_slug']['options']['validation']['rules'][] = Rule::unique($this->getModel()->getTable(), 'seo_url_slug')->where(function ($query)
-        {
+        $fields['seo_url_slug']['options']['validation']['rules'][] = Rule::unique($this->getModel()->getTable(), 'seo_url_slug')->where(function ($query) {
             $query
                 ->where('web_id', $this->getFormField('web_id')->getValue())
                 ->where('localization_id', $this->getFormField('localization_id')->getValue());

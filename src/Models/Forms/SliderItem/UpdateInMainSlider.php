@@ -3,17 +3,18 @@
 namespace Softworx\RocXolid\CMS\Models\Forms\SliderItem;
 
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\Switchery,
-    Softworx\RocXolid\Forms\Fields\Type\Select,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage,
-    Softworx\RocXolid\Forms\Fields\Type\Colorpicker;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\Switchery;
+use Softworx\RocXolid\Forms\Fields\Type\Select;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\Colorpicker;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
+
 /**
  *
  */

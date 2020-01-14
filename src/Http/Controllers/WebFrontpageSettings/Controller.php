@@ -52,14 +52,11 @@ class Controller extends AbstractCrudController
             ->getModelViewerComponent($this->getModel())
             ->setFormComponent($form_component);
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return $this->response
                 ->modal($model_viewer_component->fetch('modal.clone-structure'))
                 ->get();
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -78,8 +75,7 @@ class Controller extends AbstractCrudController
             ->adjustUpdateBeforeSubmit($request)
             ->submit();
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $web = Web::findOrFail($form->getFormField('web_id')->getValue());
 
             $form_component = CrudFormComponent::build($this, $this)
@@ -104,9 +100,7 @@ class Controller extends AbstractCrudController
                     ->modalClose($model_viewer_component->getDomId('modal-clone-structure'))
                     ->modal($this->getModelViewerComponent($web_frontpage_settings)->fetch('modal.clone-structure-success', $assignments))
                     ->get();
-        }
-        else
-        {
+        } else {
             return $this->errorResponse($request, $repository, $form, 'edit');
         }
     }

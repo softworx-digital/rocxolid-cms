@@ -21,6 +21,7 @@ use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 // cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
+
 /**
  *
  */
@@ -84,8 +85,7 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
 
     public function getFrontpageUrl($params = [])
     {
-        if ($this->seo_url_slug === '/') // homepage
-        {
+        if ($this->seo_url_slug === '/') { // homepage
             $pattern = $this->localization->is($this->web->defaultLocalization) ? '//%s' : '//%s/%s';
 
             return sprintf($pattern, $this->web->domain, $this->localization->seo_url_slug);
@@ -96,10 +96,8 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
 
     public function beforeSave($data, $action = null)
     {
-        if ($this->seo_url_slug !== '/') // homepage
-        {
-            $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug)
-            {
+        if ($this->seo_url_slug !== '/') { // homepage
+            $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
@@ -109,8 +107,7 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
 
     public function afterSave($data, $action = null)
     {
-        if ($action == 'create')
-        {
+        if ($action == 'create') {
             $this->assignTemplatePageElements();
         }
 
@@ -121,18 +118,13 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
     {
         $clone_log = new Collection();
 
-        if ($this->pageTemplate()->exists())
-        {
-            foreach ($this->pageTemplate->pageElements() as $page_element)
-            {
-                if ($page_element->getPivotData()->get('is_clone_page_element_instance'))
-                {
+        if ($this->pageTemplate()->exists()) {
+            foreach ($this->pageTemplate->pageElements() as $page_element) {
+                if ($page_element->getPivotData()->get('is_clone_page_element_instance')) {
                     $clone = $page_element->clone($clone_log);
 
                     $this->addPageElement($clone);
-                }
-                else
-                {
+                } else {
                     $this->addPageElement($page_element->cloneContaineeRelations($this->pageTemplate, $this));
                 }
             }

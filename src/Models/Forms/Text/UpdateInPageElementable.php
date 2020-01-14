@@ -4,9 +4,10 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Text;
 
 use Softworx\RocXolid\CMS\Models\Forms\AbstractUpdateInPageElementable;
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage,
-    Softworx\RocXolid\Forms\Fields\Type\UploadFile;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\UploadFile;
+
 /**
  * Update form definition for Text page element used when creating directly in page.
  *

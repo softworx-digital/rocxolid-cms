@@ -74,8 +74,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     public function getModelType()
     {
-        if (($class = $this->model_type) && class_exists($class))
-        {
+        if (($class = $this->model_type) && class_exists($class)) {
             return $class::make()->getModelViewerComponent()->translate('model.title.singular');
         }
 
@@ -93,8 +92,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
     {
         $model = $this->makeModel($model_id);
 
-        if (is_null($model))
-        {
+        if (is_null($model)) {
             return '#404';
         }
 
@@ -107,8 +105,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
     {
         $models = new Collection();
 
-        $this->getPageProxyableModelClasses()->each(function($class) use ($models)
-        {
+        $this->getPageProxyableModelClasses()->each(function ($class) use ($models) {
             $models->put($class, $class::make()->getModelViewerComponent()->translate('model.title.singular'));
         });
 
@@ -126,17 +123,14 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
         $this->getModel()->setPageAttributes($page, $this);
 
-        foreach ($page->visiblePageElements() as $element)
-        {
-            if ($element instanceof Modellable)
-            {
+        foreach ($page->visiblePageElements() as $element) {
+            if ($element instanceof Modellable) {
                 $element->setModel($this->getModel());
                 $modellable_elements++;
             }
         }
 
-        if (!$modellable_elements)
-        {
+        if (!$modellable_elements) {
             throw new \RuntimeException(sprintf('No modellable elements for proxy page "%s" [%s]', $this->getTitle(), $this->id));
         }
 
@@ -145,10 +139,8 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     public function beforeSave($data, $action = null)
     {
-        if ($this->seo_url_slug !== '/') // homepage
-        {
-            $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug)
-            {
+        if ($this->seo_url_slug !== '/') { // homepage
+            $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
@@ -158,8 +150,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     public function afterSave($data, $action = null)
     {
-        if ($action == 'create')
-        {
+        if ($action == 'create') {
             $this->assignTemplatePageElements();
         }
 
@@ -175,18 +166,13 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
     {
         $clone_log = new Collection();
 
-        if ($this->pageTemplate()->exists())
-        {
-            foreach ($this->pageTemplate->pageElements() as $page_element)
-            {
-                if ($page_element->getPivotData()->get('is_clone_page_element_instance'))
-                {
+        if ($this->pageTemplate()->exists()) {
+            foreach ($this->pageTemplate->pageElements() as $page_element) {
+                if ($page_element->getPivotData()->get('is_clone_page_element_instance')) {
                     $clone = $page_element->clone($clone_log);
 
                     $this->addPageElement($clone);
-                }
-                else
-                {
+                } else {
                     $this->addPageElement($page_element);
                 }
             }

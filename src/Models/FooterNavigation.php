@@ -8,7 +8,9 @@ use Softworx\RocXolid\Common\Models\Traits\HasImage;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
 // cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;;
+use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;
+
+;
 /**
  *
  */

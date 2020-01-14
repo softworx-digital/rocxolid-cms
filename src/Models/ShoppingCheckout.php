@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
+
 /**
  *
  */

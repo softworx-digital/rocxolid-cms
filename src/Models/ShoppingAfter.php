@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Models;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\Commerce\Models\Order;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
+
 /**
  *
  */
@@ -42,10 +43,8 @@ class ShoppingAfter extends AbstractPageElement
 
     public function getOrder($request)
     {
-        if (is_null($this->_order))
-        {
-            if ($this->_order = Order::find($request->input('order_id')))
-            {
+        if (is_null($this->_order)) {
+            if ($this->_order = Order::find($request->input('order_id'))) {
                 $this->_order->load('delivery');
                 $this->_order->load('payment');
             }

@@ -4,9 +4,10 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Text;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage,
-    Softworx\RocXolid\Forms\Fields\Type\UploadFile;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\UploadFile;
+
 /**
  * Update form definition for Text page element.
  *

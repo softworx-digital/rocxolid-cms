@@ -8,6 +8,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 //
 use Softworx\RocXolid\CrudRouter;
+
 /**
  *
  */
@@ -26,11 +27,11 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->register(Providers\TranslationServiceProvider::class);
     }
 
-     /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
+    /**
+    * Bootstrap the application services.
+    *
+    * @return void
+    */
     public function boot()
     {
         $this

@@ -21,6 +21,7 @@ use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
 // cms models
 use Softworx\RocXolid\CMS\Models\PageProxy;
+
 /**
  *
  */

@@ -3,10 +3,11 @@
 namespace Softworx\RocXolid\CMS\Models\Forms\Gallery;
 
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonGroup;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonGroup;
 // cms forms
 use Softworx\RocXolid\CMS\Models\Forms\AbstractInPageElementable;
+
 /**
  *
  */

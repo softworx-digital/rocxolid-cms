@@ -7,6 +7,7 @@ use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
+
 /**
  *
  */
@@ -22,8 +23,7 @@ class Update extends RocXolidAbstractCrudForm
     {
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
-        foreach (['continue_shopping', 'checkout'] as $param)
-        {
+        foreach (['continue_shopping', 'checkout'] as $param) {
             // $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
             $fields[sprintf('%s_page_id', $param)]['options']['collection']['filters'][] = [
                 'class' => BelongsToWeb::class,

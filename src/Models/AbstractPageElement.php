@@ -18,8 +18,8 @@ use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElement,
-    Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\PageElement;
+use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementViewer;
 // cms traits
@@ -59,20 +59,16 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
     {
         parent::boot();
 
-        static::deleting(function ($model)
-        {
-            $model->pages->each(function ($page_elementable) use ($model)
-            {
+        static::deleting(function ($model) {
+            $model->pages->each(function ($page_elementable) use ($model) {
                 $page_elementable->detachPageElement($model);
             });
 
-            $model->pageProxies->each(function ($page_elementable) use ($model)
-            {
+            $model->pageProxies->each(function ($page_elementable) use ($model) {
                 $page_elementable->detachPageElement($model);
             });
 
-            $model->pageTemplates->each(function ($page_elementable) use ($model)
-            {
+            $model->pageTemplates->each(function ($page_elementable) use ($model) {
                 $page_elementable->detachPageElement($model);
             });
         });
@@ -85,29 +81,19 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
 
     public function getTemplateName($subdirectory = null, $use_template = null, $default_template = 'default')
     {
-        if (!is_null($use_template))
-        {
+        if (!is_null($use_template)) {
             $template = $use_template;
-        }
-        elseif (property_exists($this, 'template_name'))
-        {
+        } elseif (property_exists($this, 'template_name')) {
             $template = static::$template_name;
-        }
-        elseif (isset($this->template))
-        {
+        } elseif (isset($this->template)) {
             $template = $this->template;
-        }
-        elseif (isset($this->pivot_data) && isset($this->pivot_data->template))
-        {
+        } elseif (isset($this->pivot_data) && isset($this->pivot_data->template)) {
             $template = $this->pivot_data->template;
-        }
-        else
-        {
+        } else {
             $template = $default_template;
         }
 
-        if (!is_null($subdirectory))
-        {
+        if (!is_null($subdirectory)) {
             return sprintf('%s.%s.%s.%s', static::$template_dir, $this->getModelName(), $subdirectory, $template);
         }
 
@@ -118,20 +104,17 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
     {
         $templates = new Collection();
 
-        if (is_null($web))
-        {
+        if (is_null($web)) {
             $web = $this->web()->exists() ? $this->web : null;
         }
 
-        if ($web)
-        {
+        if ($web) {
             $views = Config::get('view.paths');
             $path = reset($views);
             $path = sprintf('%s/%s', dirname($path), 'template-sets');
             $path = sprintf('%s/%s/%s/%s/*.blade.php', $path, $web->frontpageSettings->template_set, static::$template_dir, $this->getModelName());
 
-            (new Collection(File::glob($path)))->each(function ($file_path, $key) use ($templates)
-            {
+            (new Collection(File::glob($path)))->each(function ($file_path, $key) use ($templates) {
                 $pathinfo = pathinfo($file_path);
                 $template = str_replace('.blade', '', $pathinfo['filename']);
 
@@ -144,27 +127,18 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
 
     public function fillCustom($data, $action = null)
     {
-        if (!isset($data['web_id']))
-        {
-            if (isset($data['_page_template_id']))
-            {
+        if (!isset($data['web_id'])) {
+            if (isset($data['_page_template_id'])) {
                 $page_elementable = PageTemplate::findOrFail($data['_page_template_id']);
-            }
-            elseif (isset($data['_page_proxy_id']))
-            {
+            } elseif (isset($data['_page_proxy_id'])) {
                 $page_elementable = PageProxy::findOrFail($data['_page_proxy_id']);
-            }
-            elseif (isset($data['_page_id']))
-            {
+            } elseif (isset($data['_page_id'])) {
                 $page_elementable = Page::findOrFail($data['_page_id']);
-            }
-            elseif (isset($data['_article_id']))
-            {
+            } elseif (isset($data['_article_id'])) {
                 $page_elementable = Article::findOrFail($data['_article_id']);
             }
 
-            if (!isset($page_elementable))
-            {
+            if (!isset($page_elementable)) {
                 throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id or _article_id'));
             }
 

@@ -26,15 +26,13 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
 {
     public function getContainer(CrudRequest $request)
     {
-        if (!$request->has(FormField::SINGLE_DATA_PARAM))
-        {
+        if (!$request->has(FormField::SINGLE_DATA_PARAM)) {
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
         $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
 
-        if (!$data->has('container_id') || !$data->has('container_type') || !$data->has('container_relation'))
-        {
+        if (!$data->has('container_id') || !$data->has('container_type') || !$data->has('container_relation')) {
             throw new \InvalidArgumentException(sprintf('Invalid container data [%s] [%s] [%s]', $data->get('container_id', 'undefined'), $data->get('container_type', 'undefined'), $data->get('container_relation', 'undefined')));
         }
 
@@ -46,8 +44,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
 
     public function detach(CrudRequest $request, $id)
     {
-        if ($request->ajax() && $request->has('_section'))
-        {
+        if ($request->ajax() && $request->has('_section')) {
             $repository = $this->getRepository($this->getRepositoryParam($request));
 
             $this->setModel($repository->find($id));
@@ -70,8 +67,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
 
     protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $containee, $action)
     {
-        if ($request->ajax() && $request->has('_section'))
-        {
+        if ($request->ajax() && $request->has('_section')) {
             $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
 
             $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
@@ -86,9 +82,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
                 ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
-        }
-        else
-        {
+        } else {
             return parent::successResponse($request, $repository, $form, $containee, $action);
         }
     }

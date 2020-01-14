@@ -7,8 +7,9 @@ use Softworx\RocXolid\Models\Traits\IsContained;
 // common models
 use Softworx\RocXolid\Common\Models\Image;
 // cms models
-use Softworx\RocXolid\CMS\Models\AbstractPageElement,
-    Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\AbstractPageElement;
+use Softworx\RocXolid\CMS\Models\Page;
+
 /**
  *
  */

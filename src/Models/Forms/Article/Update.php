@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Article;
 use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+
 /**
  *
  */
@@ -43,8 +44,7 @@ class Update extends RocXolidAbstractCrudForm
         //
         $fields['localization_id']['options']['collection'] = $this->getModel()->detectWeb($this)->localizations->pluck('name', 'id');
         //
-        if (isset($fields['page_template_id']))
-        {
+        if (isset($fields['page_template_id'])) {
             unset($fields['page_template_id']);
         }
         //

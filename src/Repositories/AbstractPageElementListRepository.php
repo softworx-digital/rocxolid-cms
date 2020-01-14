@@ -3,12 +3,13 @@
 namespace Softworx\RocXolid\CMS\Repositories;
 
 // columns
-use Softworx\RocXolid\Repositories\Columns\Type\Text,
-    Softworx\RocXolid\Repositories\Columns\Type\ModelRelation,
-    Softworx\RocXolid\Repositories\Columns\Type\ImageRelation,
-    Softworx\RocXolid\Repositories\Columns\Type\ButtonAnchor;
+use Softworx\RocXolid\Repositories\Columns\Type\Text;
+use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
+use Softworx\RocXolid\Repositories\Columns\Type\ButtonAnchor;
 // cms repository
 use Softworx\RocXolid\CMS\Repositories\AbstractRepository;
+
 /**
  *
  */

@@ -13,8 +13,8 @@ use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 use Softworx\RocXolid\Forms\Fields\Type\Select;
 use Softworx\RocXolid\Forms\Fields\Type\Colorpicker;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-use Softworx\RocXolid\CMS\Models\Page,
-    Softworx\RocXolid\CMS\Models\PageProxy;
+use Softworx\RocXolid\CMS\Models\Page;
+use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\CMS\Models\MainSlider;
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 
@@ -205,15 +205,13 @@ class CreateInMainSlider extends RocXolidAbstractCrudForm
     {
         $input = new Collection($this->getRequest()->input());
 
-        if (!$input->has(FormField::SINGLE_DATA_PARAM))
-        {
+        if (!$input->has(FormField::SINGLE_DATA_PARAM)) {
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
         $data = new Collection($input->get(FormField::SINGLE_DATA_PARAM));
 
-        if (!$container = MainSlider::find($data->get('container_id')))
-        {
+        if (!$container = MainSlider::find($data->get('container_id'))) {
             throw new \InvalidArgumentException(sprintf('Invalid container_id [%s]', $data->get('container_id')));
         }
 

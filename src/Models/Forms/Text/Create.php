@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Text;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // fields
 use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+
 /**
  * Create form definition for Text page element.
  *

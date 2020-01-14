@@ -7,10 +7,13 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 // model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // general components
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent,
-    Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;;
+use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
+
+;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\ContainerViewer;
+
 /**
  *
  */
@@ -32,10 +35,8 @@ trait HasContainer
     {
         $model = $this->getRepository($this->getRepositoryParam($request))->findOrFail($id);
 
-        if (($order = $request->input('_data', false)) && is_array($order))
-        {
-            foreach ($order as $containee_order_data)
-            {
+        if (($order = $request->input('_data', false)) && is_array($order)) {
+            foreach ($order as $containee_order_data) {
                 $model->reorderContainees('items', $containee_order_data);
             }
         }
@@ -92,45 +93,38 @@ trait HasContainer
         $model_viewer_component = $this
             ->getModelViewerComponent($this->getModel());
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             // @todo - quick hack na handlovanie radio + checkbox
             $values = $form->getFormField('containee_id')->getValue();
 
-            if (!is_array($values))
-            {
+            if (!is_array($values)) {
                 $values = [ $values ];
             }
 
-            foreach ($values as $id)
-            {
+            foreach ($values as $id) {
                 $containee = $form->getContaineeModel()->find($id);
 
-                if ($this->getModel()->hasContainee('items', $containee))
-                {
+                if ($this->getModel()->hasContainee('items', $containee)) {
                     return $this->response
                         ->notifyError($model_viewer_component->translate('text.element-already-set'))
                         ->get();
                 }
             }
 
-            foreach ($values as $id)
-            {
+            foreach ($values as $id) {
                 $containee = $form->getContaineeModel()->find($id);
 
                 $this->getModel()->attachContainee('items', $containee);
             }
 
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
-            /*
-            return $this->response
-                ->replace($model_viewer_component->getDomId('list-containee', $this->getModel()->id), $model_viewer_component->fetch('include.list-containee'))
-                ->modalClose($model_viewer_component->getDomId('modal-select-list-containee'))
-                ->get();
-            */
-        }
-        else
-        {
+        /*
+        return $this->response
+            ->replace($model_viewer_component->getDomId('list-containee', $this->getModel()->id), $model_viewer_component->fetch('include.list-containee'))
+            ->modalClose($model_viewer_component->getDomId('modal-select-list-containee'))
+            ->get();
+        */
+        } else {
             return $this->errorResponse($request, $repository, $form, 'update');
         }
     }
@@ -176,16 +170,13 @@ trait HasContainer
         $model_viewer_component = $this
             ->getModelViewerComponent($this->getModel());
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $order_by = $form->getFormField('order_by_attribute')->getValue();
 
             $this->reattachContainees($order_by);
 
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
-        }
-        else
-        {
+        } else {
             return $this->errorResponse($request, $repository, $form, 'update');
         }
     }
@@ -196,8 +187,7 @@ trait HasContainer
 
         $items_class = static::$containee_class;
 
-        $items_class::orderBy($order_by)->get()->each(function($containee, $key)
-        {
+        $items_class::orderBy($order_by)->get()->each(function ($containee, $key) {
             $this->getModel()->attachContainee('items', $containee);
         });
 

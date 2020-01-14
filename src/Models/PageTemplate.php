@@ -16,6 +16,7 @@ use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
+
 /**
  *
  */

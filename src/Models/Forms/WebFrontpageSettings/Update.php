@@ -7,11 +7,12 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // contracts
 use Softworx\RocXolid\Forms\Contracts\FormField;
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea,
-    Softworx\RocXolid\Forms\Fields\Type\UploadFile,
-    Softworx\RocXolid\Forms\Fields\Type\Select,
-    Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
+use Softworx\RocXolid\Forms\Fields\Type\UploadFile;
+use Softworx\RocXolid\Forms\Fields\Type\Select;
+use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+
 /**
  *
  */

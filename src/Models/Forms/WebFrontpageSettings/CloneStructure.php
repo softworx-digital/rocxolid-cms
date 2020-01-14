@@ -6,15 +6,16 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Filters\NotMe;
 // fields
-use Softworx\RocXolid\Forms\Fields\Type\Input,
-    Softworx\RocXolid\Forms\Fields\Type\Email,
-    Softworx\RocXolid\Forms\Fields\Type\Textarea,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit,
-    Softworx\RocXolid\Forms\Fields\Type\ButtonGroup,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelect,
-    Softworx\RocXolid\Forms\Fields\Type\CollectionSelectAutocomplete;
+use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\Email;
+use Softworx\RocXolid\Forms\Fields\Type\Textarea;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit;
+use Softworx\RocXolid\Forms\Fields\Type\ButtonGroup;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type\CollectionSelectAutocomplete;
 // models
 use Softworx\RocXolid\Common\Models\Web;
+
 /**
  *
  */

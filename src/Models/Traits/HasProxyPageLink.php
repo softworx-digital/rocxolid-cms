@@ -29,23 +29,18 @@ trait HasProxyPageLink
 
     public function detectPageProxy(Form $form, string $relation_name = 'pageProxy')
     {
-        if (!isset($this->_detected_page_proxy[$relation_name]) || is_null($this->_detected_page_proxy[$relation_name]))
-        {
+        if (!isset($this->_detected_page_proxy[$relation_name]) || is_null($this->_detected_page_proxy[$relation_name])) {
             $param = sprintf('%s.%s_id', FormField::SINGLE_DATA_PARAM, Str::snake($relation_name));
 
             $id = $form->getRequest()->input($param, null);
 
-            if (is_null($id) && ($input = $form->getInput()))
-            {
+            if (is_null($id) && ($input = $form->getInput())) {
                 $id = Arr::get($input, $param, null);
             }
 
-            if (is_null($id) && ($this->$relation_name()->exists()))
-            {
+            if (is_null($id) && ($this->$relation_name()->exists())) {
                 $this->_detected_page_proxy[$relation_name] = $this->$relation_name;
-            }
-            else
-            {
+            } else {
                 $this->_detected_page_proxy[$relation_name] = PageProxy::find($id) ?: PageProxy::make();
             }
         }
@@ -57,12 +52,9 @@ trait HasProxyPageLink
     {
         $param = $this->getProxyPageModelAttribute($relation_name);
 
-        if ($this->detectPageProxy($form, $relation_name)->exists)
-        {
+        if ($this->detectPageProxy($form, $relation_name)->exists) {
             $fields[$param] = $this->getPageProxyModelFieldDefinition($this->detectPageProxy($form, $relation_name), $relation_name);
-        }
-        elseif (isset($fields[$param]))
-        {
+        } elseif (isset($fields[$param])) {
             unset($fields[$param]);
         }
 
@@ -94,8 +86,7 @@ trait HasProxyPageLink
             ],
         ];
 
-        if ($this->$relation_name()->exists())
-        {
+        if ($this->$relation_name()->exists()) {
             $definition['options']['value'] = $this->$relation_name->id;
         }
 

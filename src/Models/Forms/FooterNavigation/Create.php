@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
+
 /**
  *
  */
@@ -22,8 +23,7 @@ class Create extends RocXolidAbstractCrudForm
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
         //foreach ([ 'delivery', 'gtc', 'privacy' ] as $param)
-        foreach ([ 'gtc', 'privacy' ] as $param)
-        {
+        foreach ([ 'gtc', 'privacy' ] as $param) {
             //$fields[sprintf('%s_url', $param)]['options']['validation']['rules'] = sprintf('sometimes|nullable|only_one:_data.%s_url,_data.%s_page_id,_data.%s_page_proxy_id', $param, $param, $param);
             //
             // $fields[sprintf('%s_page_id', $param)]['options']['show-null-option'] = true;
