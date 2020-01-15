@@ -13,7 +13,6 @@ use Softworx\RocXolid\Forms\AbstractCrudForm;
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Repositories\Contracts\Repository;
-use Softworx\RocXolid\Repositories\Contracts\Repositoryable;
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController as AbstractCMSController;
 use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
