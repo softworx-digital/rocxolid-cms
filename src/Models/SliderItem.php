@@ -45,7 +45,7 @@ class SliderItem extends AbstractPageElement implements Containee
         'pageProxy',
     ];
 
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'small' => [ 'width' => 256, 'height' => 124, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

@@ -48,7 +48,7 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
         'items' => true,
     ];
 
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

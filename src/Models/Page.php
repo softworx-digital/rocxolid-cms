@@ -70,7 +70,7 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
         'is_visible',
     ];
 
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'openGraphImage' => [
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'small' => [ 'width' => 600, 'height' => 600, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

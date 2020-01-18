@@ -68,7 +68,7 @@ class Repository extends AbstractRepository
                 'label' => [
                     'title' => 'image'
                 ],
-                'dimension' => 'small',
+                'size' => 'small',
                 'relation' => [
                     'name' => 'image',
                 ],

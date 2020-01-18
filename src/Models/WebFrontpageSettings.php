@@ -80,7 +80,7 @@ class WebFrontpageSettings extends AbstractCrudModel
         'deleted_by',
     ];
 
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'logo' => [
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'small' => [ 'width' => 180, 'height' => 55, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

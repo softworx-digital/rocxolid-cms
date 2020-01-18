@@ -36,7 +36,7 @@ class Text extends AbstractPageElement
     ];
 
     // @todo: put this into config to be project specific (and this declaration taken as default)
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

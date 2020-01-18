@@ -32,7 +32,7 @@ class ShoppingAfter extends AbstractPageElement
         'fb_link',
     ];
 
-    protected $image_dimensions = [
+    protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],

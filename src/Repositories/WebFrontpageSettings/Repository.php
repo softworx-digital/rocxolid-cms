@@ -40,7 +40,7 @@ class Repository extends AbstractRepository
                 'label' => [
                     'title' => 'logo'
                 ],
-                'dimension' => 'thumb',
+                'size' => 'thumb',
                 'relation' => [
                     'name' => 'logo',
                 ],
@@ -57,7 +57,7 @@ class Repository extends AbstractRepository
                 'label' => [
                     'title' => 'favicon'
                 ],
-                'dimension' => '32x32',
+                'size' => '32x32',
                 'relation' => [
                     'name' => 'favicon',
                 ],
