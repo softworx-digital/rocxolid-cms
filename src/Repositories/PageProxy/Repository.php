@@ -125,8 +125,8 @@ class Repository extends AbstractRepository
                     'class' => 'btn btn-success btn-sm margin-right-no',
                     'title-key' => 'compose',
                 ],
-                'controller-method' => 'show',
-                'permissions-method-group' => 'write',
+                'policy-ability' => 'show',
+                'policy-ability-group' => 'write',
             ],
         ],
         'edit' => [
@@ -139,8 +139,8 @@ class Repository extends AbstractRepository
                     'class' => 'btn btn-primary btn-sm margin-right-no',
                     'title-key' => 'edit',
                 ],
-                'controller-method' => 'edit',
-                'permissions-method-group' => 'write',
+                'policy-ability' => 'edit',
+                'policy-ability-group' => 'write',
             ],
         ],
         'delete-ajax' => [
@@ -154,8 +154,8 @@ class Repository extends AbstractRepository
                     'class' => 'btn btn-danger btn-sm margin-right-no',
                     'title-key' => 'delete',
                 ],
-                'controller-method' => 'destroyConfirm',
-                'permissions-method-group' => 'write',
+                'policy-ability' => 'destroyConfirm',
+                'policy-ability-group' => 'write',
             ],
         ],
     ];

@@ -28,6 +28,12 @@
             ],
             "aliases": {
             }
+        },
+        "rocXolid": {
+            "title": {
+                "en": "CMS",
+                "sk": "CMS"
+            }
         }
     }
 }
