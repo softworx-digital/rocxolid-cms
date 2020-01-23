@@ -24,7 +24,7 @@
             @endforeach
             </div>
             <div class="row">
-            @foreach ($component->getModel()->getRelationshipMethods([ 'web' ]) as $method)
+            @foreach ($component->getModel()->getRelationshipMethods('web') as $method)
                 <div class="col-lg-3 col-md-4 col-xs-6">
                     <label class="col-xs-6 text-right">{{ $component->translate(sprintf('field.%s', $method)) }}</label>
                     <div class="col-xs-6">

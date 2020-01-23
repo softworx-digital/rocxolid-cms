@@ -2,7 +2,6 @@
 
 return [
     'column' => [
-        'localization_id' => 'Localization',
         'page_template_id' => 'Template',
         'type' => 'Type',
         'name' => 'Name',
@@ -18,14 +17,11 @@ return [
         'open_graph_type' => '<meta property="og:type">',
         'open_graph_url' => '<meta property="og:url">',
         'open_graph_site_name' => '<meta property="og:site_name">',
-        'description' => 'Description',
         'page_element' => 'Element',
         // relations
-        'localization' => 'Localization',
         'page_template' => 'Template',
     ],
     'field' => [
-        'localization_id' => 'Localization',
         'page_template_id' => 'Template',
         'type' => 'Type',
         'name' => 'Name',
@@ -41,10 +37,8 @@ return [
         'open_graph_type' => '<meta property="og:type">',
         'open_graph_url' => '<meta property="og:url">',
         'open_graph_site_name' => '<meta property="og:site_name">',
-        'description' => 'Description',
         'page_element' => 'Element',
         // relations
-        'localization' => 'Localization',
         'page_template' => 'Template',
         //
         'pivot-is_clone_page_element_instance' => 'Clone',

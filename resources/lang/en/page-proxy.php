@@ -19,7 +19,6 @@ return [
         'open_graph_type' => '<meta property="og:type">',
         'open_graph_url' => '<meta property="og:url">',
         'open_graph_site_name' => '<meta property="og:site_name">',
-        'description' => 'Description',
         'page_element' => 'Element',
         // relations
         'localization' => 'Localization',
@@ -43,7 +42,6 @@ return [
         'open_graph_type' => '<meta property="og:type">',
         'open_graph_url' => '<meta property="og:url">',
         'open_graph_site_name' => '<meta property="og:site_name">',
-        'description' => 'Description',
         'page_element' => 'Element',
         // relations
         'localization' => 'Localization',
