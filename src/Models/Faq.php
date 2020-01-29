@@ -22,10 +22,6 @@ class Faq extends AbstractCrudModel
 
     protected static $title_column = 'question';
 
-    protected $guarded = [
-        'id'
-    ];
-
     protected $fillable = [
         'web_id',
         'localization_id',

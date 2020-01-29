@@ -40,10 +40,6 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
     protected $page_proxyable = [
     ];
 
-    protected $guarded = [
-        'id'
-    ];
-
     protected $fillable = [
         'web_id',
         'localization_id',

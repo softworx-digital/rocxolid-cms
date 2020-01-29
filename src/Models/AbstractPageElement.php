@@ -43,10 +43,6 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
 
     protected static $template_dir = 'page-element';
 
-    protected $guarded = [
-        'id'
-    ];
-
     protected $relationships = [
         'web',
     ];

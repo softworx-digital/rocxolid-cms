@@ -35,10 +35,6 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
 
     protected $table = 'cms_page';
 
-    protected $guarded = [
-        'id'
-    ];
-
     protected $fillable = [
         'web_id',
         'localization_id',

@@ -37,10 +37,6 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected $table = 'cms_web_frontpage_settings';
 
-    protected $guarded = [
-        'id',
-    ];
-
     protected $fillable = [
         'web_id',
         'name',

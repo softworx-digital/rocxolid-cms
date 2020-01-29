@@ -39,10 +39,6 @@ class Article extends AbstractCrudModel implements PageElementable
 
     protected $is_page_element_template_choice_enabled = false;
 
-    protected $guarded = [
-        'id',
-    ];
-
     protected $fillable = [
         'web_id',
         'localization_id',
