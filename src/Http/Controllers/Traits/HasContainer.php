@@ -120,7 +120,7 @@ trait HasContainer
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
         /*
         return $this->response
-            ->replace($model_viewer_component->getDomId('list-containee', $this->getModel()->id), $model_viewer_component->fetch('include.list-containee'))
+            ->replace($model_viewer_component->getDomId('list-containee', $this->getModel()->getKey()), $model_viewer_component->fetch('include.list-containee'))
             ->modalClose($model_viewer_component->getDomId('modal-select-list-containee'))
             ->get();
         */

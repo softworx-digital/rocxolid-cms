@@ -15,7 +15,7 @@
                         @foreach ($classes as $short_class => $model)
                             @if ($page_element_class_action == 'create')
                             <div class="col-xs-3">
-                                <a class="btn btn-info col-xs-12" data-dismiss="modal" data-ajax-url="{{ $model->getControllerRoute($page_element_class_action, [ '_section' => 'page-elements', $component->getModel()->getRequestFieldName() => $component->getModel()->id ]) }}">
+                                <a class="btn btn-info col-xs-12" data-dismiss="modal" data-ajax-url="{{ $model->getControllerRoute($page_element_class_action, [ '_section' => 'page-elements', $component->getModel()->getRequestFieldName() => $component->getModel()->getKey() ]) }}">
                                 @if ($category == 'containers')
                                     <i class="fa fa-list-alt pull-left" style="margin-top: 2px;"></i>
                                 @elseif ($category == 'proxy')

@@ -60,7 +60,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
             $template_name = sprintf('include.%s', $request->_section);
 
             return $this->response
-                ->destroy($this->getModel()->getModelViewerComponent()->getDomId($request->_section, md5(get_class($this->getModel())), $this->getModel()->id))
+                ->destroy($this->getModel()->getModelViewerComponent()->getDomId($request->_section, md5(get_class($this->getModel())), $this->getModel()->getKey()))
                 ->get();
         }
     }
@@ -93,7 +93,7 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
         $template_name = sprintf('include.%s', $request->_section);
 
         $this->response
-            ->replace($model_viewer_component->getDomId($request->_section, md5(get_class($this->getmodel())), $this->getModel()->id), $model_viewer_component->fetch($template_name, [
+            ->replace($model_viewer_component->getDomId($request->_section, md5(get_class($this->getmodel())), $this->getModel()->getKey()), $model_viewer_component->fetch($template_name, [
                 'container' => $container,
             ]));
 

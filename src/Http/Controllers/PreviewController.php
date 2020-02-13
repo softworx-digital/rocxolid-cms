@@ -31,7 +31,7 @@ class PreviewController extends BaseController
         $web = $this->detectWeb($request);
 
         if ($page_template->web != $web) {
-            throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->id, $web->id));
+            throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->getKey(), $web->getKey()));
         }
 
         return view('preview.page-template', [
@@ -47,7 +47,7 @@ class PreviewController extends BaseController
         $web = $this->detectWeb($request);
 
         if ($page->web != $web) {
-            throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->id, $web->id));
+            throw new \RuntimeException(sprintf('Invalid page template [%s] for web [%s]', $page_template->getKey(), $web->getKey()));
         }
 
         return view('preview.page', [

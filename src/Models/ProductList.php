@@ -80,7 +80,7 @@ class ProductList extends AbstractPageElement implements Container, Containee
             }
 
             if ($this->productCategory()->exists()) {
-                $query->where('product_category_id', $this->productCategory->id);
+                $query->where('product_category_id', $this->productCategory->getKey());
             }
 
             if ($paged) {

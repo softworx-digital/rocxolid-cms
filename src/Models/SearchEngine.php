@@ -68,14 +68,14 @@ class SearchEngine extends AbstractPageElement
 
     protected function searchProduct($web, $query)
     {
-        $page_proxy = PageProxy::where('model_type', Product::class)->where('web_id', $web->id)->first();
+        $page_proxy = PageProxy::where('model_type', Product::class)->where('web_id', $web->getKey())->first();
 
         Product::where(function ($q) use ($query) {
             $q->orWhere('title', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('short_description', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('description', 'like', sprintf('%%%s%%', $query));
         })
-        ->where('web_id', $web->id)
+        ->where('web_id', $web->getKey())
         ->where('is_visible', 1)
         ->each(function ($item) use ($page_proxy) {
             $this->getResults()->push([
@@ -90,14 +90,14 @@ class SearchEngine extends AbstractPageElement
 
     protected function searchAdvice($web, $query)
     {
-        $page_proxy = PageProxy::where('model_type', Advice::class)->where('web_id', $web->id)->first();
+        $page_proxy = PageProxy::where('model_type', Advice::class)->where('web_id', $web->getKey())->first();
 
         Advice::where(function ($q) use ($query) {
             $q->orWhere('name', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('perex', 'like', sprintf('%%%s%%', $query));
             $q->orWhere('content', 'like', sprintf('%%%s%%', $query));
         })
-        ->where('web_id', $web->id)
+        ->where('web_id', $web->getKey())
         ->each(function ($item) use ($page_proxy) {
             $this->getResults()->push([
                 'template' => 'advice',

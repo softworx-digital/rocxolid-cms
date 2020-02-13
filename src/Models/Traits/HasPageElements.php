@@ -48,7 +48,7 @@ trait HasPageElements
                 if (is_null($page_element)) {
                     // self cleaning beacause foreign keys use is not available
                     DB::table($this->getPageElementsPivotTable())->where([
-                        $this->getPageElementsPivotTableKey() => $this->id,
+                        $this->getPageElementsPivotTableKey() => $this->getKey(),
                         'page_element_id' => $pivot_data->page_element_id,
                         'page_element_type' => $pivot_data->page_element_type,
                     ])->delete();
@@ -117,7 +117,7 @@ trait HasPageElements
     public function addPageElement(PageElement $page_element)
     {
         $position = (int)DB::table($this->getPageElementsPivotTable())
-            ->where($this->getPageElementsPivotTableKey(), $this->id)
+            ->where($this->getPageElementsPivotTableKey(), $this->getKey())
             ->count();
 
         $pivot_data = [
@@ -279,7 +279,7 @@ trait HasPageElements
 
     public function getCCRelationParam()
     {
-        return sprintf('page-element-[%s:%s]-items', Str::kebab((new \ReflectionClass($this))->getShortName()), $this->id);
+        return sprintf('page-element-[%s:%s]-items', Str::kebab((new \ReflectionClass($this))->getShortName()), $this->getKey());
     }
 
     public function getPageElementsPivotTable()
@@ -305,7 +305,7 @@ trait HasPageElements
     protected function getPivotElements($order_by = 'position', $order_by_direction = 'asc')
     {
         return DB::table($this->getPageElementsPivotTable())
-            ->where($this->getPageElementsPivotTableKey(), $this->id)
+            ->where($this->getPageElementsPivotTableKey(), $this->getKey())
             ->orderBy($order_by, $order_by_direction)
             ->get();
     }
@@ -314,7 +314,7 @@ trait HasPageElements
     {
         if ($this instanceof PageTemplate) {
             $q = DB::table($this->getPageElementsPivotTable())
-                ->where($this->getPageElementsPivotTableKey(), $this->id);
+                ->where($this->getPageElementsPivotTableKey(), $this->getKey());
 
             if (!is_null($except)) {
                 $q->whereNotIn('page_element_type', $except);
@@ -329,7 +329,7 @@ trait HasPageElements
                 ->get();
         } else {
             $q = DB::table($this->getPageElementsPivotTable())
-                ->where($this->getPageElementsPivotTableKey(), $this->id)
+                ->where($this->getPageElementsPivotTableKey(), $this->getKey())
                 ->where('is_visible', 1);
 
             if (!is_null($except)) {
@@ -349,12 +349,12 @@ trait HasPageElements
     protected function getPageElementablePivotCondition(PageElement $page_element = null): array
     {
         $condition = [
-            $this->getPageElementsPivotTableKey() => $this->id,
+            $this->getPageElementsPivotTableKey() => $this->getKey(),
         ];
 
         if (!is_null($page_element)) {
             $condition += [
-                'page_element_id' => $page_element->id,
+                'page_element_id' => $page_element->getKey(),
                 'page_element_type' => (new \ReflectionClass($page_element))->getName(),
             ];
         }
@@ -371,12 +371,12 @@ trait HasPageElements
     {
         $class = (new \ReflectionClass($this))->getName();
 
-        if ($original_id = array_search($this->id, $clone_log->get($class, []))) {
+        if ($original_id = array_search($this->getKey(), $clone_log->get($class, []))) {
             static::findOrFail($original_id)->pageElements()->each(function ($original_page_element, $key) use ($clone_log) {
                 $class = (new \ReflectionClass($original_page_element))->getName();
 
-                if ($clone_log->has($class) && array_key_exists($original_page_element->id, $clone_log->get($class))) {
-                    $clone = $original_page_element::findOrFail($clone_log->get($class)[$original_page_element->id]);
+                if ($clone_log->has($class) && array_key_exists($original_page_element->getKey(), $clone_log->get($class))) {
+                    $clone = $original_page_element::findOrFail($clone_log->get($class)[$original_page_element->getKey()]);
 
                     $this->addPageElement($clone);
                 }

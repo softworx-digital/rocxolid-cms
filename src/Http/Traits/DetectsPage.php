@@ -34,12 +34,12 @@ trait DetectsPage
             }
 
             try {
-                $this->_page = Page::where('web_id', $web->id)->where('localization_id', $localization->id)->where('seo_url_slug', $slug)->first();
+                $this->_page = Page::where('web_id', $web->getKey())->where('localization_id', $localization->getKey())->where('seo_url_slug', $slug)->first();
 
                 if (is_null($this->_page)) { // trying proxy page
                     $model = null;
                     $found_page_proxy = null;
-                    $page_proxies = PageProxy::where('web_id', $web->id)->where('localization_id', $localization->id)->get(); // ProxyPage::where('is_enabled', 1)
+                    $page_proxies = PageProxy::where('web_id', $web->getKey())->where('localization_id', $localization->getKey())->get(); // ProxyPage::where('is_enabled', 1)
 
                     $path = explode('/', $slug);
 
@@ -58,7 +58,7 @@ trait DetectsPage
                                 $class = $page_proxy->model_type;
 
                                 if (method_exists($class, 'web')) {
-                                    if ($model = $class::where('seo_url_slug', $rest)->where('web_id', $web->id)->first()) {
+                                    if ($model = $class::where('seo_url_slug', $rest)->where('web_id', $web->getKey())->first()) {
                                         $found_page_proxy = $page_proxy;
 
                                         return false;
@@ -81,7 +81,7 @@ trait DetectsPage
                     }
                 }
             } catch (ModelNotFoundException $e) {
-                //dd(sprintf('--page pre web [%s] a slug [%s] nie je definovany--> 404', $web->id, $slug));
+                //dd(sprintf('--page pre web [%s] a slug [%s] nie je definovany--> 404', $web->getKey(), $slug));
                 return false;
             }
         }

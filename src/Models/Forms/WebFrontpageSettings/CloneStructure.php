@@ -62,7 +62,7 @@ class CloneStructure extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $webs = Web::where('id', '!=', $this->getModel()->id)->pluck('name', 'id');
+        $webs = Web::where('id', '!=', $this->getModel()->getKey())->pluck('name', 'id');
 
         // $fields['web_id']['options']['show_null_option'] = true;
         $fields['web_id']['options']['collection'] = $webs;

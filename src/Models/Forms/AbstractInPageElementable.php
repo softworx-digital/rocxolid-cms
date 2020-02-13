@@ -120,7 +120,7 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
         /*
         $fields['web_id']['type'] = Hidden::class;
         $fields['web_id']['options'] = [];
-        $fields['web_id']['options']['value'] = $page_elementable->web->id;
+        $fields['web_id']['options']['value'] = $page_elementable->web->getKey();
         $fields['web_id']['options']['validation']['rules'][] = 'required';
         */
 
@@ -132,7 +132,7 @@ abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
         $page_elementable_field_param = $page_elementable->getRequestFieldParam();
 
         $fields[$page_elementable_field_param]['type'] = Hidden::class;
-        $fields[$page_elementable_field_param]['options']['value'] = $page_elementable->id;
+        $fields[$page_elementable_field_param]['options']['value'] = $page_elementable->getKey();
         $fields[$page_elementable_field_param]['options']['validation']['rules'][] = 'required';
 
         return $this;

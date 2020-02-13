@@ -55,7 +55,7 @@ class Update extends RocXolidAbstractCrudForm
             $query
                 ->where('web_id', $this->getFormField('web_id')->getValue())
                 ->where('localization_id', $this->getFormField('localization_id')->getValue());
-        })->ignore($this->getModel()->id);
+        })->ignore($this->getModel()->getKey());
         */
         //
         $fields['openGraphImage']['type'] = UploadImage::class;

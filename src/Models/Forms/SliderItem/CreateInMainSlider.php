@@ -179,7 +179,7 @@ class CreateInMainSlider extends RocXolidAbstractCrudForm
     {
         $container = $this->getContainer();
 
-        $fields['container_id']['options']['value'] = $container->id;
+        $fields['container_id']['options']['value'] = $container->getKey();
         //
         $fields['page_id']['options']['collection']['filters'][] = [
             'class' => BelongsToWeb::class,

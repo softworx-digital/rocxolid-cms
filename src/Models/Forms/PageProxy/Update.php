@@ -37,7 +37,7 @@ class Update extends RocXolidAbstractCrudForm
                 ->where('web_id', $this->getFormField('web_id')->getValue())
                 ->where('localization_id', $this->getFormField('localization_id')->getValue())
                 ->where('model_type', $this->getFormField('model_type')->getValue());
-        })->ignore($this->getModel()->id);
+        })->ignore($this->getModel()->getKey());
         //
         //unset($fields['model_type']);
         $fields['model_type']['type'] = CollectionSelect::class;

@@ -10,7 +10,7 @@
             @foreach ($component->getModel()->getPageElementModels() as $short_class => $model)
                 <div class="row">
                     <div class="col-xs-12">
-                        <a class="btn btn-default col-xs-12" data-dismiss="modal" data-ajax-url="{{ $model->getControllerRoute($page_element_class_action, ['_section' => 'page-elements', '_data[page_template_id]' => $component->getModel()->id]) }}">{{ __(sprintf('rocXolid::%s.model.title.singular', $short_class)) }}</a>
+                        <a class="btn btn-default col-xs-12" data-dismiss="modal" data-ajax-url="{{ $model->getControllerRoute($page_element_class_action, ['_section' => 'page-elements', '_data[page_template_id]' => $component->getModel()->getKey()]) }}">{{ __(sprintf('rocXolid::%s.model.title.singular', $short_class)) }}</a>
                     </div>
                 </div>
             @endforeach

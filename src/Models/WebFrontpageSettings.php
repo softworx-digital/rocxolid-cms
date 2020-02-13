@@ -207,22 +207,22 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     public function pages()
     {
-        return Page::where('web_id', $this->web->id);
+        return Page::where('web_id', $this->web->getKey());
     }
 
     public function pageProxies()
     {
-        return PageProxy::where('web_id', $this->web->id);
+        return PageProxy::where('web_id', $this->web->getKey());
     }
 
     public function pageTemplates()
     {
-        return PageTemplate::where('web_id', $this->web->id);
+        return PageTemplate::where('web_id', $this->web->getKey());
     }
 
     protected function destroyClassObjects($class)
     {
-        $class::where('web_id', $this->web->id)->each(function ($object, $id) {
+        $class::where('web_id', $this->web->getKey())->each(function ($object, $id) {
             $object->forceDelete();
         });
 
@@ -231,10 +231,10 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected function cloneClassObjects($class, Web $web)
     {
-        $class::where('web_id', $web->id)->each(function ($object, $id) {
+        $class::where('web_id', $web->getKey())->each(function ($object, $id) {
             if ($object instanceof Cloneable) {
                 $clone = $object->clone($this->clone_log, [
-                    'web_id' => $this->web->id,
+                    'web_id' => $this->web->getKey(),
                 ]);
             }
         });
@@ -244,7 +244,7 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     protected function buildClassObjects($class)
     {
-        $class::where('web_id', $this->web->id)->each(function ($object, $id) {
+        $class::where('web_id', $this->web->getKey())->each(function ($object, $id) {
             if ($object instanceof Cloneable) {
                 $object->buildRelations($this->clone_log);
             }

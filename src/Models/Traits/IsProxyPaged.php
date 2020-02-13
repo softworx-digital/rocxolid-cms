@@ -13,7 +13,7 @@ trait IsProxyPaged
 {
     public function getFrontpageUrl(array $params = [])
     {
-        return PageProxy::where('model_type', static::class)->first()->getFrontpageUrl($this->id, $params);
+        return PageProxy::where('model_type', static::class)->first()->getFrontpageUrl($this->getKey(), $params);
     }
 
     public function setPageAttributes(Page $page, PageProxy $page_proxy)

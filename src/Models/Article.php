@@ -94,7 +94,7 @@ class Article extends AbstractCrudModel implements PageElementable
 
     public function beforeSave($data, $action = null)
     {
-        //$this->seo_url_slug = sprintf('%s/%s', $this->id, Str::slug($this->name));
+        //$this->seo_url_slug = sprintf('%s/%s', $this->getKey(), Str::slug($this->name));
         $this->seo_url_slug = Str::slug($this->name);
 
         return $this;

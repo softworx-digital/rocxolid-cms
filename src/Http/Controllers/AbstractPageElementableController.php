@@ -137,7 +137,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
         /*
         return $this->response
-            ->replace($model_viewer_component->getDomId('page-elements', $this->getModel()->id), $model_viewer_component->fetch('include.page-elements'))
+            ->replace($model_viewer_component->getDomId('page-elements', $this->getModel()->getKey()), $model_viewer_component->fetch('include.page-elements'))
             ->modalClose($model_viewer_component->getDomId('modal-select-page-element'))
             ->get();
         */

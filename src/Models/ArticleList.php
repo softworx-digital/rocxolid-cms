@@ -60,7 +60,7 @@ class ArticleList extends AbstractPageElement implements Container, Containee
         } else {
             $query = Article::query();
 
-            $query->where('localization_id', $this->containeePageProxy->localization->id);
+            $query->where('localization_id', $this->containeePageProxy->localization->getKey());
 
             if ($this->container_auto_order_by_attribute) {
                 $query->orderBy($this->container_auto_order_by_attribute, $this->container_auto_order_by_direction ?: 'asc');

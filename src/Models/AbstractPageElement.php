@@ -138,7 +138,7 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
                 throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id or _article_id'));
             }
 
-            $this->web_id = $page_elementable->web->id;
+            $this->web_id = $page_elementable->web->getKey();
         }
 
         return $this;

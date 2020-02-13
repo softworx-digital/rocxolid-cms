@@ -87,7 +87,7 @@ trait HasProxyPageLink
         ];
 
         if ($this->$relation_name()->exists()) {
-            $definition['options']['value'] = $this->$relation_name->id;
+            $definition['options']['value'] = $this->$relation_name->getKey();
         }
 
         return $definition;
@@ -101,7 +101,7 @@ trait HasProxyPageLink
         /*
         if ($this->$relation_name()->exists())
         {
-            $field->setValue($this->$relation_name->id);
+            $field->setValue($this->$relation_name->getKey());
         }
         */
         return $field;

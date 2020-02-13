@@ -23,7 +23,7 @@ abstract class AbstractProxyPageElement extends AbstractPageElement implements P
                 throw new \InvalidArgumentException(sprintf('Undefined _page_proxy_id'));
             }
 
-            $this->web_id = $page_elementable->web->id;
+            $this->web_id = $page_elementable->web->getKey();
         }
 
         return $this;

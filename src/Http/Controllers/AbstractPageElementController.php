@@ -76,7 +76,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
             $template_name = sprintf('include.%s', $request->_section);
 
             return $this->response
-                ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name))
+                ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->getKey()), $page_elementable_model_viewer_component->fetch($template_name))
                 ->get();
         }
     }
@@ -130,7 +130,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
         return $this->response->redirect($page_elementable->getControllerRoute('show'))->get();
         /*
         $this->response
-            ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->id), $page_elementable_model_viewer_component->fetch($template_name));
+            ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->getKey()), $page_elementable_model_viewer_component->fetch($template_name));
 
         return $this;
         */

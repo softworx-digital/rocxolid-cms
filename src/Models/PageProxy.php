@@ -127,7 +127,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         }
 
         if (!$modellable_elements) {
-            throw new \RuntimeException(sprintf('No modellable elements for proxy page "%s" [%s]', $this->getTitle(), $this->id));
+            throw new \RuntimeException(sprintf('No modellable elements for proxy page "%s" [%s]', $this->getTitle(), $this->getKey()));
         }
 
         return $page;
