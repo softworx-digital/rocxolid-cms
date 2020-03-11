@@ -48,14 +48,14 @@
                 @endif
             @else
                 <a type="button" class="btn btn-primary btn-sm margin-right-no" title="{{ $component->translate('table-button.edit') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('edit', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-pencil"></i></a>
-                <a type="button" class="btn btn-danger btn-sm margin-right-no" title="{{ $component->translate('table-button.clear') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('clear', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-trash-o"></i></a>
+                <a type="button" class="btn btn-danger btn-sm margin-right-no" title="{{ $component->translate('table-button.clear') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('clear', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-trash"></i></a>
                 <a type="button" class="btn btn-danger btn-sm margin-right-no"  title="{{ $component->translate('table-button.detach') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('detach', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-minus"></i></a>
             </div>
 
         @if (false)
             <div class="btn-group margin-top-5">
                 <a type="button" class="btn btn-primary btn-sm margin-right-no" title="{{ $component->translate('table-button.regenerate') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('regenerate', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-refresh"></i></a>
-                <a type="button" class="btn btn-danger btn-sm margin-right-no" title="{{ $component->translate('table-button.clear') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('clear', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-trash-o"></i></a>
+                <a type="button" class="btn btn-danger btn-sm margin-right-no" title="{{ $component->translate('table-button.clear') }}" data-ajax-url="{{ $component->getModel()->getControllerRoute('clear', ['_section' => 'page-elements', $page_elementable->getRequestFieldName() => $page_elementable->getKey()]) }}"><i class="fa fa-trash"></i></a>
             </div>
         @endif
 
