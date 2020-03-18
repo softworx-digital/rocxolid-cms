@@ -6,7 +6,7 @@
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }} <small>{{ $component->translate(sprintf('action.%s', $route_method)) }}</small></h4>
             </div>
 
-            {!! $component->getFormComponent()->render('update-modal') !!}
+            {!! $component->getFormComponent()->render('modal.update') !!}
         </div>
     </div>
 </div>

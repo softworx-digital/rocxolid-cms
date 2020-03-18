@@ -17,9 +17,9 @@
                 <div class="col-xs-11">
                     <div class="col-xs-4 text-center">
                     @if ($item->imagePrimary && $item->imagePrimary()->exists())
-                        <img style="max-width: 128px; max-height: 128px;" src="{!! asset($item->imagePrimary->getPath('small')) !!}"/>
+                        <img style="max-width: 128px; max-height: 128px;" src="{!! asset($item->imagePrimary->getStoragePath('small')) !!}"/>
                     @elseif ($item->image && $item->image()->exists())
-                    <img style="max-width: 128px; max-height: 128px;" src="{!! asset($item->image->getPath('small')) !!}"/>
+                    <img style="max-width: 128px; max-height: 128px;" src="{!! asset($item->image->getStoragePath('small')) !!}"/>
                     @endif
                     </div>
                     <div class="col-xs-8">

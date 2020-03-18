@@ -4,7 +4,7 @@
         {{ Str::limit($component->getModel()->getTitle()) }}
         {!! Str::limit($component->getModel()->text, 100) !!}
     @if ($component->getModel()->image()->exists())
-        <img src="{!! asset($component->getModel()->image->getPath('small')) !!}"/>
+        <img src="{!! asset($component->getModel()->image->getStoragePath('small')) !!}"/>
     @endif
     </a>
 @else
@@ -12,7 +12,7 @@
         {{ $component->getModel()->getTitle() }}
         {!! Str::limit($component->getModel()->text, 100) !!}
     @if ($component->getModel()->image()->exists())
-        <img src="{!! asset($component->getModel()->image->getPath('small')) !!}"/>
+        <img src="{!! asset($component->getModel()->image->getStoragePath('small')) !!}"/>
     @endif
     </span>
 @endif

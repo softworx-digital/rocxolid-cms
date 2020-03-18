@@ -10,7 +10,7 @@
         <div class="col-xs-10">
         @if ($component->getModel()->image()->exists())
             <div class="d-inline-block margin-right-10">
-                <img src="{{ asset($component->getModel()->image->getPath('icon')) }}" alt="{{ $component->getModel()->image->alt }}"/>
+                <img src="{{ asset($component->getModel()->image->getStoragePath('icon')) }}" alt="{{ $component->getModel()->image->alt }}"/>
             </div>
         @endif
             <span class="d-inline-block margin-top-5">{!! $component->getModel()->getTitle() !!}</span>

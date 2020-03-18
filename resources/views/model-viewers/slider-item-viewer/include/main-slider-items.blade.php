@@ -10,7 +10,7 @@
         @if ($component->getModel()->image()->exists())
         <div class="col-xs-5">
             <div class="d-inline-block margin-right-10">
-                <img src="{!! asset($component->getModel()->image->getPath('1280x500')) !!}"/>
+                <img src="{!! asset($component->getModel()->image->getStoragePath('1280x500')) !!}"/>
             </div>
         </div>
         @endif

@@ -14,11 +14,11 @@
                 <div class="col-xs-10">
                 @if ($item->image && $item->image()->exists())
                     <div class="d-inline-block margin-right-10">
-                        <img style="max-width: 128px;" src="{!! asset($item->image->getPath('small-square')) !!}"/>
+                        <img style="max-width: 128px;" src="{!! asset($item->image->getStoragePath('small-square')) !!}"/>
                     </div>
                 @elseif ($item->imagePrimary && $item->imagePrimary()->exists())
                     <div class="d-inline-block margin-right-10">
-                        <img style="max-width: 128px;" src="{!! asset($item->imagePrimary->getPath('small-square')) !!}"/>
+                        <img style="max-width: 128px;" src="{!! asset($item->imagePrimary->getStoragePath('small-square')) !!}"/>
                     </div>
                 @endif
                     <span class="d-inline-block margin-top-5">{!! $item->getTitle() !!}</span>

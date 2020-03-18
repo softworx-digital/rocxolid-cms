@@ -81,7 +81,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
         }
     }
 
-    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, $action)
+    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, string $action)
     {
         if ($request->ajax() && $request->has('_section')) {
             $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
