@@ -49,6 +49,7 @@ class Repository extends AbstractRepository
                         'class' => 'text-center',
                     ],
                 ],
+                'width' => 64,
             ],
         ],
         'favicon' => [
@@ -66,6 +67,7 @@ class Repository extends AbstractRepository
                         'class' => 'text-center',
                     ],
                 ],
+                'width' => 32,
             ],
         ],
         'name' => [

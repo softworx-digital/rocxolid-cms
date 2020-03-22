@@ -72,6 +72,7 @@ class Repository extends AbstractRepository
                 'relation' => [
                     'name' => 'image',
                 ],
+                'width' => 64,
             ],
         ],
         'date' => [
