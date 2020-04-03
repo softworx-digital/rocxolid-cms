@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\PageTemplate\Repository;
 
 class Controller extends AbstractPageElementableController
 {
-    protected static $model_class = PageTemplate::class;
+
 
     protected static $repository_class = Repository::class;
 }

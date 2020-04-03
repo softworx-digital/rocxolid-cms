@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\FooterNavigation\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = FooterNavigation::class;
+
 
     protected static $repository_class = Repository::class;
 }

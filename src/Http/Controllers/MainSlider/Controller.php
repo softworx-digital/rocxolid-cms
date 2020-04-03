@@ -24,7 +24,7 @@ use Softworx\RocXolid\CMS\Models\MainSlider;
  */
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = MainSlider::class;
+
 
     protected static $repository_class = Repository::class;
 

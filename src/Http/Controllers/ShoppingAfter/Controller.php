@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\ShoppingAfter\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = ShoppingAfter::class;
+
 
     protected static $repository_class = Repository::class;
 }

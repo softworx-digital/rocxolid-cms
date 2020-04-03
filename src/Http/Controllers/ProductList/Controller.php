@@ -32,7 +32,7 @@ class Controller extends AbstractPageElementController
         reattachContainees as protected traitReattachContainees;
     }
 
-    protected static $model_class = ProductList::class;
+
 
     protected static $repository_class = Repository::class;
 

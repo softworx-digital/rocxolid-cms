@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\SearchEngine\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = SearchEngine::class;
+
 
     protected static $repository_class = Repository::class;
 }

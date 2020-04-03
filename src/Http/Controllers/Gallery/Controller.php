@@ -23,7 +23,7 @@ use Softworx\RocXolid\CMS\Repositories\Gallery\Repository;
  */
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = Gallery::class;
+
 
     protected static $repository_class = Repository::class;
 

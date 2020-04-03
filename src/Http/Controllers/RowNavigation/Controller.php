@@ -22,7 +22,7 @@ use Softworx\RocXolid\CMS\Models\RowNavigation;
  */
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = RowNavigation::class;
+
 
     protected static $repository_class = Repository::class;
 

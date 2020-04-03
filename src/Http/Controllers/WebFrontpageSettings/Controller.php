@@ -16,7 +16,7 @@ use Softworx\RocXolid\Common\Models\Web;
 
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = WebFrontpageSettings::class;
+
 
     protected static $repository_class = Repository::class;
 

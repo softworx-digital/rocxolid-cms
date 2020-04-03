@@ -24,7 +24,7 @@ use Softworx\RocXolid\CMS\Models\NavigationItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
-    protected static $model_class = NavigationItem::class;
+
 
     protected static $repository_class = NavigationItemRepository::class;
 

@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\StatsPanel\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = StatsPanel::class;
+
 
     protected static $repository_class = Repository::class;
 }

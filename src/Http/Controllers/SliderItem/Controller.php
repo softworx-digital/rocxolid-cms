@@ -24,7 +24,7 @@ use Softworx\RocXolid\CMS\Models\SliderItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
-    protected static $model_class = SliderItem::class;
+
 
     protected static $repository_class = SliderItemRepository::class;
 

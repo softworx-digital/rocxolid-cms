@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\ProxyProduct\Repository;
 
 class Controller extends AbstractPageElementProxyController
 {
-    protected static $model_class = ProxyProduct::class;
+
 
     protected static $repository_class = Repository::class;
 }

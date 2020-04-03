@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\IframeVideo\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = IframeVideo::class;
+
 
     protected static $repository_class = Repository::class;
 }

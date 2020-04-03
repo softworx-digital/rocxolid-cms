@@ -24,7 +24,7 @@ use Softworx\RocXolid\CMS\Models\MainNavigation;
  */
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = MainNavigation::class;
+
 
     protected static $repository_class = Repository::class;
 

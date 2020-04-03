@@ -8,7 +8,7 @@ use Softworx\RocXolid\CMS\Repositories\TopPanel\Repository;
 
 class Controller extends AbstractPageElementController
 {
-    protected static $model_class = TopPanel::class;
+
 
     protected static $repository_class = Repository::class;
 }
