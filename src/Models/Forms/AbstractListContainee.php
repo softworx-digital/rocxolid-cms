@@ -97,7 +97,6 @@ class AbstractListContainee extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-
 /*
         $fields = array_merge_recursive($fields, [
             'page_element_id' => [

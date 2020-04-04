@@ -14,8 +14,6 @@ use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewer
 use Softworx\RocXolid\CMS\Components\ModelViewers\SliderItemViewer;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementContaineeController;
-// cms repositories
-use Softworx\RocXolid\CMS\Repositories\SliderItem\Repository as SliderItemRepository;
 // cms models
 use Softworx\RocXolid\CMS\Models\SliderItem;
 
@@ -24,10 +22,6 @@ use Softworx\RocXolid\CMS\Models\SliderItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
-
-
-    protected static $repository_class = SliderItemRepository::class;
-
     protected $form_mapping = [
         // main slider
         'create.main-slider-items' => 'create-in-main-slider',

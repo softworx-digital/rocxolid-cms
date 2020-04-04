@@ -10,16 +10,11 @@ use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewer
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 use Softworx\RocXolid\CMS\Components\ModelViewers\WebFrontpageSettingsViewer;
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
-use Softworx\RocXolid\CMS\Repositories\WebFrontpageSettings\Repository;
 use Softworx\RocXolid\CMS\Models\WebFrontpageSettings;
 use Softworx\RocXolid\Common\Models\Web;
 
 class Controller extends AbstractCrudController
 {
-
-
-    protected static $repository_class = Repository::class;
-
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',

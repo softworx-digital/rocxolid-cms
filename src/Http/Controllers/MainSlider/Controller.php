@@ -14,8 +14,7 @@ use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewer
 use Softworx\RocXolid\CMS\Components\ModelViewers\SliderViewer;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
-// cms repositories
-use Softworx\RocXolid\CMS\Repositories\MainSlider\Repository;
+
 // cms models
 use Softworx\RocXolid\CMS\Models\MainSlider;
 
@@ -24,10 +23,6 @@ use Softworx\RocXolid\CMS\Models\MainSlider;
  */
 class Controller extends AbstractPageElementController
 {
-
-
-    protected static $repository_class = Repository::class;
-
     public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
     {
         return SliderViewer::build($this, $this)

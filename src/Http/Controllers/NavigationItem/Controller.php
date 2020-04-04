@@ -14,8 +14,6 @@ use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewer
 use Softworx\RocXolid\CMS\Components\ModelViewers\NavigationItemViewer;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementContaineeController;
-// cms repositories
-use Softworx\RocXolid\CMS\Repositories\NavigationItem\Repository as NavigationItemRepository;
 // cms models
 use Softworx\RocXolid\CMS\Models\NavigationItem;
 
@@ -24,10 +22,6 @@ use Softworx\RocXolid\CMS\Models\NavigationItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
-
-
-    protected static $repository_class = NavigationItemRepository::class;
-
     protected $form_mapping = [
         // main navigation
         'create.main-navigation-items' => 'create-in-main-navigation',

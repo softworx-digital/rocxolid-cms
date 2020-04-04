@@ -15,18 +15,12 @@ use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 // cms models
 use Softworx\RocXolid\CMS\Models\Gallery;
-// cms repositories
-use Softworx\RocXolid\CMS\Repositories\Gallery\Repository;
 
 /**
  *
  */
 class Controller extends AbstractPageElementController
 {
-
-
-    protected static $repository_class = Repository::class;
-
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
