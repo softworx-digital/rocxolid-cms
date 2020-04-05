@@ -142,7 +142,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->get();
         */
         } else {
-            return $this->errorResponse($request, $repository, $form, 'update');
+            return $this->errorResponse($request, $this->getRepository()->getModel(), $form, 'update');
         }
     }
 

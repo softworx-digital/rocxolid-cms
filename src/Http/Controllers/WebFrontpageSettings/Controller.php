@@ -96,7 +96,7 @@ class Controller extends AbstractCrudController
                     ->modal($this->getModelViewerComponent($web_frontpage_settings)->fetch('modal.clone-structure-success', $assignments))
                     ->get();
         } else {
-            return $this->errorResponse($request, $repository, $form, 'edit');
+            return $this->errorResponse($request, $this->getRepository()->getModel(), $form, 'edit');
         }
     }
 }

@@ -125,7 +125,7 @@ trait HasContainer
             ->get();
         */
         } else {
-            return $this->errorResponse($request, $repository, $form, 'update');
+            return $this->errorResponse($request, $this->getRepository()->getModel(), $form, 'update');
         }
     }
 
@@ -177,7 +177,7 @@ trait HasContainer
 
             return $this->response->redirect($this->getModel()->getControllerRoute('show'))->get();
         } else {
-            return $this->errorResponse($request, $repository, $form, 'update');
+            return $this->errorResponse($request, $this->getRepository()->getModel(), $form, 'update');
         }
     }
 

@@ -18,7 +18,7 @@
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close') }}</button>
                 <button type="button" class="btn btn-success pull-right" data-ajax-submit-form="{{ $component->getDomIdHash('select-page-element') }}"><i class="fa fa-check margin-right-10"></i>{{ $component->translate('button.save') }}</button>
             </div>
-        {!! Form::close() !!}
+        {{ Form::close() }}
         </div>
     </div>
 </div>

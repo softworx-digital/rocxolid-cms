@@ -4,6 +4,7 @@
         {{ Form::open([ 'id' => $component->getFormComponent()->getDomId('modal-clear'), 'url' => $component->getController()->getRoute('clear', $component->getModel()) ]) }}
             {{ Form::hidden('_method', 'POST') }}
             {{ Form::hidden('_submit-action', null) }}
+            {{ Form::hidden('_param', $component->getFormComponent()->getForm()->getParam()) }}
             {{ Form::hidden('_section', 'page-elements') }}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
