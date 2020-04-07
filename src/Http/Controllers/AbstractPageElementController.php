@@ -71,7 +71,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
             $page_elementable = $this->getPageElementable($request);
             $page_elementable->detachPageElement($this->getModel());
 
-            $page_elementable_controller = App::make($page_elementable->getControllerClass());
+            $page_elementable_controller = $page_elementable->getCrudController();
             $page_elementable_model_viewer_component = $page_elementable_controller->getModelViewerComponent($page_elementable);
             $template_name = sprintf('include.%s', $request->_section);
 
@@ -81,7 +81,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
         }
     }
 
-    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, string $action)
+    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element)
     {
         if ($request->ajax() && $request->has('_section')) {
             $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
@@ -123,7 +123,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
 
     protected function updatePageElementableResponse(CrudRequest $request, PageElementable $page_elementable)
     {
-        $page_elementable_controller = App::make($page_elementable->getControllerClass());
+        $page_elementable_controller = $page_elementable->getCrudController();
         $page_elementable_model_viewer_component = $page_elementable_controller->getModelViewerComponent($page_elementable);
         $template_name = sprintf('include.%s', $request->_section);
 

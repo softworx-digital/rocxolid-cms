@@ -36,15 +36,13 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->setModel($model)
             ->setController($this);
     }
-
-    public function preview(CrudRequest $request, $id)
+// @todo
+    public function preview(CrudRequest $request, CrudableModel $model)
     {
-        $repository = $this->getRepository($this->getRepositoryParam($request));
+        // $repository = $this->getRepository($this->getRepositoryParam($request));
+        // $model = $repository->find($id);
 
-        $this->setModel($repository->find($id));
-
-        $model_viewer_component = $this
-            ->getModelViewerComponent($this->getModel());
+        $model_viewer_component = $this->getModelViewerComponent($model);
 
         if ($request->ajax()) {
             return $this->response

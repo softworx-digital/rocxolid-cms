@@ -12,20 +12,21 @@ abstract class AbstractProxyPageElement extends AbstractPageElement implements P
 {
     use ModellableTrait;
 
-    public function fillCustom($data, $action = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
-        if (!isset($data['web_id'])) {
-            if (isset($data['_page_proxy_id'])) {
-                $page_elementable = PageProxy::findOrFail($data['_page_proxy_id']);
-            }
-
-            if (!isset($page_elementable)) {
-                throw new \InvalidArgumentException(sprintf('Undefined _page_proxy_id'));
-            }
-
-            $this->web_id = $page_elementable->web->getKey();
+        if ($data->has('_page_proxy_id')) {
+            $page_elementable = PageProxy::findOrFail($data->get('_page_proxy_id'));
         }
 
-        return $this;
+        if (!isset($page_elementable)) {
+            throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id or _article_id'));
+        }
+
+        $this->web()->associate($page_elementable->web);
+
+        return parent::onCreateBeforeSave($data);
     }
 }

@@ -31,7 +31,7 @@ class Gallery extends AbstractPageElement
 
     public function getModelViewerComponent()
     {
-        $controller = App::make($this->getControllerClass());
+        $controller = $this->getCrudController();
 
         return GalleryPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }

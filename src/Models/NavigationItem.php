@@ -2,7 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use App;
+use Illuminate\Support\Collection;
+//
 use Softworx\RocXolid\Models\Contracts\Containee;
 use Softworx\RocXolid\Models\Contracts\Container;
 use Softworx\RocXolid\Models\Traits\IsContained;
@@ -66,18 +67,19 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
 
     public function getModelViewerComponent()
     {
-        $controller = App::make($this->getControllerClass());
+        $controller = $this->getCrudController();
 
         return NavigationItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 
-    public function fillCustom($data, $action = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
-        if (!$this->exists) {
-            $this->web_id = $this->getContainerElement($data)->web_id;
-        }
+        $this->web()->associate($this->getContainerElement($data)->web);
 
-        return $this;
+        return parent::onCreateBeforeSave($data);
     }
 
     public function afterSave($data, $action = null)

@@ -48,7 +48,7 @@ class Text extends AbstractPageElement
 
     public function getModelViewerComponentInside(Translatable $component)
     {
-        $controller = App::make($this->getControllerClass());
+        $controller = $this->getCrudController();
 
         return TextPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }

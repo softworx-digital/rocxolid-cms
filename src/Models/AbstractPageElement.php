@@ -2,9 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use App;
 use File;
-use Config;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // rocXolid fundamentals
@@ -12,6 +10,8 @@ use Softworx\RocXolid\Contracts\Translatable;
 use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 use Softworx\RocXolid\Models\Traits\CanClone;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 // common models
 use Softworx\RocXolid\Common\Models\Web;
 // common traits
@@ -98,19 +98,19 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
 
     public function getTemplateOptions(Web $web = null)
     {
-        $templates = new Collection();
+        $templates = collect();
 
         if (is_null($web)) {
             $web = $this->web()->exists() ? $this->web : null;
         }
 
         if ($web) {
-            $views = Config::get('view.paths');
+            $views = config('view.paths');
             $path = reset($views);
             $path = sprintf('%s/%s', dirname($path), 'template-sets');
             $path = sprintf('%s/%s/%s/%s/*.blade.php', $path, $web->frontpageSettings->template_set, static::$template_dir, $this->getModelName());
 
-            (new Collection(File::glob($path)))->each(function ($file_path, $key) use ($templates) {
+            collect(File::glob($path))->each(function ($file_path, $key) use ($templates) {
                 $pathinfo = pathinfo($file_path);
                 $template = str_replace('.blade', '', $pathinfo['filename']);
 
@@ -121,27 +121,28 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
         return $templates;
     }
 
-    public function fillCustom($data, $action = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
-        if (!isset($data['web_id'])) {
-            if (isset($data['_page_template_id'])) {
-                $page_elementable = PageTemplate::findOrFail($data['_page_template_id']);
-            } elseif (isset($data['_page_proxy_id'])) {
-                $page_elementable = PageProxy::findOrFail($data['_page_proxy_id']);
-            } elseif (isset($data['_page_id'])) {
-                $page_elementable = Page::findOrFail($data['_page_id']);
-            } elseif (isset($data['_article_id'])) {
-                $page_elementable = Article::findOrFail($data['_article_id']);
-            }
-
-            if (!isset($page_elementable)) {
-                throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id or _article_id'));
-            }
-
-            $this->web_id = $page_elementable->web->getKey();
+        if ($data->has('_page_template_id')) {
+            $page_elementable = PageTemplate::findOrFail($data->get('_page_template_id'));
+        } elseif ($data->has('_page_proxy_id')) {
+            $page_elementable = PageProxy::findOrFail($data->get('_page_proxy_id'));
+        } elseif ($data->has('_page_id')) {
+            $page_elementable = Page::findOrFail($data->get('_page_id'));
+        } elseif ($data->has('_article_id')) {
+            $page_elementable = Article::findOrFail($data->get('_article_id'));
         }
 
-        return $this;
+        if (!isset($page_elementable)) {
+            throw new \InvalidArgumentException(sprintf('Undefined _page_template_id or _page_proxy_id or _page_id or _article_id'));
+        }
+
+        $this->web()->associate($page_elementable->web);
+
+        return parent::onCreateBeforeSave($data);
     }
 
     public function cloneContaineeRelations($original_page_elementable, $page_elementable)
@@ -152,7 +153,7 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
     // @todo: this is not nice
     public function getModelViewerComponentInside(Translatable $component)
     {
-        $controller = App::make($this->getControllerClass());
+        $controller = $this->getCrudController();
 
         return PageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
@@ -178,7 +179,7 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
 
     public function getPivotData(): Collection
     {
-        return new Collection($this->pivot_data);
+        return collect($this->pivot_data);
     }
 
     public function pages()
