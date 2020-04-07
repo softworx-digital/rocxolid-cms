@@ -2,17 +2,11 @@
 
 namespace Softworx\RocXolid\CMS;
 
-use View;
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 //
-use Softworx\RocXolid\CrudRouter;
+use Softworx\RocXolid\AbstractServiceProvider as RocXolidAbstractServiceProvider;
 
-/**
- *
- */
-class ServiceProvider extends IlluminateServiceProvider
+class ServiceProvider extends RocXolidAbstractServiceProvider
 {
     /**
      * Register the application services.
@@ -25,6 +19,10 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->register(Providers\ViewServiceProvider::class);
         $this->app->register(Providers\RouteServiceProvider::class);
         $this->app->register(Providers\TranslationServiceProvider::class);
+
+        $this
+            ->bindContracts()
+            ->bindAliases(AliasLoader::getInstance());
     }
 
     /**
@@ -75,6 +73,34 @@ class ServiceProvider extends IlluminateServiceProvider
             __DIR__.'/../database/dumps/' => database_path('dumps/rocXolid/cms')
         ], 'dumps');
 
+        return $this;
+    }
+
+    /**
+     * Bind contracts / facades, so they don't have to be added to config/app.php.
+     *
+     * Usage:
+     *      $this->app->bind(<SomeContract>::class, <SomeImplementation>::class);
+     *
+     * @return \Softworx\RocXolid\AbstractServiceProvider
+     */
+    private function bindContracts(): RocXolidAbstractServiceProvider
+    {
+        // ...
+        return $this;
+    }
+
+    /**
+     * Bind aliases, so they don't have to be added to config/app.php.
+     *
+     * Usage:
+     *      $loader->alias('<alias>', <Facade/>Contract>::class);
+     *
+     * @return \Softworx\RocXolid\AbstractServiceProvider
+     */
+    private function bindAliases(AliasLoader $loader): RocXolidAbstractServiceProvider
+    {
+        // ...
         return $this;
     }
 }

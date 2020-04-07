@@ -40,7 +40,7 @@ trait HasPageElements
     public function pageElements()
     {
         if (is_null($this->_page_elements)) {
-            $this->_page_elements = new Collection();
+            $this->_page_elements = collect();
 
             $this->getPivotElements()->each(function ($pivot_data, $key) {
                 $page_element = $pivot_data->page_element_type::find($pivot_data->page_element_id);
@@ -68,7 +68,7 @@ trait HasPageElements
     public function visiblePageElements($except = null, $only = null)
     {
         if (is_null($this->_visible_page_elements)) {
-            $this->_visible_page_elements = new Collection();
+            $this->_visible_page_elements = collect();
 
             $this->getVisiblePivotElements()->each(function ($pivot_data, $key) {
                 $page_element = $pivot_data->page_element_type::find($pivot_data->page_element_id);
@@ -152,7 +152,7 @@ trait HasPageElements
     {
         if (($input = $request->input('_data', false)) && is_array($input)) {
             $page_elements = $this->pageElements();
-            $page_elements_attached = new Collection();
+            $page_elements_attached = collect();
 
             foreach ($input as $order_data) {
                 foreach ($order_data as $position => $page_element_data) {
@@ -207,9 +207,9 @@ trait HasPageElements
     public function getPageElementModels($categorize = false)
     {
         $models = [
-            'panels' => new Collection(),
-            'containers' => new Collection(),
-            'proxy' => new Collection(),
+            'panels' => collect(),
+            'containers' => collect(),
+            'proxy' => collect(),
         ];
 
         foreach ($this->getAvailablePageElements() as $page_element_class) {
@@ -235,7 +235,7 @@ trait HasPageElements
         if ($categorize) {
             return $models;
         } else {
-            $all = new Collection();
+            $all = collect();
 
             foreach ($models as $collection) {
                 $all = $all->merge($collection);
@@ -250,7 +250,7 @@ trait HasPageElements
     // special use for cloning
     public function getAllPageElementModels()
     {
-        $models = new Collection();
+        $models = collect();
 
         foreach ($this->getAvailablePageElements() as $page_element_class) {
             $related = $this->getPageElementsRelationship($page_element_class)->getRelated();

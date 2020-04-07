@@ -44,19 +44,10 @@ class Controller extends AbstractPageElementController
 
     public function clearConfirmation(CrudRequest $request, Gallery $gallery)
     {
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-
-        $this->setModel($gallery);
-
-        $form = $repository->getForm($this->getFormParam($request));
-
-        $form_component = (new CrudFormComponent())
-            ->setForm($form)
-            ->setRepository($repository);
-
-        $model_viewer_component = $this->getModel()
-            ->getModelViewerComponent()
-            ->setFormComponent($form_component);
+        $model_viewer_component = $this->getModelViewerComponent(
+            $gallery,
+            $this->getFormComponent($this->getForm($request, $gallery))
+        );
 
         return $this->response
             ->modal($model_viewer_component->fetch('modal.clear-confirmation', []))
@@ -67,11 +58,7 @@ class Controller extends AbstractPageElementController
     {
         $gallery->images()->delete();
 
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-
-        $this->setModel($gallery);
-
-        $form = $repository->getForm($this->getFormParam($request));
+        $form = $this->getForm($request, $gallery);
 
         return $this->successResponse($request, $repository, $form, $gallery, 'clear');
     }

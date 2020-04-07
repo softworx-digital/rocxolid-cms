@@ -22,6 +22,8 @@ use Softworx\RocXolid\CMS\Models\SliderItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
+    protected static $model_viewer_type = SliderItemViewer::class;
+
     protected $form_mapping = [
         // main slider
         'create.main-slider-items' => 'create-in-main-slider',
@@ -29,13 +31,6 @@ class Controller extends AbstractPageElementContaineeController
         'edit.main-slider-items' => 'update-in-main-slider',
         'update.main-slider-items' => 'update-in-main-slider',
     ];
-
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return SliderItemViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
 
     protected function handleMainSliderItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
@@ -46,6 +41,6 @@ class Controller extends AbstractPageElementContaineeController
 
     protected function handleMainSliderItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
-        return $this->updateContaineeResponse($request, $container);
+        return $this->updateContaineeResponse($request, $form, $container);
     }
 }

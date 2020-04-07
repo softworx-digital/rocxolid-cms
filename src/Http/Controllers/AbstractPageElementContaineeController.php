@@ -2,25 +2,20 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
-use App;
+// @todo: cleanup
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 // rocXolid fundamentals
 use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Softworx\RocXolid\Http\Controllers\Contracts\Crudable as CrudableController;
 use Softworx\RocXolid\Forms\AbstractCrudForm;
 use Softworx\RocXolid\Forms\Contracts\FormField;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Models\Contracts\Container;
-use Softworx\RocXolid\Models\Contracts\Containee;
-use Softworx\RocXolid\Repositories\Contracts\Repository;
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
-// general components
-use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
-// cms controllers
+// rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController as AbstractCMSController;
 
 /**
- *
+ * @todo: docblock
  */
 abstract class AbstractPageElementContaineeController extends AbstractCMSController
 {
@@ -30,10 +25,17 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
-        $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
+        $data = collect($request->get(FormField::SINGLE_DATA_PARAM));
 
-        if (!$data->has('container_id') || !$data->has('container_type') || !$data->has('container_relation')) {
-            throw new \InvalidArgumentException(sprintf('Invalid container data [%s] [%s] [%s]', $data->get('container_id', 'undefined'), $data->get('container_type', 'undefined'), $data->get('container_relation', 'undefined')));
+        if (!$data->has('container_id')
+         || !$data->has('container_type')
+         || !$data->has('container_relation')) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid container data [%s] [%s] [%s]',
+                $data->get('container_id', 'undefined'),
+                $data->get('container_type', 'undefined'),
+                $data->get('container_relation', 'undefined')
+            ));
         }
 
         $container_class = $data->get('container_type');
@@ -42,37 +44,36 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
         return $container;
     }
 
+    // @todo: docblock & cleanup
     public function detach(CrudRequest $request, $id)
     {
-        if ($request->ajax() && $request->has('_section')) {
-            $repository = $this->getRepository($this->getRepositoryParam($request));
-
-            $this->setModel($repository->find($id));
-
-            $container = $this->getContainer($request);
-
-            $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
-
-            $container->detachContainee($data->get('container_relation'), $this->getModel());
-
-            $container_controller = $container->getCrudController();
-            $container_model_viewer_component = $container_controller->getModelViewerComponent($container);
-            $template_name = sprintf('include.%s', $request->_section);
-
-            return $this->response
-                ->destroy($this->getModel()->getModelViewerComponent()->getDomId($request->_section, md5(get_class($this->getModel())), $this->getModel()->getKey()))
-                ->get();
+        if (!$request->has('_section'))
+        {
+            throw new \InvalidArgumentException('Missing [_section] param in request');
         }
+
+        $model = $this->getRepository()->find($id);
+
+        $container = $this->getContainer($request);
+
+        $data = collect($request->get(FormField::SINGLE_DATA_PARAM));
+
+        $container->detachContainee($data->get('container_relation'), $model);
+
+        $container_controller = $container->getCrudController();
+        $container_model_viewer_component = $container_controller->getModelViewerComponent($container);
+        $template_name = sprintf('include.%s', $request->_section);
+
+        return $this->response
+            ->destroy($model->getModelViewerComponent()->getDomId($request->_section, md5(get_class($model)), $model->getKey()))
+            ->get();
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function successAjaxResponse(CrudRequest $request, CrudableModel $containee, AbstractCrudForm $form)
+    protected function onModelUpdated(CrudRequest $request, CrudableModel $containee, AbstractCrudForm $form): CrudableController
     {
-dump(__METHOD__);
-dd($form->getParam());
-        // @todo: put this in on<action> handler
         if (!$request->has('_section'))
         {
             throw new \InvalidArgumentException('Missing [_section] param in request');
@@ -85,28 +86,34 @@ dd($form->getParam());
             throw new \RuntimeException(sprintf('Invalid method call [%s] in [%s]', $section_action_method, get_class($this)));
         }
 
-        $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
-
-        $model_viewer_component = $this->getModelViewerComponent(
-            $this->getRepository()->getModel(),
-            $this->getFormComponent($this->getForm($request, $model))
-        );
-
-        return $this->response
-            ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
-            ->get();
+        return $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
     }
 
-    protected function updateContaineeResponse(CrudRequest $request, Container $container)
+    /**
+     * @todo: docblock
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
+     * @param \Softworx\RocXolid\Models\Contracts\Container $container
+     * @return AbstractPageElementContaineeController
+     */
+    protected function updateContaineeResponse(CrudRequest $request, AbstractCrudForm $form, Container $container): AbstractPageElementContaineeController
     {
-        $model_viewer_component = $this->getModelViewerComponent($this->getModel());
-        $template_name = sprintf('include.%s', $request->_section);
+        $model_viewer_component = $this->getModelViewerComponent();
+
+        $template_name = sprintf('include.%s', $request->input('_section'));
 
         $this->response
-            ->replace($model_viewer_component->getDomId($request->_section, md5(get_class($this->getmodel())), $this->getModel()->getKey()), $model_viewer_component->fetch($template_name, [
-                'container' => $container,
-            ]));
+            ->replace(
+                $model_viewer_component->getDomId(
+                    $request->get('_section'),
+                    md5(get_class($form->getModel())),
+                    $form->getModel()->getKey()
+                ),
+                $model_viewer_component->fetch($template_name, [
+                    'container' => $container,
+                ])
+            );
 
         return $this;
     }

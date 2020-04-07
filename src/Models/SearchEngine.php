@@ -60,7 +60,7 @@ class SearchEngine extends AbstractPageElement
     public function getResults()
     {
         if (is_null($this->results)) {
-            $this->results = new Collection();
+            $this->results = collect();
         }
 
         return $this->results;

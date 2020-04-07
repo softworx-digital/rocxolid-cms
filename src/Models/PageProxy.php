@@ -99,7 +99,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     public function getPageProxyableModels(): Collection
     {
-        $models = new Collection();
+        $models = collect();
 
         $this->getPageProxyableModelClasses()->each(function ($class) use ($models) {
             $models->put($class, $class::make()->getModelViewerComponent()->translate('model.title.singular'));
@@ -160,7 +160,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     protected function assignTemplatePageElements()
     {
-        $clone_log = new Collection();
+        $clone_log = collect();
 
         if ($this->pageTemplate()->exists()) {
             foreach ($this->pageTemplate->pageElements() as $page_element) {

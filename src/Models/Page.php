@@ -112,7 +112,7 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
 
     protected function assignTemplatePageElements()
     {
-        $clone_log = new Collection();
+        $clone_log = collect();
 
         if ($this->pageTemplate()->exists()) {
             foreach ($this->pageTemplate->pageElements() as $page_element) {

@@ -20,16 +20,11 @@ use Softworx\RocXolid\CMS\Models\RowNavigation;
  */
 class Controller extends AbstractPageElementController
 {
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return RowNavigationViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
+    protected static $model_viewer_type = RowNavigationViewer::class;
 
     public function reorder(CrudRequest $request, $id, $relation)//: View
     {
-        $model = $this->getRepository($this->getRepositoryParam($request))->findOrFail($id);
+        $model = $this->getRepository()->findOrFail($id);
 
         if (($order = $request->input('_data', false)) && is_array($order)) {
             foreach ($order as $containee_order_data) {

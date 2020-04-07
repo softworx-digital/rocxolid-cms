@@ -2,68 +2,35 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers\ProductList;
 
-// requests
-use Softworx\RocXolid\Http\Requests\CrudRequest;
-// model contracts
-use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
-// general components
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
-use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 // cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
-// cms controller traits
-use Softworx\RocXolid\CMS\Http\Controllers\Traits\HasContainer;
-// cms models
-use Softworx\RocXolid\CMS\Models\ProductList;
-// cms viewers
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementListController;
+// rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\ProductListViewer;
 // commerce models
 use Softworx\RocXolid\Commerce\Models\Product;
 
 /**
- *
- * @todo Doplnit interface 'pre' HasContainer
+ * @todo: docblock
  */
-class Controller extends AbstractPageElementController
+class Controller extends AbstractPageElementListController
 {
-    use HasContainer {
-        reattachContainees as protected traitReattachContainees;
-    }
+    protected static $model_viewer_type = ProductListViewer::class;
 
     protected static $containee_class = Product::class;
 
-    protected $form_mapping = [
-        'create' => 'create',
-        'store' => 'create',
-        'edit' => 'update',
-        'update' => 'update',
-        'create.page-elements' => 'create-in-page-elementable',
-        'store.page-elements' => 'create-in-page-elementable',
-        'edit.page-elements' => 'update-in-page-elementable',
-        'update.page-elements' => 'update-in-page-elementable',
-        'listContainee' => 'list-containee',
-        'selectContainee' => 'list-containee',
-        'listContaineeReplace' => 'list-containee-replace',
-        'listContaineeReplaceSubmit' => 'list-containee-replace',
-    ];
-
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
+    // @todo: type hints
+    protected function reattachContainees($model, $order_by)
     {
-        return ProductListViewer::build($this, $this)->setModel($model)->setController($this);
-    }
+        if ($model->productCategory()->exists()) {
+            $model->detachContainee('items');
 
-    protected function reattachContainees($order_by)
-    {
-        if ($this->getModel()->productCategory()->exists()) {
-            $this->getModel()->detachContainee('items');
-
-            $this->getModel()->productCategory->products()->orderBy($order_by)->get()->each(function (Product $product, $key) {
-                $this->getModel()->attachContainee('items', $product);
+            $model->productCategory->products()->orderBy($order_by)->get()->each(function (Product $product, $key) {
+                $model->attachContainee('items', $product);
             });
 
             return $this;
         }
 
-        return $this->traitReattachContainees($order_by);
+        return parent::reattachContainees($model, $order_by);
     }
 }

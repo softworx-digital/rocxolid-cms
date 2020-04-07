@@ -45,7 +45,7 @@ class Create extends RocXolidAbstractCrudForm
 
         $containee_model_viewer_component = (new $containee_class())->getModelViewerComponent();
 
-        $collection = new Collection();
+        $collection = collect();
 
         foreach ($containee_class::$list_sortable_attributes as $attribute) {
             $collection->put($attribute, $containee_model_viewer_component->translate(sprintf('field.%s', $attribute)));

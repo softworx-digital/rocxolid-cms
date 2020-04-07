@@ -20,7 +20,7 @@ abstract class AbstractPageElementProxyController extends AbstractPageElementCon
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
-        $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
+        $data = collect($request->get(FormField::SINGLE_DATA_PARAM));
 
         if ($data->has('_page_proxy_id')) {
             $page_elementable = PageProxy::findOrFail($data->get('_page_proxy_id'));

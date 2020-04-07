@@ -22,6 +22,8 @@ use Softworx\RocXolid\CMS\Models\NavigationItem;
  */
 class Controller extends AbstractPageElementContaineeController
 {
+    protected static $model_viewer_type = NavigationItemViewer::class;
+
     protected $form_mapping = [
         // main navigation
         'create.main-navigation-items' => 'create-in-main-navigation',
@@ -35,13 +37,6 @@ class Controller extends AbstractPageElementContaineeController
         'update.row-navigation-items' => 'update-in-row-navigation',
     ];
 
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return NavigationItemViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
-
     protected function handleMainNavigationItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         $this->response->redirect($container->getControllerRoute());
@@ -51,7 +46,7 @@ class Controller extends AbstractPageElementContaineeController
 
     protected function handleMainNavigationItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
-        return $this->updateContaineeResponse($request, $container);
+        return $this->updateContaineeResponse($request, $form, $container);
     }
 
     protected function handleRowNavigationItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
@@ -63,6 +58,6 @@ class Controller extends AbstractPageElementContaineeController
 
     protected function handleRowNavigationItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
-        return $this->updateContaineeResponse($request, $container);
+        return $this->updateContaineeResponse($request, $form, $container);
     }
 }

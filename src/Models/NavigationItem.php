@@ -3,15 +3,20 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Collection;
-//
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Containee;
 use Softworx\RocXolid\Models\Contracts\Container;
+// rocXolid model traits
 use Softworx\RocXolid\Models\Traits\IsContained;
 use Softworx\RocXolid\Models\Traits\CanContain;
+//
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
+//
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;
+//
 use Softworx\RocXolid\CMS\Components\ModelViewers\NavigationItemViewer;
 
 /**
@@ -65,11 +70,17 @@ class NavigationItem extends AbstractPageElement implements Containee, Container
         return $this->belongsTo(Page::class);
     }
 
-    public function getModelViewerComponent()
+    public function getModelViewerComponent(?string $view_package = null)
     {
         $controller = $this->getCrudController();
 
-        return NavigationItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
+        $model_viewer = NavigationItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
+
+        if (!is_null($view_package)) {
+            $model_viewer->setViewPackage($view_package);
+        }
+
+        return $model_viewer;
     }
 
     /**

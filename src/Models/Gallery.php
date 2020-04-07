@@ -13,10 +13,9 @@ use Softworx\RocXolid\CMS\Components\ModelViewers\GalleryPageElementViewer;
 /**
  * Gallery page element model definition.
  *
- * @package  CMS
- * @author   Peter Bolemant <peter@softworx.digital>
- * @version  1.0
- * @access   public
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid
+ * @version 1.0.0
  */
 class Gallery extends AbstractPageElement
 {
@@ -29,10 +28,16 @@ class Gallery extends AbstractPageElement
         'name',
     ];
 
-    public function getModelViewerComponent()
+    public function getModelViewerComponent(?string $view_package = null)
     {
         $controller = $this->getCrudController();
 
-        return GalleryPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
+        $model_viewer = GalleryPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
+
+        if (!is_null($view_package)) {
+            $model_viewer->setViewPackage($view_package);
+        }
+
+        return $model_viewer;
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Softworx\RocXolid\Http\Requests\FormRequest;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Softworx\RocXolid\Http\Controllers\Contracts\Crudable as CrudableController;
 use Softworx\RocXolid\Forms\Contracts\FormField;
 use Softworx\RocXolid\Forms\AbstractCrudForm;
 use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
@@ -42,7 +43,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
-        $data = new Collection($request->get(FormField::SINGLE_DATA_PARAM));
+        $data = collect($request->get(FormField::SINGLE_DATA_PARAM));
 
         if ($data->has('_page_template_id')) {
             $page_elementable = PageTemplate::findOrFail($data->get('_page_template_id'));
@@ -63,45 +64,43 @@ abstract class AbstractPageElementController extends AbstractCMSController
 
     public function detach(CrudRequest $request, $id)
     {
-        if ($request->ajax() && $request->has('_section')) {
-            $repository = $this->getRepository($this->getRepositoryParam($request));
-
-            $this->setModel($repository->find($id));
-
-            $page_elementable = $this->getPageElementable($request);
-            $page_elementable->detachPageElement($this->getModel());
-
-            $page_elementable_controller = $page_elementable->getCrudController();
-            $page_elementable_model_viewer_component = $page_elementable_controller->getModelViewerComponent($page_elementable);
-            $template_name = sprintf('include.%s', $request->_section);
-
-            return $this->response
-                ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->getKey()), $page_elementable_model_viewer_component->fetch($template_name))
-                ->get();
+        if (!$request->has('_section'))
+        {
+            throw new \InvalidArgumentException('Missing [_section] param in request');
         }
+
+        $model = $this->getRepository()->find($id);
+
+        $page_elementable = $this->getPageElementable($request);
+        $page_elementable->detachPageElement($model);
+
+        $page_elementable_controller = $page_elementable->getCrudController();
+        $page_elementable_model_viewer_component = $page_elementable_controller->getModelViewerComponent($page_elementable);
+        $template_name = sprintf('include.%s', $request->_section);
+
+        return $this->response
+            ->replace($page_elementable_model_viewer_component->getDomId($request->_section, $page_elementable->getKey()), $page_elementable_model_viewer_component->fetch($template_name))
+            ->get();
     }
 
-    protected function successResponse(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element)
+    /**
+     * {@inheritDoc}
+     */
+    protected function onModelUpdated(CrudRequest $request, CrudableModel $page_element, AbstractCrudForm $form): CrudableController
     {
-        if ($request->ajax() && $request->has('_section')) {
-            $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
-
-            $this->$section_action_method($request, $repository, $form, $page_element, $this->getPageElementable($request));
-
-            $form_component = CrudFormComponent::build($this, $this)
-                ->setForm($form)
-                ->setRepository($this->getRepository());
-
-            $model_viewer_component = $this->getModelViewerComponent($page_element);
-
-            // @todo: depracated, use notifications
-            return $this->response
-                ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $repository, $form, $page_element, $action);
+        if (!$request->has('_section'))
+        {
+            throw new \InvalidArgumentException('Missing [_section] param in request');
         }
+
+        $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($form->getParam()));
+
+        if (!method_exists($this, $section_action_method))
+        {
+            throw new \RuntimeException(sprintf('Invalid method call [%s] in [%s]', $section_action_method, get_class($this)));
+        }
+
+        $this->$section_action_method($request, $repository, $form, $page_element, $this->getPageElementable($request));
     }
 
     protected function handlePageElementsCreate(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)

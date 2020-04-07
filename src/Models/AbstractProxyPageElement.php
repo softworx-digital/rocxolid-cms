@@ -2,8 +2,12 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
+use Illuminate\Support\Collection;
+//
 use Softworx\RocXolid\Contracts\Modellable;
 use Softworx\RocXolid\Traits\Modellable as ModellableTrait;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElement;
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\PageProxy;

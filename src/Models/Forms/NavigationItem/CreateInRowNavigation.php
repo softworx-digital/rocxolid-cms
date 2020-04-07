@@ -184,13 +184,13 @@ class CreateInRowNavigation extends RocXolidAbstractCrudForm
 
     protected function getContainer()
     {
-        $input = new Collection($this->getRequest()->input());
+        $input = collect($this->getRequest()->input());
 
         if (!$input->has(FormField::SINGLE_DATA_PARAM)) {
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
-        $data = new Collection($input->get(FormField::SINGLE_DATA_PARAM));
+        $data = collect($input->get(FormField::SINGLE_DATA_PARAM));
 
         if (!$container = RowNavigation::find($data->get('container_id'))) {
             throw new \InvalidArgumentException(sprintf('Invalid container_id [%s]', $data->get('container_id')));

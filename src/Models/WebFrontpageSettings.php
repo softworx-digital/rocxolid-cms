@@ -113,13 +113,13 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     public function getTemplateSetsOptions()
     {
-        $template_sets = new Collection();
+        $template_sets = collect();
 
         $views = Config::get('view.paths');
         $path = dirname(reset($views));
         $path = sprintf('%s/template-sets/*', $path);
 
-        (new Collection(LaravelFile::glob($path)))->each(function ($file_path, $key) use ($template_sets) {
+        (collect(LaravelFile::glob($path)))->each(function ($file_path, $key) use ($template_sets) {
             $pathinfo = pathinfo($file_path);
 
             $template_sets->put($pathinfo['filename'], $pathinfo['filename']);
@@ -145,7 +145,7 @@ class WebFrontpageSettings extends AbstractCrudModel
 
     public function cloneCmsStructure(Web $web)
     {
-        $this->clone_log = new Collection();
+        $this->clone_log = collect();
 
         Page::make()->getAllPageElementModels()->each(function ($page_element_model, $short_kebab_name) use ($web) {
             $this
