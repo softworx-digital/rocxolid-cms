@@ -76,7 +76,7 @@ class Controller extends AbstractPageElementController
         return $this->successResponse($request, $repository, $form, $gallery, 'clear');
     }
 
-    protected function handlePageElementsClear(CrudRequest $request, Repository $repository, AbstractCrudForm $form, $containee, $container)
+    protected function handlePageElementsClear(CrudRequest $request, AbstractCrudForm $form, $containee, $container)
     {
         $this->response->redirect($container->getControllerRoute());
 

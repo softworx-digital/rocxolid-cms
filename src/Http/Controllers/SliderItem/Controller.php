@@ -37,14 +37,14 @@ class Controller extends AbstractPageElementContaineeController
             ->setController($this);
     }
 
-    protected function handleMainSliderItemsCreate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleMainSliderItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         $this->response->redirect($container->getControllerRoute());
 
         return $this;
     }
 
-    protected function handleMainSliderItemsUpdate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleMainSliderItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         return $this->updateContaineeResponse($request, $container);
     }

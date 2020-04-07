@@ -81,7 +81,7 @@ abstract class AbstractPageElementController extends AbstractCMSController
         }
     }
 
-    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element)
+    protected function successResponse(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element)
     {
         if ($request->ajax() && $request->has('_section')) {
             $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
@@ -104,19 +104,19 @@ abstract class AbstractPageElementController extends AbstractCMSController
         }
     }
 
-    protected function handlePageElementsCreate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
+    protected function handlePageElementsCreate(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
     {
         $page_elementable->addPageElement($page_element);
 
         return $this->updatePageElementableResponse($request, $page_elementable);
     }
 
-    protected function handlePageElementsUpdate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
+    protected function handlePageElementsUpdate(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
     {
         return $this->updatePageElementableResponse($request, $page_elementable);
     }
 
-    protected function handlePageElementsDetach(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
+    protected function handlePageElementsDetach(CrudRequest $request, AbstractCrudForm $form, CrudableModel $page_element, PageElementable $page_elementable)
     {
         return $this;
     }

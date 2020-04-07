@@ -42,26 +42,26 @@ class Controller extends AbstractPageElementContaineeController
             ->setController($this);
     }
 
-    protected function handleMainNavigationItemsCreate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleMainNavigationItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         $this->response->redirect($container->getControllerRoute());
 
         return $this;
     }
 
-    protected function handleMainNavigationItemsUpdate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleMainNavigationItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         return $this->updateContaineeResponse($request, $container);
     }
 
-    protected function handleRowNavigationItemsCreate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleRowNavigationItemsCreate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         $this->response->redirect($container->getControllerRoute());
 
         return $this;
     }
 
-    protected function handleRowNavigationItemsUpdate(CrudRequest $request, Repository $repository, AbstractCrudForm $form, Containee $containee, Container $container)
+    protected function handleRowNavigationItemsUpdate(CrudRequest $request, AbstractCrudForm $form, Containee $containee, Container $container)
     {
         return $this->updateContaineeResponse($request, $container);
     }

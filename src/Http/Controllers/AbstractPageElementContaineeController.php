@@ -65,26 +65,37 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
         }
     }
 
-    protected function successResponse(CrudRequest $request, Repository $repository, AbstractCrudForm $form, CrudableModel $containee)
+    /**
+     * {@inheritDoc}
+     */
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $containee, AbstractCrudForm $form)
     {
-        if ($request->ajax() && $request->has('_section')) {
-            $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($action));
-
-            $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
-
-            $form_component = CrudFormComponent::build($this, $this)
-                ->setForm($form)
-                ->setRepository($this->getRepository());
-
-            $model_viewer_component = $this->getModelViewerComponent($this->getModel());
-
-            return $this->response
-                ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $repository, $form, $containee, $action);
+dump(__METHOD__);
+dd($form->getParam());
+        // @todo: put this in on<action> handler
+        if (!$request->has('_section'))
+        {
+            throw new \InvalidArgumentException('Missing [_section] param in request');
         }
+
+        $section_action_method = sprintf('handle%s%s', Str::studly($request->get('_section')), Str::studly($form->getParam()));
+
+        if (!method_exists($this, $section_action_method))
+        {
+            throw new \RuntimeException(sprintf('Invalid method call [%s] in [%s]', $section_action_method, get_class($this)));
+        }
+
+        $this->$section_action_method($request, $repository, $form, $containee, $containee->getContainerElement($request));
+
+        $model_viewer_component = $this->getModelViewerComponent(
+            $this->getRepository()->getModel(),
+            $this->getFormComponent($this->getForm($request, $model))
+        );
+
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
+            ->get();
     }
 
     protected function updateContaineeResponse(CrudRequest $request, Container $container)
