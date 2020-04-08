@@ -23,7 +23,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
     public function boot()
     {
         $this
-            ->load($this->app->router);
+            ->load($this->app->router)
+            ->mapRouteModels($this->app->router);
 
         return $this;
     }
@@ -63,7 +64,11 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'prefix' => sprintf('%s/cms', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.',
         ], function ($router) {
-            CrudRouterService::create('web-frontpage-settings', \WebFrontpageSettings\Controller::class);
+            CrudRouterService::create('web-frontpage-settings', \WebFrontpageSettings\Controller::class, [
+                'parameters' => [
+                    'web-frontpage-settings' => 'web_frontpage_settings',
+                ],
+            ]);
 
             $router->group([
                 'namespace' => 'WebFrontpageSettings',
@@ -182,6 +187,19 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 CrudRouterService::create('product', \ProxyProduct\Controller::class);
             });
         });
+
+        return $this;
+    }
+
+    /**
+     * Define the route bindings for URL params.
+     *
+     * @param  \Illuminate\Routing\Router $router Router to be used for routing.
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    private function mapRouteModels(Router $router): IlluminateServiceProvider
+    {
+        $router->model('web_frontpage_settings', \Softworx\RocXolid\CMS\Models\WebFrontpageSettings::class);
 
         return $this;
     }

@@ -2,12 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\Models\Tables\Page;
 
-// columns
+// rocXolid table columns
 use Softworx\RocXolid\Tables\Columns\Type\Text;
 use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
 use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
 // buttons
-use Softworx\RocXolid\Tables\Columns\Type\ButtonAnchor;
+// rocXolid table buttons
+use Softworx\RocXolid\Tables\Buttons\Type\ButtonAnchor;
 // cms columns
 use Softworx\RocXolid\CMS\Models\Tables\Columns\Type\PageRelation;
 // rocXolid CMS tables

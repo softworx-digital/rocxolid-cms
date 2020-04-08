@@ -94,27 +94,4 @@ class AbstractListContainee extends RocXolidAbstractCrudForm
     {
         return $this->containee_model;
     }
-
-    protected function adjustFieldsDefinition($fields)
-    {
-/*
-        $fields = array_merge_recursive($fields, [
-            'page_element_id' => [
-                'options' => [
-                    'collection' => [
-                        'model' => Country::class,
-                        'column' => 'name',
-                        'filters' => [
-                            [
-                                'class' => BelongsToWeb::class,
-                                'data' => $this->getModel()->web
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-*/
-        return $fields;
-    }
 }

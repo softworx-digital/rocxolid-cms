@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models\Tables\Faq;
 
-// columns
+// rocXolid table columns
 use Softworx\RocXolid\Tables\Columns\Type\Text;
 use Softworx\RocXolid\Tables\Columns\Type\Flag;
 use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;

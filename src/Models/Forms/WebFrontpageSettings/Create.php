@@ -17,7 +17,6 @@ class Create extends RocXolidAbstractCrudForm
     protected function adjustFieldsDefinition($fields)
     {
         $fields['template_set']['type'] = Select::class;
-        $fields['template_set']['options']['placeholder']['title'] = 'template_set';
         $fields['template_set']['options']['choices'] = $this->getModel()->getTemplateSetsOptions();
 
         return $fields;

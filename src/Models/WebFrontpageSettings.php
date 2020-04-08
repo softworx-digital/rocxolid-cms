@@ -2,8 +2,6 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use DB;
-use Config;
 use File as LaravelFile;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,8 +22,6 @@ use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
-// commerce models
-
 /**
  *
  */
@@ -45,15 +41,15 @@ class WebFrontpageSettings extends AbstractCrudModel
         //'js',
         'schema',
         'facebook_page_url',
-        'google_plus_page_url',
+        // 'google_plus_page_url',
         'youtube_page_url',
         'google_analytics_tracking_code',
         'google_tag_manager_container_id',
-        'livechatoo_account',
-        'livechatoo_language',
-        'livechatoo_side',
-        'dognet_account_id',
-        'dognet_campaign_id',
+        // 'livechatoo_account',
+        // 'livechatoo_language',
+        // 'livechatoo_side',
+        // 'dognet_account_id',
+        // 'dognet_campaign_id',
         'twitter_card',
         'twitter_site',
         'twitter_creator',
@@ -115,7 +111,7 @@ class WebFrontpageSettings extends AbstractCrudModel
     {
         $template_sets = collect();
 
-        $views = Config::get('view.paths');
+        $views = config('view.paths');
         $path = dirname(reset($views));
         $path = sprintf('%s/template-sets/*', $path);
 
