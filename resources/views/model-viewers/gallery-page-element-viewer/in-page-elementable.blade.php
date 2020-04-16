@@ -19,16 +19,16 @@
             @endforeach
             </div>
             <div class="row">
-            @foreach ($component->getModel()->getRelationshipMethods('web') as $method)
+            @foreach ($component->getModel()->getRelationshipMethods('web') as $attribute)
                 <div class="col-lg-3 col-md-4 col-xs-6">
-                    <label class="col-xs-6 text-right">{{ $component->translate(sprintf('field.%s', $method)) }}</label>
+                    <label class="col-xs-6 text-right">{{ $component->translate(sprintf('field.%s', $attribute)) }}</label>
                     <div class="col-xs-6">
-                    @foreach ($component->getModel()->$method()->get() as $item)
-                        @if ($item->userCan('read-only'))
+                    @foreach ($component->getModel()->$attribute()->get() as $item)
+                        @can ('update', $item)
                             <a class="label label-info" data-ajax-url="{{ $item->getControllerRoute() }}">{{ $item->getTitle() }}</a>
                         @else
                             <span class="label label-info">{{ $item->getTitle() }}</span>
-                        @endif
+                        @endcan
                     @endforeach
                     </div>
                 </div>

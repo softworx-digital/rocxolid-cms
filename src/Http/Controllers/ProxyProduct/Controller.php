@@ -6,4 +6,6 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementProxyController;
 use Softworx\RocXolid\CMS\Models\ProxyProduct;
 
 class Controller extends AbstractPageElementProxyController
-{}
+{
+
+}

@@ -186,6 +186,25 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 CrudRouterService::create('article', \ProxyArticle\Controller::class);
                 CrudRouterService::create('product', \ProxyProduct\Controller::class);
             });
+
+            CrudRouterService::create('document-type', \DocumentType\Controller::class);
+            CrudRouterService::create('document', \Document\Controller::class);
+
+            $router->group([
+                'namespace' => 'Document',
+                'prefix' => 'document',
+            ], function ($router) {
+                $router->get('/{document}/snippets', 'Controller@pageElementSnippets');
+
+
+                $router->get('/{document}/select-page-element-class/{page_element_class_action}', 'Controller@selectPageElementClass');
+                $router->get('/{document}/page-element-choice/{page_element_short_class}', 'Controller@listPageElement');
+                $router->match(['PUT', 'PATCH'], '/{document}/page-element-choice/{page_element_short_class}', 'Controller@selectPageElement');
+                $router->post('/{document}/update-page-elements-order', 'Controller@updatePageElementsOrder');
+                $router->post('/{document}/update-pivot-data/{page_elementable_type}/{page_elementable_id}', 'Controller@setPivotData');
+                $router->get('/{document}/preview', 'Controller@preview');
+                $router->post('/{document}/preview-pdf', 'Controller@previewPdf');
+            });
         });
 
         return $this;
@@ -200,6 +219,44 @@ class RouteServiceProvider extends IlluminateServiceProvider
     private function mapRouteModels(Router $router): IlluminateServiceProvider
     {
         $router->model('web_frontpage_settings', \Softworx\RocXolid\CMS\Models\WebFrontpageSettings::class);
+        //
+        $router->model('page_template', \Softworx\RocXolid\CMS\Models\PageTemplate::class);
+        $router->model('page', \Softworx\RocXolid\CMS\Models\Page::class);
+        $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
+        // general page elements - (usually) cloned from template
+        $router->model('text', \Softworx\RocXolid\CMS\Models\Text::class);
+        $router->model('link', \Softworx\RocXolid\CMS\Models\Link::class);
+        $router->model('gallery', \Softworx\RocXolid\CMS\Models\Gallery::class);
+        $router->model('iframe_video', \Softworx\RocXolid\CMS\Models\IframeVideo::class);
+        // panels
+        $router->model('html_wrapper', \Softworx\RocXolid\CMS\Models\HtmlWrapper::class);
+        $router->model('cookie_consent', \Softworx\RocXolid\CMS\Models\CookieConsent::class);
+        $router->model('footer_navigation', \Softworx\RocXolid\CMS\Models\FooterNavigation::class);
+        $router->model('footer_note', \Softworx\RocXolid\CMS\Models\FooterNote::class);
+        $router->model('stats_panel', \Softworx\RocXolid\CMS\Models\StatsPanel::class);
+        $router->model('top_panel', \Softworx\RocXolid\CMS\Models\TopPanel::class);
+        // specials (forms)
+        $router->model('newsletter', \Softworx\RocXolid\CMS\Models\Newsletter::class);
+        $router->model('search_engine', \Softworx\RocXolid\CMS\Models\SearchEngine::class);
+        $router->model('login_registration', \Softworx\RocXolid\CMS\Models\LoginRegistration::class);
+        $router->model('forgot_password', \Softworx\RocXolid\CMS\Models\ForgotPassword::class);
+        $router->model('user_profile', \Softworx\RocXolid\CMS\Models\UserProfile::class);
+        $router->model('contact', \Softworx\RocXolid\CMS\Models\Contact::class);
+        // containers (for page elements)
+        $router->model('main_navigation', \Softworx\RocXolid\CMS\Models\MainNavigation::class);
+        $router->model('row_navigation', \Softworx\RocXolid\CMS\Models\RowNavigation::class);
+        $router->model('main_slider', \Softworx\RocXolid\CMS\Models\MainSlider::class);
+        // containers (for other models)
+        $router->model('article_list', \Softworx\RocXolid\CMS\Models\ArticleList::class);
+        // containees
+        $router->model('navigation_item', \Softworx\RocXolid\CMS\Models\NavigationItem::class);
+        $router->model('slider_item', \Softworx\RocXolid\CMS\Models\SliderItem::class);
+        //
+        $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
+        $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);
+        //
+        $router->model('document_type', \Softworx\RocXolid\CMS\Models\DocumentType::class);
+        $router->model('document', \Softworx\RocXolid\CMS\Models\Document::class);
 
         return $this;
     }

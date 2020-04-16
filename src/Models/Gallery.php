@@ -2,42 +2,32 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use App;
-// common traits
+// rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasImages;
-// cms models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
-// components
-use Softworx\RocXolid\CMS\Components\ModelViewers\GalleryPageElementViewer;
 
 /**
  * Gallery page element model definition.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 class Gallery extends AbstractPageElement
 {
     use HasImages;
 
+    /**
+     * {@inheritDoc}
+     */
     protected $table = 'cms_page_element_gallery';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'web_id',
         'name',
     ];
-
-    public function getModelViewerComponent(?string $view_package = null)
-    {
-        $controller = $this->getCrudController();
-
-        $model_viewer = GalleryPageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
-
-        if (!is_null($view_package)) {
-            $model_viewer->setViewPackage($view_package);
-        }
-
-        return $model_viewer;
-    }
 }

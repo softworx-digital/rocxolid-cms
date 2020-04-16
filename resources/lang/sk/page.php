@@ -2,10 +2,10 @@
 
 return [
     'column' => [
-        'page_template_id' => 'Template',
-        'type' => 'Type',
-        'name' => 'Name',
-        'css_class' => 'CSS class(es)',
+        'page_template_id' => 'Šablóna',
+        'type' => 'Typ',
+        'name' => 'Názov',
+        'css_class' => 'CSS triedy',
         'seo_url_slug' => 'SEO URL slug',
         'meta_title' => '<title>',
         'meta_description' => '<meta name="description">',
@@ -19,13 +19,13 @@ return [
         'open_graph_site_name' => '<meta property="og:site_name">',
         'page_element' => 'Element',
         // relations
-        'page_template' => 'Template',
+        'page_template' => 'Šablóna',
     ],
     'field' => [
-        'page_template_id' => 'Template',
-        'type' => 'Type',
-        'name' => 'Name',
-        'css_class' => 'CSS class(es)',
+        'page_template_id' => 'Šablóna',
+        'type' => 'Typ',
+        'name' => 'Názov',
+        'css_class' => 'CSS triedy',
         'seo_url_slug' => 'SEO URL slug',
         'meta_title' => '<title>',
         'meta_description' => '<meta name="description">',
@@ -39,30 +39,30 @@ return [
         'open_graph_site_name' => '<meta property="og:site_name">',
         'page_element' => 'Element',
         // relations
-        'page_template' => 'Template',
+        'page_template' => 'Šablóna',
         //
-        'pivot-is_clone_page_element_instance' => 'Clone',
-        'pivot-is_visible' => 'Show',
+        'pivot-is_clone_page_element_instance' => 'Klon',
+        'pivot-is_visible' => 'Zobrazené',
     ],
     'model' => [
         'title' => [
-            'singular' => 'Page',
-            'plural' => 'Pages',
+            'singular' => 'Stránka',
+            'plural' => 'Stránky',
         ],
     ],
     'action' => [
-        'show' => 'Composition',
-        'repositoryOrderBy' => 'List',
-        'selectPageElementClass' => 'Element class',
-        'listPageElement' => 'Element class list',
-        'preview' => 'Preview',
+        'show' => 'Kompozícia',
+        'repositoryOrderBy' => 'Zoznam',
+        'selectPageElementClass' => 'Typ elementu',
+        'listPageElement' => 'Zoznam typov elementov',
+        'preview' => 'Náhľad',
     ],
     'text' => [
-        'element-already-set' => 'Element is already set'
+        'element-already-set' => 'Element je už priradený'
     ],
     'category' => [
-        'panels' => 'Panels',
-        'containers' => 'Containers',
-        'proxy' => 'Proxy elements',
+        'panels' => 'Panely',
+        'containers' => 'Kontajnery',
+        'proxy' => 'Proxy elementy',
     ],
 ];

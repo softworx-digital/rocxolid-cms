@@ -22,11 +22,11 @@
             <p><a href="{{ $component->getModel()->url }}" target="_blank"><i class="fa fa-external-link margin-right-10"></i>{{ Str::limit($component->getModel()->url, 50) }}</a></p>
         @else
             @if ($component->getModel()->page()->exists())
-                @if ($component->getModel()->userCan('read-only'))
+                @can ('update', $component->getModel()->page)
                     <p><a class="label label-info" data-ajax-url="{{ $component->getModel()->page->getControllerRoute() }}">{!! $component->getModel()->page->getTitle() !!}</a></p>
                 @else
                     <p><span class="label label-info">{!! $component->getModel()->page->getTitle() !!}</span></p>
-                @endif
+                @endcan
             @else
                 <p><i class="fa fa-exclamation-triangle text-danger" title="{{ __('rocXolid::general.text.undefined') }} {{ $component->translate('field.url') }} / {{ $component->translate('field.page') }}"></i></p>
             @endif

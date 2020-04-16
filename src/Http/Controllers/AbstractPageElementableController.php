@@ -13,6 +13,8 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // general components
 use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
+// rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
 // cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementableViewer;
 
@@ -32,12 +34,14 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         'selectPageElement' => 'list-page-element',
     ];
 
+    public function pageElementSnippets(CrudRequest $request, PageElementable $page_elementable)
+    {
+        return $this->getModelViewerComponent($page_elementable)->render('snippets');
+    }
+
 // @todo
     public function preview(CrudRequest $request, CrudableModel $model)
     {
-        // $repository = $this->getRepository();
-        // $model = $repository->find($id);
-
         $model_viewer_component = $this->getModelViewerComponent($model);
 
         if ($request->ajax()) {
@@ -54,9 +58,9 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         }
     }
 
-    public function selectPageElementClass(CrudRequest $request, $id, $page_element_class_action)
+    public function selectPageElementClass(CrudRequest $request, CrudableModel $model, string $page_element_class_action)
     {
-        $model_viewer_component = $this->getModelViewerComponent($this->getRepository()->findOrFail($id));
+        $model_viewer_component = $this->getModelViewerComponent($model);
 
         return $this->response
             ->modal($model_viewer_component->fetch('modal.select-page-element-class', [
@@ -65,10 +69,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->get();
     }
 
-    public function listPageElement(CrudRequest $request, $id, $page_element_short_class)
+    public function listPageElement(CrudRequest $request, CrudableModel $model, string $page_element_short_class)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setPageElementShortClass($page_element_short_class);
@@ -85,10 +87,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->get();
     }
 
-    public function selectPageElement(CrudRequest $request, $id, $page_element_short_class)
+    public function selectPageElement(CrudRequest $request, CrudableModel $model, string $page_element_short_class)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setPageElementShortClass($page_element_short_class)
@@ -122,9 +122,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         }
     }
 
-    public function updatePageElementsOrder(CrudRequest $request, $id)
+    public function updatePageElementsOrder(CrudRequest $request, CrudableModel $model)
     {
-        $model = $this->getRepository()->findOrFail($id);
         $model->updatePageElementsOrder($request);
 
         $model_viewer_component = $this->getModelViewerComponent($model);
@@ -135,9 +134,8 @@ abstract class AbstractPageElementableController extends AbstractCrudController
             ->get();
     }
 
-    public function setPivotData(CrudRequest $request, $id, $page_elementable_type, $page_elementable_id)
+    public function setPivotData(CrudRequest $request, CrudableModel $model, string $page_elementable_type, int $page_elementable_id)
     {
-        $model = $this->getRepository()->findOrFail($id);
         $model->updatePivotData($request, $page_elementable_type, $page_elementable_id);
 
         $model_viewer_component = $this->getModelViewerComponent($model);

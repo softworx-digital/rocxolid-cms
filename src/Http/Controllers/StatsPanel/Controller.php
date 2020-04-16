@@ -6,4 +6,6 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 use Softworx\RocXolid\CMS\Models\StatsPanel;
 
 class Controller extends AbstractPageElementController
-{}
+{
+
+}

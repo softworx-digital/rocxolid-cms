@@ -20,6 +20,7 @@ class UpdateInPageElementable extends AbstractUpdateInPageElementable
 {
     protected function adjustFieldsDefinition($fields)
     {
+        /*
         $fields['image']['type'] = UploadImage::class;
         $fields['image']['options']['multiple'] = false;
         $fields['image']['options']['label']['title'] = 'image';
@@ -27,6 +28,7 @@ class UpdateInPageElementable extends AbstractUpdateInPageElementable
         $fields['file']['type'] = UploadFile::class;
         $fields['file']['options']['multiple'] = false;
         $fields['file']['options']['label']['title'] = 'file';
+        */
 
         $fields['content']['type'] = WysiwygTextarea::class;
 

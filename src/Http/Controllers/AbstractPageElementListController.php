@@ -40,10 +40,8 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
         return static::$containee_class;
     }
 
-    public function reorder(CrudRequest $request, $id, $relation)//: View
+    public function reorder(CrudRequest $request, CrudableModel $model, string $relation)//: View
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         if (($order = $request->input('_data', false)) && is_array($order)) {
             foreach ($order as $containee_order_data) {
                 $model->reorderContainees('items', $containee_order_data);
@@ -57,10 +55,8 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
             ->get();
     }
 
-    public function listContainee(CrudRequest $request, $id)
+    public function listContainee(CrudRequest $request, CrudableModel $model)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setContaineeClass(static::$containee_class);
@@ -77,10 +73,8 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
             ->get();
     }
 
-    public function selectContainee(CrudRequest $request, $id)
+    public function selectContainee(CrudRequest $request, CrudableModel $model)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setContaineeClass(static::$containee_class)
@@ -127,10 +121,8 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
         }
     }
 
-    public function listContaineeReplace(CrudRequest $request, $id)
+    public function listContaineeReplace(CrudRequest $request, CrudableModel $model)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setContaineeClass(static::$containee_class);
@@ -145,10 +137,8 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
             ->get();
     }
 
-    public function listContaineeReplaceSubmit(CrudRequest $request, $id)
+    public function listContaineeReplaceSubmit(CrudRequest $request, CrudableModel $model)
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         $form = $this
             ->getForm($request, $model)
             ->setContaineeClass(static::$containee_class)
@@ -163,8 +153,7 @@ abstract class AbstractPageElementListController extends AbstractPageElementCont
         }
     }
 
-    // @todo: type hints
-    protected function reattachContainees($model, $order_by)
+    protected function reattachContainees(CrudableModel $model, string $order_by)
     {
         $model->detachContainee('items');
 

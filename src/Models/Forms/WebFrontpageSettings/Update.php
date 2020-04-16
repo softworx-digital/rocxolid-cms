@@ -29,6 +29,7 @@ class Update extends RocXolidAbstractCrudForm
         $fields['template_set']['type'] = Select::class;
         $fields['template_set']['options']['choices'] = $this->getModel()->getTemplateSetsOptions();
 
+        /*
         $fields['logo']['type'] = UploadImage::class;
         $fields['logo']['options']['multiple'] = false;
         $fields['logo']['options']['label']['title'] = 'logo';
@@ -49,6 +50,7 @@ class Update extends RocXolidAbstractCrudForm
         $fields['jsFiles']['type'] = UploadFile::class;
         $fields['jsFiles']['options']['multiple'] = true;
         $fields['jsFiles']['options']['label']['title'] = 'jsFiles';
+        */
 
         return $fields;
     }

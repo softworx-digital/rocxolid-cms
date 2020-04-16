@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // base contracts
 use Softworx\RocXolid\Contracts\Modellable;
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // base traits
 use Softworx\RocXolid\Traits\Modellable as ModellableTrait;
@@ -133,24 +134,24 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         return $page;
     }
 
-    public function beforeSave($data, $action = null)
+    // @todo: revise, find nicer approach
+    public function onBeforeSave(Collection $data): Crudable
     {
+        // @todo: helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
 
-        return $this;
+        return parent::onBeforeSave($data);
     }
 
-    public function afterSave($data, $action = null)
+    public function onCreateAfterSave(Collection $data): Crudable
     {
-        if ($action == 'create') {
-            $this->assignTemplatePageElements();
-        }
+        $this->assignTemplatePageElements();
 
-        return $this;
+        return parent::onCreateAfterSave($data);
     }
 
     protected function getPageProxyableModelClasses(): Collection

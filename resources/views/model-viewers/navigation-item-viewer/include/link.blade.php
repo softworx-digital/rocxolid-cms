@@ -13,15 +13,15 @@
 @endif
 
 @if ($component->getModel()->page()->exists())
-    @if ($component->getModel()->userCan('read-only'))
+    @can ('update', component->getModel()->page)
         <a class="label label-info" data-ajax-url="{{ $component->getModel()->page->getControllerRoute() }}" style="position: relative; top: -1px;">{!! $component->getModel()->page->getTitle() !!}</a>
     @else
         <span class="label label-info" style="position: relative; top: -1px;">{!! $component->getModel()->page->getTitle() !!}</span>
-    @endif
+    @endcan
 @elseif ($component->getModel()->pageProxy()->exists() && $component->getModel()->pageProxy->makeModel($component->getModel()->page_proxy_model_id))
-    @if ($component->getModel()->userCan('read-only'))
+    @can ('update', $component->getModel()->pageProxy)
         <a class="label label-info" data-ajax-url="{{ $component->getModel()->pageProxy->makeModel($component->getModel()->page_proxy_model_id)->getControllerRoute() }}" style="position: relative; top: -1px;">{!! $component->getModel()->pageProxy->getTitle() !!} ({!! $component->getModel()->pageProxy->makeModel($component->getModel()->page_proxy_model_id)->getTitle() !!})</a>
     @else
         <span class="label label-info" style="position: relative; top: -1px;">{!! $component->getModel()->pageProxy->getTitle() !!}</span>
-    @endif
+    @endcan
 @endif

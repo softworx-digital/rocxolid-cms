@@ -39,10 +39,10 @@ class WebFrontpageSettings extends AbstractCrudModel
         'template_set',
         //'css',
         //'js',
-        'schema',
+        // 'schema',
         'facebook_page_url',
         // 'google_plus_page_url',
-        'youtube_page_url',
+        // 'youtube_page_url',
         'google_analytics_tracking_code',
         'google_tag_manager_container_id',
         // 'livechatoo_account',
@@ -50,9 +50,9 @@ class WebFrontpageSettings extends AbstractCrudModel
         // 'livechatoo_side',
         // 'dognet_account_id',
         // 'dognet_campaign_id',
-        'twitter_card',
-        'twitter_site',
-        'twitter_creator',
+        // 'twitter_card',
+        // 'twitter_site',
+        // 'twitter_creator',
     ];
 
     protected $relationships = [
@@ -70,6 +70,18 @@ class WebFrontpageSettings extends AbstractCrudModel
         'created_by',
         'updated_by',
         'deleted_by',
+        // temporarily put here so they won't show up in details
+        'schema',
+        'google_plus_page_url',
+        'youtube_page_url',
+        'livechatoo_account',
+        'livechatoo_language',
+        'livechatoo_side',
+        'dognet_account_id',
+        'dognet_campaign_id',
+        'twitter_card',
+        'twitter_site',
+        'twitter_creator',
     ];
 
     protected $image_sizes = [

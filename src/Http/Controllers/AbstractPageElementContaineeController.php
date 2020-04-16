@@ -45,14 +45,12 @@ abstract class AbstractPageElementContaineeController extends AbstractCMSControl
     }
 
     // @todo: docblock & cleanup
-    public function detach(CrudRequest $request, $id)
+    public function detach(CrudRequest $request, CrudableModel $model)
     {
         if (!$request->has('_section'))
         {
             throw new \InvalidArgumentException('Missing [_section] param in request');
         }
-
-        $model = $this->getRepository()->find($id);
 
         $container = $this->getContainer($request);
 

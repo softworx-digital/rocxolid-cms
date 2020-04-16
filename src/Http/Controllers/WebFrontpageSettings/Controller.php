@@ -54,8 +54,6 @@ class Controller extends AbstractCrudController
                 $this->getFormComponent($form)
             );
 
-            $model = $this->getRepository()->getModel();
-
             $model
                 ->destroyCmsStructure()
                 ->cloneCmsStructure($web)

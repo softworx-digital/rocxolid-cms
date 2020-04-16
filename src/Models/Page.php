@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // base contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // base models
 use Softworx\RocXolid\Models\AbstractCrudModel;
@@ -90,24 +91,24 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
         return sprintf('//%s/%s/%s', $this->web->domain, $this->localization->seo_url_slug, $this->seo_url_slug);
     }
 
-    public function beforeSave($data, $action = null)
+    // @todo: revise, find nicer approach
+    public function onBeforeSave(Collection $data): Crudable
     {
+        // @todo: helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
 
-        return $this;
+        return parent::onBeforeSave($data);
     }
 
-    public function afterSave($data, $action = null)
+    public function onCreateAfterSave(Collection $data): Crudable
     {
-        if ($action == 'create') {
-            $this->assignTemplatePageElements();
-        }
+        $this->assignTemplatePageElements();
 
-        return $this;
+        return parent::onCreateAfterSave($data);
     }
 
     protected function assignTemplatePageElements()

@@ -15,12 +15,16 @@ use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 // cms models
 use Softworx\RocXolid\CMS\Models\Gallery;
+// rocXolid cms model viewers
+use Softworx\RocXolid\CMS\Components\ModelViewers\GalleryPageElementViewer;
 
 /**
  *
  */
 class Controller extends AbstractPageElementController
 {
+    protected static $model_viewer_type = GalleryPageElementViewer::class;
+
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',

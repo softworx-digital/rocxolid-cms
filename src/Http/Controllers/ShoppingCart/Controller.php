@@ -6,4 +6,6 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementController;
 use Softworx\RocXolid\CMS\Models\ShoppingCart;
 
 class Controller extends AbstractPageElementController
-{}
+{
+
+}

@@ -13,8 +13,6 @@ use Softworx\RocXolid\Common\Models\Traits\HasImage;
 //
 use Softworx\RocXolid\CMS\Models\AbstractPageElement;
 use Softworx\RocXolid\CMS\Models\Page;
-//
-use Softworx\RocXolid\CMS\Components\ModelViewers\SliderItemViewer;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasProxyPageLink;
 
@@ -66,19 +64,6 @@ class SliderItem extends AbstractPageElement implements Containee
         return $this->belongsTo(Page::class);
     }
 
-    public function getModelViewerComponent(?string $view_package = null)
-    {
-        $controller = $this->getCrudController();
-
-        $model_viewer = SliderItemViewer::build($controller, $controller)->setModel($this)->setController($controller);
-
-        if (!is_null($view_package)) {
-            $model_viewer->setViewPackage($view_package);
-        }
-
-        return $model_viewer;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -89,13 +74,16 @@ class SliderItem extends AbstractPageElement implements Containee
         return parent::onCreateBeforeSave($data);
     }
 
-    public function afterSave($data, $action = null)
+    /**
+     * {@inheritDoc}
+     */
+    public function onUpdateAfterSave(Collection $data): Crudable
     {
         if (!$this->hasContainer('items')) {
             $this->getContainerElement($data)->attachContainee('items', $this);
         }
 
-        return $this;
+        return parent::onUpdateAfterSave($data);
     }
 
     public function getContainerElement($data)

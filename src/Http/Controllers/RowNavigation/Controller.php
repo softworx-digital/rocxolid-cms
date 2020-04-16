@@ -22,10 +22,8 @@ class Controller extends AbstractPageElementController
 {
     protected static $model_viewer_type = RowNavigationViewer::class;
 
-    public function reorder(CrudRequest $request, $id, $relation)//: View
+    public function reorder(CrudRequest $request, CrudableModel $model, string $relation)//: View
     {
-        $model = $this->getRepository()->findOrFail($id);
-
         if (($order = $request->input('_data', false)) && is_array($order)) {
             foreach ($order as $containee_order_data) {
                 $model->reorderContainees('items', $containee_order_data);
