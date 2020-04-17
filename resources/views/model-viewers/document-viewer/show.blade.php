@@ -4,7 +4,7 @@
     <div data-keditor="html">
         <div
             class="content-composition"
-            data-snippets-url="{{ $component->getController()->getRoute('pageElementSnippets', $component->getModel()) }}"
+            data-snippets-url="{{ $component->getController()->getRoute('elementSnippets', $component->getModel()) }}"
             data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}">
         </div>
     </div>

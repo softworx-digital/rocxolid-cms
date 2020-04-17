@@ -18,10 +18,9 @@ use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElement;
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
 // cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementViewer;
+use Softworx\RocXolid\CMS\Elements\Components\ModelViewers\ElementViewer;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasFrontpageUrlAttribute;
 // cms models
@@ -29,11 +28,13 @@ use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Article;
+// rocXolid cms elements model contracts
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
 
 /**
  *
  */
-abstract class AbstractPageElement extends AbstractCrudModel implements PageElement, Cloneable
+abstract class AbstractPageElement extends AbstractCrudModel implements Element, Cloneable
 {
     use SoftDeletes;
     use HasWeb;
@@ -158,7 +159,7 @@ abstract class AbstractPageElement extends AbstractCrudModel implements PageElem
         return PageElementViewer::build($controller, $controller)->setModel($this)->setController($controller);
     }
 
-    public function setParentPageElementable(PageElementable $page_elementable)
+    public function setParentPageElementable(Elementable $page_elementable)
     {
         $this->parent_page_elementable = $page_elementable;
 

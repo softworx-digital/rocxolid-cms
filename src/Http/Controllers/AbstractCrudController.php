@@ -2,8 +2,9 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
+// rocXolid controllers
 use Softworx\RocXolid\Http\Controllers\AbstractCrudController as RocXolidAbstractCrudController;
-// admin components
+// rocXolid admin components
 use Softworx\RocXolid\Admin\Components\Dashboard\Crud as CrudDashboard;
 
 abstract class AbstractCrudController extends RocXolidAbstractCrudController

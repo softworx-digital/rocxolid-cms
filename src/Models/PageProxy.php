@@ -18,7 +18,7 @@ use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\ProxyElementable;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 // cms models
@@ -27,7 +27,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
 /**
  *
  */
-class PageProxy extends AbstractCrudModel implements PageProxyElementable, Modellable, Cloneable
+class PageProxy extends AbstractCrudModel implements ProxyElementable, Modellable, Cloneable
 {
     use SoftDeletes;
     use HasWeb;

@@ -15,7 +15,7 @@ use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
@@ -25,7 +25,7 @@ use Softworx\RocXolid\CMS\Models\PageProxy;
 /**
  *
  */
-class Document extends AbstractCrudModel implements PageElementable
+class Document extends AbstractCrudModel implements Elementable
 {
     use SoftDeletes;
     use HasWeb;

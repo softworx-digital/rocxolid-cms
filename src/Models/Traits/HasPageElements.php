@@ -13,7 +13,7 @@ use Softworx\RocXolid\Models\Traits\CanClone;
 // cms contracts
 use Softworx\RocXolid\CMS\Models\Contracts\PageElement;
 use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElement;
-use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\ProxyElementable;
 // cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\PreviewController;
 //
@@ -219,7 +219,7 @@ trait HasPageElements
                 if ($related instanceof Container) {
                     $models['containers']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                 } elseif ($related instanceof PageProxyElement) {
-                    if (($this instanceof PageProxyElementable) && ($this->model_type == $related::$model_type)) {
+                    if (($this instanceof ProxyElementable) && ($this->model_type == $related::$model_type)) {
                         $models['proxy']->put(Str::kebab((new \ReflectionClass($related))->getShortName()), $related);
                     }
                 } else {
@@ -228,7 +228,7 @@ trait HasPageElements
             }
         }
 
-        if (!($this instanceof PageProxyElementable)) {
+        if (!($this instanceof ProxyElementable)) {
             unset($models['proxy']);
         }
 

@@ -2,9 +2,9 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers\DocumentType;
 
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementableController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
 
-class Controller extends AbstractPageElementableController
+class Controller extends AbstractCrudController
 {
 
 }

@@ -14,16 +14,20 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // general components
 use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // rocXolid cms model contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
 // cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\PageElementableViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\ElementableViewer;
 
 /**
+ * CMS controller for models that can contain elements.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-abstract class AbstractPageElementableController extends AbstractCrudController
+abstract class AbstractElementableController extends AbstractCrudController
 {
-    protected static $model_viewer_type = PageElementableViewer::class;
+    protected static $model_viewer_type = ElementableViewer::class;
 
     protected $form_mapping = [
         'create' => 'create',
@@ -34,7 +38,7 @@ abstract class AbstractPageElementableController extends AbstractCrudController
         'selectPageElement' => 'list-page-element',
     ];
 
-    public function pageElementSnippets(CrudRequest $request, PageElementable $page_elementable)
+    public function elementSnippets(CrudRequest $request, Elementable $page_elementable)
     {
         return $this->getModelViewerComponent($page_elementable)->render('snippets');
     }

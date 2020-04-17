@@ -8,13 +8,13 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Services\PdfGeneratorService;
 // rocXolid cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractPageElementableController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentViewer;
 // rocXolid models
 use Softworx\RocXolid\CMS\Models\Document;
 
-class Controller extends AbstractPageElementableController
+class Controller extends AbstractElementableController
 {
     protected static $model_viewer_type = DocumentViewer::class;
 

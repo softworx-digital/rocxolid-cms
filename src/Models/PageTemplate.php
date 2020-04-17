@@ -13,14 +13,14 @@ use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 // cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
+use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
 // cms traits
 use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
 
 /**
  *
  */
-class PageTemplate extends AbstractCrudModel implements PageElementable, Cloneable
+class PageTemplate extends AbstractCrudModel implements Elementable, Cloneable
 {
     use SoftDeletes;
     use HasWeb;
