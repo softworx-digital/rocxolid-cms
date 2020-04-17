@@ -3,9 +3,16 @@
 namespace Softworx\RocXolid\CMS;
 
 use Illuminate\Foundation\AliasLoader;
-//
+// rocXolid service providers
 use Softworx\RocXolid\AbstractServiceProvider as RocXolidAbstractServiceProvider;
 
+/**
+ * rocXolid CMS package primary service provider.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
+ */
 class ServiceProvider extends RocXolidAbstractServiceProvider
 {
     /**
@@ -86,7 +93,6 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
      */
     private function bindContracts(): RocXolidAbstractServiceProvider
     {
-        // ...
         return $this;
     }
 
@@ -100,7 +106,6 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
      */
     private function bindAliases(AliasLoader $loader): RocXolidAbstractServiceProvider
     {
-        // ...
         return $this;
     }
 }
