@@ -18,6 +18,7 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
      */
     protected $config_files = [
         'rocXolid.cms.general' => '/../../config/general.php',
+        'rocXolid.cms.elementable' => '/../../config/elementable.php',
     ];
 
     /**

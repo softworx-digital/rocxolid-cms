@@ -5,6 +5,7 @@
         <div
             class="content-composition"
             data-snippets-url="{{ $component->getController()->getRoute('elementSnippets', $component->getModel()) }}"
+            data-update-url="{{ $component->getController()->getRoute('storeComposition', $component->getModel()) }}"
             data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}">
         </div>
     </div>
@@ -21,6 +22,34 @@
 $(document).ready(function($)
 {
     let $element = $('.content-composition');
+
+    const serialize = function($node, onlyData = [], onNodeCreated)
+    {
+        let element = {
+            gridLayout: {},
+            // content: $container.html(),
+        };
+
+        for (let i in $node.data()) {
+            // put only defined data, or all if not defined
+            if (!onlyData.length || onlyData.includes(i)) {
+                element[i] = $node.data(i);
+            }
+        }
+
+        element.children = [];
+
+        $node.children().each(function()
+        {
+            element.children.push(serialize($(this), onlyData, onNodeCreated));
+        });
+
+        if (typeof onNodeCreated == 'function') {
+            element = onNodeCreated($node, element, onlyData);
+        }
+
+        return element;
+    };
 
     $element.keditor({
         rx: window.rx(),
@@ -48,6 +77,12 @@ $(document).ready(function($)
             }*/
         ],
         snippetsUrl: $element.data('snippets-url'),
+        containerForQuickAddComponent: `
+            <div class="row" data-element-type="grid-row">
+                <div class="col-sm-12" data-type="container-content" data-element-type="grid-column">
+                </div>
+            </div>
+        `,
         extraTopbarItems: {
             pdf: {
                 html: '<a href="javascript:void(0);" title="PDF Preview" class="keditor-ui keditor-topbar-btn"><i class="fa fa-fw fa-file-pdf-o"></i></a>',
@@ -71,6 +106,7 @@ $(document).ready(function($)
             console.log('onBeforeContainerDeleted');
         },
         onComponentSnippetAdded: function (event, newComponent, selectedSnippet, contentArea) {
+            console.log('contentArea', contentArea);
             console.log('onComponentSnippetAdded');
         },
         onBeforeComponentDeleted: function (event, selectedComponent, contentArea) {
@@ -81,6 +117,36 @@ $(document).ready(function($)
         },
         onDynamicContentLoaded: function (dynamicElement, jqXHR, contentArea) {
             console.log('onDynamicContentLoaded');
+        },
+        onSave: function (content) {
+            // let content = $element.keditor('getContent');
+            console.log('content', content);
+
+            parseNodeContent = function($node, element, onlyData) {
+                if (typeof $node.attr('class') == 'string') {
+                    let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
+                        if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
+                            element.gridLayout[col[1]] = col[2];
+                        }
+                    });
+                }
+
+                return element;
+            };
+
+            const tree = serialize($('<div>').html(content), [], parseNodeContent);
+
+            console.log('tree', tree);
+
+            window.rxUtility().ajaxCall({
+                rx: window.rx(),
+                element: $element,
+                type: 'post',
+                url: $element.data('update-url'),
+                data: {
+                    tree: tree
+                }
+            });
         },
     });
 });

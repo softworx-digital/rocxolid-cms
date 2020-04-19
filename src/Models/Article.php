@@ -3,41 +3,26 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common models
-use Softworx\RocXolid\Common\Models\Image;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
+// rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Image;
+// rocXolid cms model traits
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
-// cms models
-use Softworx\RocXolid\CMS\Models\PageProxy;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
+ * Article model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class Article extends AbstractCrudModel implements Elementable
+class Article extends AbstractElementable
 {
-    use SoftDeletes;
     use HasImage;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
     use IsProxyPaged;
-
-    protected $table = 'cms_article';
-
-    protected $is_page_element_template_choice_enabled = false;
 
     protected $fillable = [
         'web_id',
@@ -51,11 +36,6 @@ class Article extends AbstractCrudModel implements Elementable
         'perex',
         //'css_class',
         'is_enabled'
-    ];
-
-    protected $relationships = [
-        'web',
-        'localization',
     ];
 
     protected $pivot_extra = [

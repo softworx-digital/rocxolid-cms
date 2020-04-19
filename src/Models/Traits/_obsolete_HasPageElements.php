@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Models\Contracts\Container;
 use Softworx\RocXolid\Models\Contracts\Containee;
 // traits
-use Softworx\RocXolid\Models\Traits\CanClone;
+use Softworx\RocXolid\Models\Traits\Cloneable;
 // cms contracts
 use Softworx\RocXolid\CMS\Models\Contracts\PageElement;
 use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElement;
@@ -22,9 +22,9 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
 /**
  *
  */
-trait HasPageElements
+trait _obsolete_HasPageElements
 {
-    use CanClone;
+    use Cloneable;
 
     private $_page_elements = null;
 
@@ -388,9 +388,7 @@ trait HasPageElements
 
     public function getAvailablePageElements()
     {
-        $param = Str::kebab((new \ReflectionClass($this))->getShortName());
-
-        return collect(config(sprintf('rocXolid.cms.elementable.%s', $param), config('rocXolid.cms.elementable.default')));
+        return collect(config(sprintf('rocXolid.cms.elementable.%s', static::class), config('rocXolid.cms.elementable.default')));
     }
 
     public function getPageElementsRelationship($class)

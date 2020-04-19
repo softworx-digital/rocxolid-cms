@@ -5,7 +5,8 @@ namespace Softworx\RocXolid\CMS\Http\Controllers\Document;
 use Illuminate\Validation\ValidationException;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
-// rocXolid cms controllers
+// rocXolid cms services
+use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
 use Softworx\RocXolid\CMS\Services\PdfGeneratorService;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
@@ -14,11 +15,19 @@ use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentViewer;
 // rocXolid models
 use Softworx\RocXolid\CMS\Models\Document;
 
+/**
+ * Document controller.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
+ */
 class Controller extends AbstractElementableController
 {
     protected static $model_viewer_type = DocumentViewer::class;
 
     protected $extra_services = [
+        ElementableCompositionService::class,
         PdfGeneratorService::class,
     ];
 

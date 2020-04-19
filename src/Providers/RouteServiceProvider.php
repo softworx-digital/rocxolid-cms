@@ -61,9 +61,6 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 $router->match(['PUT', 'PATCH'], '/{web_frontpage_settings}/clone-structure-submit', 'Controller@cloneStructureSubmit');
             });
 
-            CrudRouterService::create('document-type', \DocumentType\Controller::class);
-            ElementableRouterService::create('document', \Document\Controller::class);
-
             ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
             ElementableRouterService::create('page', \Page\Controller::class);
             ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
@@ -71,6 +68,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
             ElementableRouterService::create('article', \Article\Controller::class);
 
             CrudRouterService::create('faq', \Faq\Controller::class);
+
+            CrudRouterService::create('document-type', \DocumentType\Controller::class);
+            ElementableRouterService::create('document', \Document\Controller::class);
         });
 
         return $this;

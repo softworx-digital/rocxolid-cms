@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 // rocXolid service contracts
 use Softworx\RocXolid\Services\Contracts\ConsumerService;
 // rocXolid service contracts
-use Softworx\RocXolid\Contracts\ServiceConsumer;
+use Softworx\RocXolid\Services\Contracts\ServiceConsumer;
 // rocXolid models
 use Softworx\RocXolid\CMS\Models\Document;
 

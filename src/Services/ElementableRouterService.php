@@ -18,13 +18,18 @@ class ElementableRouterService extends CrudRouterService
 {
     protected function registerPackageRoutes(string $param): CrudRouterService
     {
-        Route::get($this->name . '/snippets', [
-            'as' => 'cms.' . $this->name . '.element-snippets',
+        Route::get($this->name . sprintf('/{%s}/snippets', $param), [
+            'as' => 'crud.' . $this->name . '.element-snippets',
             'uses' => $this->controller . '@elementSnippets',
         ]);
 
-        Route::get($this->name . '/preview/pdf', [
-            'as' => 'cms.' . $this->name . '.preview-pdf',
+        Route::post($this->name . sprintf('/{%s}/composition', $param), [
+            'as' => 'crud.' . $this->name . '.update.composition',
+            'uses' => $this->controller . '@storeComposition',
+        ]);
+
+        Route::get($this->name . sprintf('/{%s}/preview/pdf', $param), [
+            'as' => 'crud.' . $this->name . '.preview-pdf',
             'uses' => $this->controller . '@previewPdf',
         ]);
 

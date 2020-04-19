@@ -4,39 +4,28 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
-use Softworx\RocXolid\Contracts\Modellable;
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base traits
-use Softworx\RocXolid\Traits\Modellable as ModellableTrait;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
+// rocXolid traits
+use Softworx\RocXolid\Traits\Modellable;
+// rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ProxyElementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
-// cms models
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
+ * Proxy page model.
+ * Serves as a 'placeholder' for real page after setting the model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class PageProxy extends AbstractCrudModel implements ProxyElementable, Modellable, Cloneable
+class PageProxy extends AbstractElementable implements ProxyElementable //, Cloneable
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use ModellableTrait;
-    use UserGroupAssociatedWeb;
-
-    protected $table = 'cms_page_proxy';
+    use Modellable;
 
     protected $page_proxyable = [
     ];
@@ -64,6 +53,8 @@ class PageProxy extends AbstractCrudModel implements ProxyElementable, Modellabl
         'is_visible',
     ];
 
+
+    /*
     public function pageTemplate()
     {
         return $this->belongsTo(PageTemplate::class);
@@ -177,4 +168,5 @@ class PageProxy extends AbstractCrudModel implements ProxyElementable, Modellabl
 
         return $this;
     }
+    */
 }

@@ -3,33 +3,20 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
+ * Page template model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class PageTemplate extends AbstractCrudModel implements Elementable, Cloneable
+class PageTemplate extends AbstractElementable // implements Cloneable
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
-
-    protected $table = 'cms_page_template';
-
     protected $fillable = [
         'web_id',
         'localization_id',
@@ -47,11 +34,6 @@ class PageTemplate extends AbstractCrudModel implements Elementable, Cloneable
         'open_graph_url',
         'open_graph_site_name',
         'description'
-    ];
-
-    protected $relationships = [
-        'web',
-        'localization',
     ];
 
     protected $pivot_extra = [

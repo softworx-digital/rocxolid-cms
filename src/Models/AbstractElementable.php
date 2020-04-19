@@ -2,56 +2,49 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use File;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
-// rocXolid fundamentals
-use Softworx\RocXolid\Contracts\Translatable;
+// rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
-use Softworx\RocXolid\Models\Contracts\Cloneable;
-use Softworx\RocXolid\Models\Traits\CanClone;
-// rocXolid model contracts
-use Softworx\RocXolid\Models\Contracts\Crudable;
-// common models
-use Softworx\RocXolid\Common\Models\Web;
-// common traits
+// rocXolid common traits
 use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
+use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
+// rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
-// cms components
-use Softworx\RocXolid\CMS\Elements\Components\ModelViewers\ElementViewer;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasFrontpageUrlAttribute;
-// cms models
-use Softworx\RocXolid\CMS\Models\Page;
-use Softworx\RocXolid\CMS\Models\PageProxy;
-use Softworx\RocXolid\CMS\Models\PageTemplate;
-use Softworx\RocXolid\CMS\Models\Article;
-// rocXolid cms elements model contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
+// rocXolid cms models traits
+use Softworx\RocXolid\CMS\Models\Traits\HasElements;
 
 /**
+ * Elementable model abstraction.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-abstract class AbstractPageElement extends AbstractCrudModel implements Element, Cloneable
+abstract class AbstractElementable extends AbstractCrudModel implements Elementable
 {
     use SoftDeletes;
     use HasWeb;
-    use HasFrontpageUrlAttribute;
-    use CanClone;
-    //use UserGroupAssociatedWeb;
+    use UserGroupAssociatedWeb;
+    use HasLocalization;
+    use HasElements;
 
     protected static $template_dir = 'page-element';
 
     protected $relationships = [
         'web',
+        'localization',
     ];
 
-    protected $pivot_data = null;
+    /**
+     * {@inheritDoc}
+     */
+    public function getTable()
+    {
+        return sprintf('cms_%s', parent::getTable());
+    }
 
-    protected $parent_page_elementable = null;
-
+    /*
     public static function boot()
     {
         parent::boot();
@@ -121,10 +114,12 @@ abstract class AbstractPageElement extends AbstractCrudModel implements Element,
 
         return $templates;
     }
+    */
 
     /**
      * {@inheritDoc}
      */
+    /*
     public function onCreateBeforeSave(Collection $data): Crudable
     {
         if ($data->has('_page_template_id')) {
@@ -197,4 +192,5 @@ abstract class AbstractPageElement extends AbstractCrudModel implements Element,
     {
         return $this->morphToMany(PageTemplate::class, 'page_element', PageTemplate::make()->getPageElementsPivotTable())->withPivot(PageTemplate::make()->getPivotExtra());
     }
+    */
 }

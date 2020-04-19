@@ -4,38 +4,24 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common models
+// rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
-// cms models
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
+ * Page model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class Page extends AbstractCrudModel implements Elementable, Cloneable
+class Page extends AbstractElementable // implements Cloneable
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
-
-    protected $table = 'cms_page';
-
     protected $fillable = [
         'web_id',
         'localization_id',
@@ -75,6 +61,9 @@ class Page extends AbstractCrudModel implements Elementable, Cloneable
         ],
     ];
 
+
+
+    /*
     public function pageTemplate()
     {
         return $this->belongsTo(PageTemplate::class);
@@ -134,4 +123,5 @@ class Page extends AbstractCrudModel implements Elementable, Cloneable
     {
         return $this->morphOne(Image::class, 'model')->where(sprintf('%s.model_attribute', (new Image())->getTable()), 'openGraphImage')->orderBy(sprintf('%s.model_attribute_position', (new Image())->getTable()));
     }
+    */
 }

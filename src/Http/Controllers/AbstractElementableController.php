@@ -2,21 +2,16 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
-// utils
+// rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
-use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
-//
-use Softworx\RocXolid\Components\Forms\CrudForm as CrudFormComponent;
-//
+// rocXolid controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
-// contracts
-use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
-// general components
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
-// cms components
+// rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\ElementableViewer;
+// rocXolid cms services
+use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
 
 /**
  * CMS controller for models that can contain elements.
@@ -29,22 +24,34 @@ abstract class AbstractElementableController extends AbstractCrudController
 {
     protected static $model_viewer_type = ElementableViewer::class;
 
+    /**
+     * {@inheritDoc}
+     */
+    protected $extra_services = [
+        ElementableCompositionService::class,
+    ];
+
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
         'edit' => 'update',
         'update' => 'update',
-        'listPageElement' => 'list-page-element',
-        'selectPageElement' => 'list-page-element',
     ];
 
-    public function elementSnippets(CrudRequest $request, Elementable $page_elementable)
+    public function elementSnippets(CrudRequest $request, Elementable $model)
     {
-        return $this->getModelViewerComponent($page_elementable)->render('snippets');
+        return $this->getModelViewerComponent($model)->render('snippets');
+    }
+
+    public function storeComposition(CrudRequest $request, Elementable $model)
+    {
+        $model = $this->elementableCompositionService()->compose($request, $model);
+
+        return $this->getModelViewerComponent($model)->render('snippets');
     }
 
 // @todo
-    public function preview(CrudRequest $request, CrudableModel $model)
+    public function preview(CrudRequest $request, Elementable $model)
     {
         $model_viewer_component = $this->getModelViewerComponent($model);
 
@@ -61,6 +68,13 @@ abstract class AbstractElementableController extends AbstractCrudController
                 ]);
         }
     }
+
+
+
+
+
+
+
 
     public function selectPageElementClass(CrudRequest $request, CrudableModel $model, string $page_element_class_action)
     {
