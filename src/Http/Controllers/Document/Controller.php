@@ -24,13 +24,25 @@ use Softworx\RocXolid\CMS\Models\Document;
  */
 class Controller extends AbstractElementableController
 {
+    /**
+     * {@inheritDoc}
+     */
     protected static $model_viewer_type = DocumentViewer::class;
 
+    /**
+     * {@inheritDoc}
+     */
     protected $extra_services = [
         ElementableCompositionService::class,
         PdfGeneratorService::class,
     ];
 
+    /**
+     * Create PDF document and send it to response in base 64 encoding.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Models\Document $document
+     */
     public function previewPdf(CrudRequest $request, Document $document)
     {
         try {

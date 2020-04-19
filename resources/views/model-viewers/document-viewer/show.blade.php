@@ -21,8 +21,6 @@
 <script type="text/javascript" data-keditor="script">
 $(document).ready(function($)
 {
-    let $element = $('.content-composition');
-
     const serialize = function($node, onlyData = [], onNodeCreated)
     {
         let element = {
@@ -50,6 +48,20 @@ $(document).ready(function($)
 
         return element;
     };
+
+    const parseNodeContent = function($node, element, onlyData) {
+        if (typeof $node.attr('class') == 'string') {
+            let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
+                if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
+                    element.gridLayout[col[1]] = col[2];
+                }
+            });
+        }
+
+        return element;
+    };
+
+    let $element = $('.content-composition');
 
     $element.keditor({
         rx: window.rx(),
@@ -119,24 +131,7 @@ $(document).ready(function($)
             console.log('onDynamicContentLoaded');
         },
         onSave: function (content) {
-            // let content = $element.keditor('getContent');
-            console.log('content', content);
-
-            parseNodeContent = function($node, element, onlyData) {
-                if (typeof $node.attr('class') == 'string') {
-                    let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
-                        if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
-                            element.gridLayout[col[1]] = col[2];
-                        }
-                    });
-                }
-
-                return element;
-            };
-
-            const tree = serialize($('<div>').html(content), [], parseNodeContent);
-
-            console.log('tree', tree);
+            const composition = serialize($('<div>').html(content), [], parseNodeContent);
 
             window.rxUtility().ajaxCall({
                 rx: window.rx(),
@@ -144,7 +139,7 @@ $(document).ready(function($)
                 type: 'post',
                 url: $element.data('update-url'),
                 data: {
-                    tree: tree
+                    composition: composition
                 }
             });
         },
