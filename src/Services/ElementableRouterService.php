@@ -28,7 +28,7 @@ class ElementableRouterService extends CrudRouterService
             'uses' => $this->controller . '@storeComposition',
         ]);
 
-        Route::get($this->name . sprintf('/{%s}/preview/pdf', $param), [
+        Route::post($this->name . sprintf('/{%s}/preview/pdf', $param), [
             'as' => 'crud.' . $this->name . '.preview-pdf',
             'uses' => $this->controller . '@previewPdf',
         ]);
