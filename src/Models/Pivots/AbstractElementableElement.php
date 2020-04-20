@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Pivots;
 
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 // rocXolid cms elements model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
@@ -19,7 +20,21 @@ abstract class AbstractElementableElement extends MorphPivot
 {
     protected $fillable = [
         'position',
+        'is_enabled',
+        'template',
     ];
+
+    protected function setKeysForSaveQuery(Builder $query)
+    {
+        $query
+            ->where([
+                $this->parent()->getKeyName() =>$this->container()->getRelated()->getKey(),
+                $this->element()->getMorphType() => get_class($this->element()->getRelated()),
+                $this->element()->getForeignKeyName() => $this->element()->getRelated()->getKey(),
+            ]);
+
+        return $query;
+    }
 
     abstract public function parent();
 

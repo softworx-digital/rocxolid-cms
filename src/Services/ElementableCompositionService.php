@@ -35,7 +35,6 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      */
     public function compose(Elementable $model, Collection $data): Elementable
     {
-dd($data);
         $this
             ->createElementStructure($model, collect($data->get('composition')))
             ->saveStructure($model);
@@ -103,7 +102,6 @@ dd($data);
     protected function createElement(Collection $data)
     {
         if (!$data->has('elementType')) {
-dd($data);
             throw new \InvalidArgumentException('Missing [elementType] in node data');
         }
 
@@ -112,6 +110,14 @@ dd($data);
         $element = $data->has('elementId')
             ? $element_type::findOrFail($data->get('elementId'))
             : app($element_type);
+
+        if ($data->has('elementData')) {
+            $element->setDataOnCreate(collect($data->get('elementData')));
+        }
+
+        if ($data->has('pivotData')) {
+            $element->setPivotData(collect($data->get('pivotData')));
+        }
 
         return $element;
     }

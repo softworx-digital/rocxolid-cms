@@ -8,7 +8,7 @@
             data-update-url="{{ $component->getController()->getRoute('storeComposition', $component->getModel()) }}"
             data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}">
         @foreach ($component->getModel()->elements() as $element)
-            {!! $element->getModelViewerComponent()->render('default') !!}
+            {!! $element->getModelViewerComponent()->render($element->getPivotData()->get('template')) !!}
         @endforeach
         </div>
     </div>
@@ -24,11 +24,17 @@
 <script type="text/javascript" data-keditor="script">
 $(document).ready(function($)
 {
-    const serialize = function($node, onlyData = [], onNodeCreated)
+    const serialize = function($node, position = 0, onlyData = [], onNodeCreated)
     {
         let element = {
-            gridLayout: {},
-            // content: $container.html(),
+            pivotData: {
+                position: position,
+                template: 'default'
+            },
+            elementData: {
+                gridLayout: {},
+                content: [],
+            }
         };
 
         for (let i in $node.data()) {
@@ -38,12 +44,21 @@ $(document).ready(function($)
             }
         }
 
-        element.children = [];
+        if ($node.find('[data-element-type]').length) {
+            element.children = [];
 
-        $node.children().each(function()
-        {
-            element.children.push(serialize($(this), onlyData, onNodeCreated));
-        });
+            $node.children().each(function(position)
+            {
+                element.children.push(serialize($(this), position, onlyData, onNodeCreated));
+            });
+        } else if ($node.children().length) {
+            $node.children().each(function(position)
+            {
+                element.elementData.content.push($.trim($(this).html()));
+            });
+        } else {
+            element.elementData.content.push($.trim($node.html()));
+        }
 
         if (typeof onNodeCreated == 'function') {
             element = onNodeCreated($node, element, onlyData);
@@ -56,7 +71,7 @@ $(document).ready(function($)
         if (typeof $node.attr('class') == 'string') {
             let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
                 if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
-                    element.gridLayout[col[1]] = col[2];
+                    element.elementData.gridLayout[col[1]] = col[2];
                 }
             });
         }
@@ -134,8 +149,9 @@ $(document).ready(function($)
             console.log('onDynamicContentLoaded');
         },
         onSave: function (content) {
-            const root = serialize($('<div>').html(content), [ 'elementType' ], parseNodeContent);
-
+console.log(content);
+            const root = serialize($('<div>').html(content), 0, [], parseNodeContent);
+console.log(root);
             window.rxUtility().ajaxCall({
                 rx: window.rx(),
                 element: $element,

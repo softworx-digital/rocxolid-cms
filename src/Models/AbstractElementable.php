@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
@@ -11,7 +12,8 @@ use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
 use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-// rocXolid cms models contracts
+// rocXolid cms elements models contracts
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms elements models traits
 use Softworx\RocXolid\CMS\Elements\Models\Traits\HasElements;
@@ -55,6 +57,20 @@ abstract class AbstractElementable extends AbstractCrudModel implements Elementa
     public function elementsPivots(): HasOneOrMany
     {
         return $this->hasMany($this->getElementsPivotType(), 'parent_id');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPivot(Element $element): MorphPivot
+    {
+        $type = $this->elementsPivots()->getRelated();
+
+        return $type::firstOrNew([
+            $this->elementsPivots()->getForeignKeyName() => $this->getKey(),
+            $type->element()->getMorphType() => get_class($element),
+            $type->element()->getForeignKeyName() => $element->getKey(),
+        ]);
     }
 
     /**

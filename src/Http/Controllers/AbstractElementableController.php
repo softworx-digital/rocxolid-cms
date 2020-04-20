@@ -23,6 +23,9 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  */
 abstract class AbstractElementableController extends AbstractCrudController
 {
+    /**
+     * {@inheritDoc}
+     */
     protected static $model_viewer_type = ElementableViewer::class;
 
     /**
@@ -32,6 +35,9 @@ abstract class AbstractElementableController extends AbstractCrudController
         ElementableCompositionService::class,
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
@@ -39,11 +45,23 @@ abstract class AbstractElementableController extends AbstractCrudController
         'update' => 'update',
     ];
 
+    /**
+     * Show snippets listing.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
     public function elementSnippets(CrudRequest $request, Elementable $model)
     {
         return $this->getModelViewerComponent($model)->render('snippets');
     }
 
+    /**
+     * Store the elementable composition.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
     public function storeComposition(CrudRequest $request, Elementable $model)
     {
         try {
