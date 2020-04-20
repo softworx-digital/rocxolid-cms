@@ -2,12 +2,11 @@
 
 namespace Softworx\RocXolid\CMS\Services\Contracts;
 
-// rocXolid utils
-use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Illuminate\Support\Collection;
 // rocXolid service contracts
 use Softworx\RocXolid\Services\Contracts\ConsumerService;
 // rocXolid cms model contracts
-use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 
 /**
  * Service to handle elementable (page, document,...) composition.
@@ -21,9 +20,9 @@ interface ElementableCompositionService extends ConsumerService
     /**
      * Compose elementable with provided structure of elements.
      *
-     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
-     * @param \Softworx\RocXolid\CMS\Models\Contracts\Elementable $model
-     * @return \Softworx\RocXolid\CMS\Models\Contracts\Elementable
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     * @param \Illuminate\Support\Collection $structure
+     * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable
      */
-    public function compose(CrudRequest $request, Elementable $model): Elementable;
+    public function compose(Elementable $model, Collection $structure): Elementable;
 }

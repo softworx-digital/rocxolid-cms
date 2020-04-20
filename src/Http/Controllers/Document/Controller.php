@@ -50,11 +50,11 @@ class Controller extends AbstractElementableController
                 'content' => 'required',
             ]);
 
-            $pdf = $this->pdfGeneratorService()->generatePdf($this->getDashboard(), $document, collect($data));
+            $pdf = $this->pdfGeneratorService()->generatePdf($document, collect($data));
 
             return $this->response
-                    ->file64($pdf)//, 'sample.pdf')
-                    ->get();
+                ->file64($pdf)//, 'sample.pdf')
+                ->get();
         } catch (ValidationException $e) {
             return $this->response
                 ->notifyError($e->getMessage())

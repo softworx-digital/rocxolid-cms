@@ -37,7 +37,7 @@ class PdfGeneratorService implements ConsumerService
     /**
      * {@inheritDoc}
      */
-    public function generatePdf($dashbpard, Document $document, Collection $data)
+    public function generatePdf(Document $document, Collection $data)
     {
         $view = View::make('rocXolid::pdf', [
             'content' => $data->get('content')

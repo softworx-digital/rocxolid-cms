@@ -7,6 +7,9 @@
             data-snippets-url="{{ $component->getController()->getRoute('elementSnippets', $component->getModel()) }}"
             data-update-url="{{ $component->getController()->getRoute('storeComposition', $component->getModel()) }}"
             data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}">
+        @foreach ($component->getModel()->elements() as $element)
+            {!! $element->getModelViewerComponent()->render('default') !!}
+        @endforeach
         </div>
     </div>
 
@@ -131,7 +134,7 @@ $(document).ready(function($)
             console.log('onDynamicContentLoaded');
         },
         onSave: function (content) {
-            const composition = serialize($('<div>').html(content), [], parseNodeContent);
+            const root = serialize($('<div>').html(content), [ 'elementType' ], parseNodeContent);
 
             window.rxUtility().ajaxCall({
                 rx: window.rx(),
@@ -139,7 +142,7 @@ $(document).ready(function($)
                 type: 'post',
                 url: $element.data('update-url'),
                 data: {
-                    composition: composition
+                    composition: root.children
                 }
             });
         },

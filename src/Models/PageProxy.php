@@ -10,7 +10,7 @@ use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid traits
 use Softworx\RocXolid\Traits\Modellable;
 // rocXolid cms model contracts
-use Softworx\RocXolid\CMS\Models\Contracts\ProxyElementable;
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\ProxyElementable;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;

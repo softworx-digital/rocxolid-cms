@@ -2,12 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
+use Illuminate\Validation\ValidationException;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
 // rocXolid cms model contracts
-use Softworx\RocXolid\CMS\Models\Contracts\Elementable;
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\ElementableViewer;
 // rocXolid cms services
@@ -45,9 +46,31 @@ abstract class AbstractElementableController extends AbstractCrudController
 
     public function storeComposition(CrudRequest $request, Elementable $model)
     {
-        $model = $this->elementableCompositionService()->compose($request, $model);
+        try {
+            // @todo: extend to validate complete structure
+            $data = $request->validate([
+                'composition' => [
+                    'required',
+                    'array',
+                ],
+            ]);
 
-        return $this->getModelViewerComponent($model)->render('snippets');
+            $model = $this->elementableCompositionService()->compose($model, collect($data));
+
+            $model_viewer_component = $this->getModelViewerComponent($model);
+
+            return $this->response
+                ->notifySuccess($model_viewer_component->translate('text.updated'))
+                ->get();
+        } catch (ValidationException $e) {
+            return $this->response
+                ->notifyError($e->getMessage())
+                ->get();
+        } catch (\Exception $e) {
+            return $this->response
+                ->notifyError($e->getMessage())
+                ->get();
+        }
     }
 
 // @todo
