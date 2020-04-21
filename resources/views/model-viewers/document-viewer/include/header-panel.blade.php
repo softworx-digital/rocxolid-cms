@@ -4,7 +4,7 @@
         <div class="col-md-6 col-xs-12">
             <h2 class="text-overflow"><span class="text-big">{!! $component->getModel()->getTitle() !!}</span></h2>
         </div>
-        <div class="col-md-6 col-xs-12 text-right hidden-xs">
+        <div class="col-md-6 col-xs-12 text-right hidden-sm">
             <h2 class="text-overflow">
                 <small>{{ $component->translate(sprintf('action.%s', $route_method)) }}</small>
                 <span class="model-class-title">{{ $component->translate('model.title.singular') }}</span>

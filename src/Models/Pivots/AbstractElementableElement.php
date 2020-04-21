@@ -2,9 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\Models\Pivots;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
+// rocXolid cms elements model pivots
+use Softworx\RocXolid\CMS\Elements\Models\Pivots\AbstractElementableElementPivot;
 // rocXolid cms elements model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
@@ -16,43 +15,20 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractElementableElement extends MorphPivot
+abstract class AbstractElementableElement extends AbstractElementableElementPivot
 {
-    protected $fillable = [
-        'position',
-        'is_enabled',
-        'template',
-    ];
-
-    protected function setKeysForSaveQuery(Builder $query)
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrimaryKeyWhereCondition(?Elementable $parent = null, ?Element $element = null): array
     {
-        $query
-            ->where([
-                $this->parent()->getKeyName() =>$this->container()->getRelated()->getKey(),
-                $this->element()->getMorphType() => get_class($this->element()->getRelated()),
-                $this->element()->getForeignKeyName() => $this->element()->getRelated()->getKey(),
-            ]);
+        $parent = $parent ?? $this->parent ?? $this->parent()->getRelated();
+        $element = $element ?? $this->element ?? $this->element()->getRelated();
 
-        return $query;
-    }
-
-    abstract public function parent();
-
-    public function setElement(Elementable $container, Element $element)
-    {
-        $this->parent()->associate($container);
-        $this->element()->associate($element);
-
-        return $this;
-    }
-
-    public function element()
-    {
-        return $this->morphTo();
-    }
-
-    public function getTable()
-    {
-        return sprintf('cms_%s_has_elements', Str::snake((new \ReflectionClass($this->parent()->getRelated()))->getShortName()));
+        return [
+            $this->parent()->getForeignKeyName() => $parent->getKey(),
+            $this->element()->getMorphType() => get_class($element),
+            $this->element()->getForeignKeyName() => $element->getKey(),
+        ];
     }
 }

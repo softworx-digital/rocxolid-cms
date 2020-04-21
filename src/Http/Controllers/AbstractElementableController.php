@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
@@ -64,143 +65,86 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     public function storeComposition(CrudRequest $request, Elementable $model)
     {
-        try {
-            // @todo: extend to validate complete structure
-            $data = $request->validate([
-                'composition' => [
-                    'required',
-                    'array',
-                ],
-            ]);
+        $model = $this->elementableCompositionService()->compose($model, $this->validateCompositionData($request));
 
-            $model = $this->elementableCompositionService()->compose($model, collect($data));
+        $model_viewer_component = $this->getModelViewerComponent($model);
 
-            $model_viewer_component = $this->getModelViewerComponent($model);
-
-            return $this->response
-                ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->get();
-        } catch (ValidationException $e) {
-            return $this->response
-                ->notifyError($e->getMessage())
-                ->get();
-        } catch (\Exception $e) {
-            return $this->response
-                ->notifyError($e->getMessage())
-                ->get();
-        }
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->redirect($this->getRoute('show', $model)) // to reload with element ids for new elements
+            ->get();
     }
 
-// @todo
+    /**
+     * Detach element from elementable without deleting it from database.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
+    public function detachElement(CrudRequest $request, Elementable $model)
+    {
+        dd('@todo', __METHOD__);
+    }
+
+    /**
+     * Delete element from elementable and database.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
+    public function destroyElement(CrudRequest $request, Elementable $model)
+    {
+        $model = $this->elementableCompositionService()->destroyElement($model, $this->validateElementData($request));
+
+        $model_viewer_component = $this->getModelViewerComponent($model);
+
+        return $this->response->notifySuccess($model_viewer_component->translate('text.updated'))->get();
+    }
+
+    /**
+     * Provide live preview from edited, not persisted content.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
     public function preview(CrudRequest $request, Elementable $model)
     {
-        $model_viewer_component = $this->getModelViewerComponent($model);
-
-        if ($request->ajax()) {
-            return $this->response
-                ->modal($model_viewer_component->fetch('modal.preview'))
-                ->get();
-        } else {
-            return $this
-                ->getDashboard()
-                ->setModelViewerComponent($model_viewer_component)
-                ->render('model', [
-                    'model_viewer_template' => 'preview'
-                ]);
-        }
+        dd('@todo', __METHOD__);
     }
 
-
-
-
-
-
-
-
-    public function selectPageElementClass(CrudRequest $request, CrudableModel $model, string $page_element_class_action)
+    /**
+     * Validate request data for composition manipulation actions.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    private function validateCompositionData(CrudRequest $request): Collection
     {
-        $model_viewer_component = $this->getModelViewerComponent($model);
-
-        return $this->response
-            ->modal($model_viewer_component->fetch('modal.select-page-element-class', [
-                'page_element_class_action' => $page_element_class_action,
-            ]))
-            ->get();
+        // @todo: extend to validate complete structure
+        return collect($request->validate([
+            'composition' => [
+                'required',
+                'array',
+            ],
+        ]));
     }
 
-    public function listPageElement(CrudRequest $request, CrudableModel $model, string $page_element_short_class)
+    /**
+     * Validate request data for element manipulation actions.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @return \Illuminate\Support\Collection
+     */
+    private function validateElementData(CrudRequest $request): Collection
     {
-        $form = $this
-            ->getForm($request, $model)
-            ->setPageElementShortClass($page_element_short_class);
-
-        $model_viewer_component = $this->getModelViewerComponent(
-            $model,
-            $this->getFormComponent($form)
-        );
-
-        return $this->response
-            ->modal($model_viewer_component->fetch('modal.select-page-element', [
-                'page_element_short_class' => $page_element_short_class,
-            ]))
-            ->get();
-    }
-
-    public function selectPageElement(CrudRequest $request, CrudableModel $model, string $page_element_short_class)
-    {
-        $form = $this
-            ->getForm($request, $model)
-            ->setPageElementShortClass($page_element_short_class)
-            ->submit();
-
-        $model_viewer_component = $this->getModelViewerComponent(
-            $model,
-            $this->getFormComponent($form)
-        );
-
-        if ($form->isValid()) {
-            $page_element = $form->getPageElementModel()->find($form->getFormField('page_element_id')->getValue());
-
-            if ($model->hasPageElement($page_element)) {
-                return $this->response
-                    ->notifyError($model_viewer_component->translate('text.element-already-set'))
-                    ->get();
-            }
-
-            $model->addPageElement($page_element);
-
-            return $this->response->redirect($model->getControllerRoute('show'))->get();
-        /*
-        return $this->response
-            ->replace($model_viewer_component->getDomId('page-elements', $model->getKey()), $model_viewer_component->fetch('include.page-elements'))
-            ->modalClose($model_viewer_component->getDomId('modal-select-page-element'))
-            ->get();
-        */
-        } else {
-            return $this->errorResponse($request, $model, $form, 'update');
-        }
-    }
-
-    public function updatePageElementsOrder(CrudRequest $request, CrudableModel $model)
-    {
-        $model->updatePageElementsOrder($request);
-
-        $model_viewer_component = $this->getModelViewerComponent($model);
-
-        return $this->response
-            //->replace($model_viewer_component->getDomId($request->_section), $model_viewer_component->fetch($template_name))
-            ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->get();
-    }
-
-    public function setPivotData(CrudRequest $request, CrudableModel $model, string $page_elementable_type, int $page_elementable_id)
-    {
-        $model->updatePivotData($request, $page_elementable_type, $page_elementable_id);
-
-        $model_viewer_component = $this->getModelViewerComponent($model);
-
-        return $this->response
-            ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->get();
+        // @todo: extend to validate complete structure
+        return collect($request->validate([
+            'elementType' => [
+                'required',
+            ],
+            'elementId' => [
+                'required',
+            ],
+        ]));
     }
 }

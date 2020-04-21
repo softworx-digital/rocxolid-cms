@@ -25,4 +25,13 @@ interface ElementableCompositionService extends ConsumerService
      * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable
      */
     public function compose(Elementable $model, Collection $structure): Elementable;
+
+    /**
+     * Remove given element and underlying structure from composition.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     * @param \Illuminate\Support\Collection $data
+     * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable
+     */
+    public function destroyElement(Elementable $model, Collection $data): Elementable;
 }

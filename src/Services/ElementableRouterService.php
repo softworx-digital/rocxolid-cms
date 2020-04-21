@@ -24,8 +24,18 @@ class ElementableRouterService extends CrudRouterService
         ]);
 
         Route::post($this->name . sprintf('/{%s}/composition', $param), [
-            'as' => 'crud.' . $this->name . '.update.composition',
+            'as' => 'crud.' . $this->name . '.composition.update',
             'uses' => $this->controller . '@storeComposition',
+        ]);
+
+        Route::post($this->name . sprintf('/{%s}/composition/detach/element', $param), [
+            'as' => 'crud.' . $this->name . '.composition.detach.element',
+            'uses' => $this->controller . '@detachElement',
+        ]);
+
+        Route::delete($this->name . sprintf('/{%s}/composition/destroy/element', $param), [
+            'as' => 'crud.' . $this->name . '.composition.destroy.element',
+            'uses' => $this->controller . '@destroyElement',
         ]);
 
         Route::post($this->name . sprintf('/{%s}/preview/pdf', $param), [

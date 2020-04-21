@@ -25,6 +25,7 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
+ * @todo: delegate element retrieval & data manipulation to element repository (obtained from service consumer)
  */
 class ElementableCompositionService implements ElementableCompositionServiceContract
 {
@@ -44,44 +45,51 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
         return $model;
     }
 
-
-    protected function saveStructure(Elementable $model)
+    /**
+     * {@inheritDoc}
+     */
+    public function destroyElement(Elementable $model, Collection $data): Elementable
     {
-        return $this
-            ->saveNodes($model)
-            ->saveEdges($model);
+        // find the element to destroy
+        $element = $this->getElement($data);
+
+        if ($element instanceof Elementable) {
+            $this->destroyStructure($element);
+        }
+
+        $model->findPivot($element)->delete();
+        $element->delete();
+
+        return $model;
     }
 
-    protected function saveNodes(Elementable &$parent)
+    /**
+     * Destroys the structure with the given root element bottom up.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $parent
+     */
+    protected function destroyStructure(Elementable $parent): ElementableCompositionServiceContract
     {
-        $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
+        $parent->elements()->each(function ($element, $index) use ($parent) {
             if ($element instanceof Elementable) {
-                $this->saveNodes($element);
+                $this->destroyStructure($element);
             }
 
-            $parent->saveElement($element);
+            $parent->findPivot($element)->delete();
+            $element->delete();
         });
-
-        // $parent = tap($parent)->push();
-        $parent = tap($parent)->save();
 
         return $this;
     }
 
-    protected function saveEdges(Elementable &$parent)
-    {
-        $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
-            if ($element instanceof Elementable) {
-                $this->saveEdges($element);
-            }
-
-            $parent->savePivot($element);
-        });
-
-        return $this;
-    }
-
-    protected function createElementStructure(Elementable &$parent, Collection $structure)
+    /**
+     * Create in-memory structure of elements (nodes) and pivots (edges) from (request) data.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
+     * @param \Illuminate\Support\Collection $structure
+     * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
+     */
+    protected function createElementStructure(Elementable &$parent, Collection $structure): ElementableCompositionServiceContract
     {
         $structure->each(function ($element_data, $position) use (&$parent) {
             $element_data = collect($element_data);
@@ -99,7 +107,115 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
         return $this;
     }
 
-    protected function createElement(Collection $data)
+    /**
+     * Persist in-memory structure of elements (nodes) and pivots (edges).
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
+     */
+    protected function saveStructure(Elementable $model): ElementableCompositionServiceContract
+    {
+        // this should be enough, however the structure is somehow non-standard
+        // and the relations are not resolved properly
+        // $parent = tap($parent)->push();
+
+        // custom save mechanism
+        return $this
+            ->dropEdges($model)
+            ->saveNodes($model)
+            ->saveEdges($model);
+    }
+
+    /**
+     * Drop all edges of the structure with the given root element bottom up.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
+     */
+    protected function dropEdges(Elementable $model): ElementableCompositionServiceContract
+    {
+        $model->elements()->each(function ($element, $index) use ($model) {
+            if ($element instanceof Elementable) {
+                $this->dropEdges($element);
+            }
+
+            $model->findPivot($element)->delete();
+        });
+
+        return $this;
+    }
+
+    /**
+     * Persist in-memory structure of elements (nodes) in bottom up fashion.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
+     * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
+     */
+    protected function saveNodes(Elementable &$parent): ElementableCompositionServiceContract
+    {
+        // use in-memory elements collection created from request
+        $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
+            if ($element instanceof Elementable) {
+                $this->saveNodes($element);
+            }
+
+            $parent->saveElement($element);
+        });
+
+        $parent = tap($parent)->save();
+
+        return $this;
+    }
+
+    /**
+     * Persist in-memory structure of pivots (edges) in bottom up fashion.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
+     * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
+     */
+    protected function saveEdges(Elementable &$parent): ElementableCompositionServiceContract
+    {
+        // use in-memory elements collection created from request
+        $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
+            if ($element instanceof Elementable) {
+                $this->saveEdges($element);
+            }
+
+            $parent->savePivot($element);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Obtain (find or create) element to work with based on (request) data.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Element
+     * @throws \InvalidArgumentException
+     */
+    protected function getElement(Collection $data): Element
+    {
+        if (!$data->has('elementType')) {
+            throw new \InvalidArgumentException('Missing [elementType] in node data');
+        }
+
+        if (!$data->has('elementId')) {
+            throw new \InvalidArgumentException('Missing [elementId] in node data');
+        }
+
+        $element_type = $this->resolveElementPolymorphism($data->get('elementType'));
+
+        return $element_type::findOrFail($data->get('elementId'));
+    }
+
+    /**
+     * Obtain (find or create) element to work with based on (request) data.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Element
+     * @throws \InvalidArgumentException
+     */
+    protected function createElement(Collection $data): Element
     {
         if (!$data->has('elementType')) {
             throw new \InvalidArgumentException('Missing [elementType] in node data');
@@ -112,7 +228,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
             : app($element_type);
 
         if ($data->has('elementData')) {
-            $element->setDataOnCreate(collect($data->get('elementData')));
+            $element->onCreateBeforeSave(collect($data->get('elementData')));
         }
 
         if ($data->has('pivotData')) {
@@ -122,7 +238,14 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
         return $element;
     }
 
-    protected function resolveElementPolymorphism(string $param)
+    /**
+     * Retrieve the real fully qualified element type based on provided model param.
+     *
+     * @param string $param
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function resolveElementPolymorphism(string $param): string
     {
         $element_type = config(sprintf('rocXolid.main.polymorphism.%s', $param), $this->guessElementType($param));
 
@@ -137,7 +260,14 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
         return $element_type;
     }
 
-    protected function guessElementType(string $param)
+    /**
+     * Naively guess the element type based on namespace and model param.
+     *
+     * @param string $param
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function guessElementType(string $param): string
     {
         /*
          * @todo: Laravel 7

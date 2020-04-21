@@ -1,12 +1,14 @@
 <div class="x_panel ajax-overlay">
     {!! $component->render('include.header-panel') !!}
 
-    <div data-keditor="html">
+    <div class="d-none" data-keditor="html">
         <div
             class="content-composition"
             data-snippets-url="{{ $component->getController()->getRoute('elementSnippets', $component->getModel()) }}"
             data-update-url="{{ $component->getController()->getRoute('storeComposition', $component->getModel()) }}"
-            data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}">
+            data-preview-pdf-url="{{ $component->getController()->getRoute('previewPdf', $component->getModel()) }}"
+            data-element-detach-url="{{ $component->getController()->getRoute('detachElement', $component->getModel()) }}"
+            data-element-destroy-url="{{ $component->getController()->getRoute('destroyElement', $component->getModel()) }}">
         @foreach ($component->getModel()->elements() as $element)
             {!! $element->getModelViewerComponent()->render($element->getPivotData()->get('template')) !!}
         @endforeach
@@ -19,6 +21,7 @@
 @push('script')
 <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor.js') }}"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor-components.js') }}"></script>
 <script type="text/javascript" data-keditor="script">
@@ -51,14 +54,18 @@ $(document).ready(function($)
             {
                 element.children.push(serialize($(this), position, onlyData, onNodeCreated));
             });
-        } else if ($node.children().length) {
+
+        } else if ($node.is('[data-element-type="text"]')) {
+            // element.elementData.content.push($.trim($node.html()));
+            element.elementData.content = $.trim($node.html());
+        }/* else if ($node.children().length) {
             $node.children().each(function(position)
             {
                 element.elementData.content.push($.trim($(this).html()));
             });
         } else {
             element.elementData.content.push($.trim($node.html()));
-        }
+        }*/
 
         if (typeof onNodeCreated == 'function') {
             element = onNodeCreated($node, element, onlyData);
@@ -77,6 +84,33 @@ $(document).ready(function($)
         }
 
         return element;
+    };
+
+    const elementableApi = {
+        storeComposition: function(composition) {
+            window.rxUtility().ajaxCall({
+                rx: window.rx(),
+                element: $element,
+                type: 'post',
+                url: $element.data('update-url'),
+                data: {
+                    composition: composition
+                }
+            });
+        },
+        deleteComponent: function(component) {
+            window.rxUtility().ajaxCall({
+                rx: window.rx(),
+                element: $element,
+                type: 'delete',
+                url: $element.data('element-destroy-url'),
+                data: {
+                    // @todo: ugly access method
+                    elementType: $(component[0].innerHTML).find('[data-element-type]').first().data('elementType'),
+                    elementId: $(component[0].innerHTML).find('[data-element-type]').first().data('elementId'),
+                }
+            });
+        },
     };
 
     let $element = $('.content-composition');
@@ -129,18 +163,41 @@ $(document).ready(function($)
                 }
             }
         },
+        onInitIframe: function (iframe, iframeHead, iframeBody) {
+            setTimeout(function() {
+                $element
+                    .closest('[data-keditor]')
+                    .removeClass('d-none')
+                    .addClass('animated fadeIn faster');
+            }, 500);
+        },
+        onContentChanged: function (event, contentArea) {
+            window.isContentDirty = true;
+        },
+        onComponentReady: function (component) {
+            console.log('onComponentReady', component);
+        },
         onContainerSnippetAdded: function (event, newContainer, selectedSnippet, contentArea) {
             console.log('onContainerSnippetAdded');
         },
-        onBeforeContainerDeleted: function (event, selectedContainer, contentArea) {
-            console.log('onBeforeContainerDeleted');
+        onBeforeContainerDeleted: function (event, component, contentArea) {
+            if ($(component[0].innerHTML).find('[data-element-type]').first().data('elementId')) {
+                return elementableApi.deleteComponent(component);
+            }
+        },
+        onContainerDeleted: function (event, selectedContainer, contentArea) {
+            window.isContentDirty = false;
         },
         onComponentSnippetAdded: function (event, newComponent, selectedSnippet, contentArea) {
-            console.log('contentArea', contentArea);
             console.log('onComponentSnippetAdded');
         },
-        onBeforeComponentDeleted: function (event, selectedComponent, contentArea) {
-            console.log('onBeforeComponentDeleted');
+        onBeforeComponentDeleted: function (event, component, contentArea) {
+            if ($(component[0].innerHTML).find('[data-element-type]').first().data('elementId')) {
+                return elementableApi.deleteComponent(component);
+            }
+        },
+        onComponentDeleted: function (event, selectedContainer, contentArea) {
+            window.isContentDirty = false;
         },
         onBeforeDynamicContentLoad: function (dynamicElement, component, contentArea) {
             console.log('onBeforeDynamicContentLoad');
@@ -149,18 +206,11 @@ $(document).ready(function($)
             console.log('onDynamicContentLoaded');
         },
         onSave: function (content) {
-console.log(content);
             const root = serialize($('<div>').html(content), 0, [], parseNodeContent);
-console.log(root);
-            window.rxUtility().ajaxCall({
-                rx: window.rx(),
-                element: $element,
-                type: 'post',
-                url: $element.data('update-url'),
-                data: {
-                    composition: root.children
-                }
-            });
+
+            window.isContentDirty = false;
+
+            elementableApi.storeComposition(root.children);
         },
     });
 });
