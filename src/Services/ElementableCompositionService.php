@@ -8,12 +8,8 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Services\Contracts\ServiceConsumer;
 // rocXolid service traits
 use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
-// rocXolid model contracts
-use Softworx\RocXolid\Models\Contracts\Crudable;
-// rocXolid cms service contracts
-use Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService as ElementableCompositionServiceContract;
 // rocXolid cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractDocumentController;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms model elements contracts
@@ -27,7 +23,7 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * @version 1.0.0
  * @todo: delegate element retrieval & data manipulation to element repository (obtained from service consumer)
  */
-class ElementableCompositionService implements ElementableCompositionServiceContract
+class ElementableCompositionService implements Contracts\ElementableCompositionService
 {
     use HasServiceConsumer;
 
@@ -68,7 +64,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      *
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $parent
      */
-    protected function destroyStructure(Elementable $parent): ElementableCompositionServiceContract
+    protected function destroyStructure(Elementable $parent): Contracts\ElementableCompositionService
     {
         $parent->elements()->each(function ($element, $index) use ($parent) {
             if ($element instanceof Elementable) {
@@ -89,7 +85,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      * @param \Illuminate\Support\Collection $structure
      * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
      */
-    protected function createElementStructure(Elementable &$parent, Collection $structure): ElementableCompositionServiceContract
+    protected function createElementStructure(Elementable &$parent, Collection $structure): Contracts\ElementableCompositionService
     {
         $structure->each(function ($element_data, $position) use (&$parent) {
             $element_data = collect($element_data);
@@ -113,7 +109,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
      * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
      */
-    protected function saveStructure(Elementable $model): ElementableCompositionServiceContract
+    protected function saveStructure(Elementable $model): Contracts\ElementableCompositionService
     {
         // this should be enough, however the structure is somehow non-standard
         // and the relations are not resolved properly
@@ -131,14 +127,16 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      *
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
      */
-    protected function dropEdges(Elementable $model): ElementableCompositionServiceContract
+    protected function dropEdges(Elementable $model): Contracts\ElementableCompositionService
     {
-        $model->elements()->each(function ($element, $index) use ($model) {
+        $model->elements()->filter(function ($element) {
+            return $element->exists;
+        })->each(function ($element, $index) use ($model) {
             if ($element instanceof Elementable) {
                 $this->dropEdges($element);
             }
 
-            $model->findPivot($element)->delete();
+            optional($model->findPivot($element))->delete();
         });
 
         return $this;
@@ -150,7 +148,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
      * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
      */
-    protected function saveNodes(Elementable &$parent): ElementableCompositionServiceContract
+    protected function saveNodes(Elementable &$parent): Contracts\ElementableCompositionService
     {
         // use in-memory elements collection created from request
         $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
@@ -172,7 +170,7 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable &$parent
      * @return \Softworx\RocXolid\CMS\Services\Contracts\ElementableCompositionService
      */
-    protected function saveEdges(Elementable &$parent): ElementableCompositionServiceContract
+    protected function saveEdges(Elementable &$parent): Contracts\ElementableCompositionService
     {
         // use in-memory elements collection created from request
         $parent->elementsBag()->each(function (&$element, $index) use (&$parent) {
@@ -296,6 +294,6 @@ class ElementableCompositionService implements ElementableCompositionServiceCont
      */
     protected function validateServiceConsumer(ServiceConsumer $consumer): bool
     {
-        return ($consumer instanceof AbstractElementableController);
+        return ($consumer instanceof AbstractDocumentController);
     }
 }

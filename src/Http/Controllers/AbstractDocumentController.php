@@ -22,7 +22,7 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractElementableController extends AbstractCrudController
+abstract class AbstractDocumentController extends AbstractCrudController
 {
     /**
      * {@inheritDoc}

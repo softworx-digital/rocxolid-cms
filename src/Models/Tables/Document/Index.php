@@ -3,12 +3,9 @@
 namespace Softworx\RocXolid\CMS\Models\Tables\Document;
 
 // rocXolid table columns
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\SwitchFlag;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
-use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 // rocXolid table buttons
-use Softworx\RocXolid\Tables\Buttons\Type\ButtonAnchor;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 // rocXolid CMS tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
 
@@ -19,15 +16,28 @@ class Index extends AbstractCrudCMSTable
 {
     protected $columns = [
         'is_enabled' => [
-            'type' => SwitchFlag::class,
+            'type' => ColumnType\SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'
                 ],
             ],
         ],
+        'title' => [
+            'type' => ColumnType\Text::class,
+            'options' => [
+                'label' => [
+                    'title' => 'title'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
         'web_id' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -45,7 +55,7 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'localization_id' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -63,7 +73,7 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'document_type_id' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -80,8 +90,21 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
+        'theme' => [
+            'type' => ColumnType\Text::class,
+            'options' => [
+                'label' => [
+                    'title' => 'theme'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
         'valid_from' => [
-            'type' => Text::class,
+            'type' => ColumnType\Date::class,
             'options' => [
                 'label' => [
                     'title' => 'valid_from'
@@ -94,23 +117,10 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'valid_to' => [
-            'type' => Text::class,
+            'type' => ColumnType\Date::class,
             'options' => [
                 'label' => [
                     'title' => 'valid_to'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],
-        'name' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'name'
                 ],
                 'wrapper' => [
                     'attributes' => [
@@ -123,7 +133,7 @@ class Index extends AbstractCrudCMSTable
 
     protected $buttons = [
         'compose' => [
-            'type' => ButtonAnchor::class,
+            'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'label' => [
                     'icon' => 'fa fa-object-group',
@@ -137,7 +147,7 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'edit' => [
-            'type' => ButtonAnchor::class,
+            'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'label' => [
                     'icon' => 'fa fa-pencil',
@@ -151,7 +161,7 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'delete-ajax' => [
-            'type' => ButtonAnchor::class,
+            'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

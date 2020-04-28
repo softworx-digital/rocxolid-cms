@@ -10,7 +10,7 @@ use Softworx\RocXolid\Common\Models\Image;
 // rocXolid cms model traits
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\AbstractDocument;
 
 /**
  * Article model.
@@ -19,10 +19,12 @@ use Softworx\RocXolid\CMS\Models\AbstractElementable;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Article extends AbstractElementable
+class Article extends AbstractDocument
 {
     use HasImage;
     use IsProxyPaged;
+
+    protected $table = 'cms_articles';
 
     protected $fillable = [
         'web_id',
@@ -36,11 +38,6 @@ class Article extends AbstractElementable
         'perex',
         //'css_class',
         'is_enabled'
-    ];
-
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
     ];
 
     protected $image_sizes = [

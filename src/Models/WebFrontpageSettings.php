@@ -2,8 +2,6 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use File as LaravelFile;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // rocxolid fundamentals
 use Softworx\RocXolid\Models\AbstractCrudModel;
@@ -36,7 +34,7 @@ class WebFrontpageSettings extends AbstractCrudModel
     protected $fillable = [
         'web_id',
         'name',
-        'template_set',
+        'theme',
         //'css',
         //'js',
         // 'schema',
@@ -118,23 +116,6 @@ class WebFrontpageSettings extends AbstractCrudModel
     ];
 
     public $clone_log;
-
-    public function getTemplateSetsOptions()
-    {
-        $template_sets = collect();
-
-        $views = config('view.paths');
-        $path = dirname(reset($views));
-        $path = sprintf('%s/template-sets/*', $path);
-
-        (collect(LaravelFile::glob($path)))->each(function ($file_path, $key) use ($template_sets) {
-            $pathinfo = pathinfo($file_path);
-
-            $template_sets->put($pathinfo['filename'], $pathinfo['filename']);
-        });
-
-        return $template_sets;
-    }
 
     public function destroyCmsStructure()
     {

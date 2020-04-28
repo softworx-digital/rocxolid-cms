@@ -84,6 +84,19 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
+        'theme' => [
+            'type' => Text::class,
+            'options' => [
+                'label' => [
+                    'title' => 'theme'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
         'google_analytics_tracking_code' => [
             'type' => Text::class,
             'options' => [

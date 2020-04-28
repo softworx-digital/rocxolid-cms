@@ -10,7 +10,7 @@
             data-element-detach-url="{{ $component->getController()->getRoute('detachElement', $component->getModel()) }}"
             data-element-destroy-url="{{ $component->getController()->getRoute('destroyElement', $component->getModel()) }}">
         @foreach ($component->getModel()->elements() as $element)
-            {!! $element->getModelViewerComponent()->render($element->getPivotData()->get('template')) !!}
+            {!! $element->getModelViewerComponent()->setViewTheme('pdf')->render() !!}
         @endforeach
         </div>
     </div>
@@ -49,9 +49,11 @@ $(document).ready(function($)
 
         if ($node.find('[data-element-type]').length) {
             element.children = [];
-
-            $node.children().each(function(position)
-            {
+console.log($node);
+            // $node.children().each(function(position)
+            // naively assume that underlying valid elements are on the same level
+            $node.find('[data-element-type]').first().parent().children('[data-element-type]').each(function(position) {
+console.log('[' + element.elementType + '][' + element.elementId + '] child: ' + $(this).attr('data-element-type'));
                 element.children.push(serialize($(this), position, onlyData, onNodeCreated));
             });
 
@@ -207,7 +209,7 @@ $(document).ready(function($)
         },
         onSave: function (content) {
             const root = serialize($('<div>').html(content), 0, [], parseNodeContent);
-
+console.log(root);
             window.isContentDirty = false;
 
             elementableApi.storeComposition(root.children);

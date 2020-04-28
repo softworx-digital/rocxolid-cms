@@ -8,8 +8,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 // rocXolid service contracts
 use Softworx\RocXolid\Services\Contracts\ConsumerService;
-// rocXolid service contracts
-use Softworx\RocXolid\Services\Contracts\ServiceConsumer;
+// rocXolid service traits
+use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
 // rocXolid models
 use Softworx\RocXolid\CMS\Models\Document;
 
@@ -22,17 +22,7 @@ use Softworx\RocXolid\CMS\Models\Document;
  */
 class PdfGeneratorService implements ConsumerService
 {
-    protected $consumer;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setConsumer(ServiceConsumer $consumer): ConsumerService
-    {
-        $this->consumer = $consumer;
-
-        return $this;
-    }
+    use HasServiceConsumer;
 
     /**
      * {@inheritDoc}

@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\AbstractDocument;
 
 /**
  * Page template model.
@@ -15,8 +15,10 @@ use Softworx\RocXolid\CMS\Models\AbstractElementable;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class PageTemplate extends AbstractElementable // implements Cloneable
+class PageTemplate extends AbstractDocument // implements Cloneable
 {
+    protected $table = 'cms_page_templates';
+
     protected $fillable = [
         'web_id',
         'localization_id',
@@ -36,11 +38,13 @@ class PageTemplate extends AbstractElementable // implements Cloneable
         'description'
     ];
 
+    /*
     protected $pivot_extra = [
         'position',
         'is_clone_page_element_instance',
         //'is_visible',
     ];
+    */
 
     public function beforeSave($data, $action = null)
     {

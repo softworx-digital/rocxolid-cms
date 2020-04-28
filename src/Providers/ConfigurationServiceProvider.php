@@ -18,18 +18,34 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
      */
     protected $config_files = [
         'rocXolid.cms.general' => '/../../config/general.php',
+        'rocXolid.cms.themes' => '/../../config/themes.php',
         'rocXolid.cms.elementable' => '/../../config/elementable.php',
     ];
 
     /**
-     * Extend the default request validator.
+     * Register configuration provider for rocXolid CMS package.
+     *
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register(): IlluminateServiceProvider
+    {
+        $this
+            ->configure();
+
+        return $this;
+    }
+
+    /**
+     * Extend the filesystem to provide easy access with Storage facade.
      *
      * @return \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this
-            ->configure();
+        $this->app->config['filesystems.disks.themes'] = [
+            'driver' => 'local',
+            'root' => config('rocXolid.cms.themes.path'),
+        ];
 
         return $this;
     }

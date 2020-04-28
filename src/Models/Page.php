@@ -10,7 +10,7 @@ use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\AbstractDocument;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
@@ -20,8 +20,10 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Page extends AbstractElementable // implements Cloneable
+class Page extends AbstractDocument // implements Cloneable
 {
+    protected $table = 'cms_pages';
+
     protected $fillable = [
         'web_id',
         'localization_id',
@@ -46,11 +48,6 @@ class Page extends AbstractElementable // implements Cloneable
         'web',
         'localization',
         'pageTemplate',
-    ];
-
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
     ];
 
     protected $image_sizes = [

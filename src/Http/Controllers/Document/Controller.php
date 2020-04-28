@@ -9,7 +9,7 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
 use Softworx\RocXolid\CMS\Services\PdfGeneratorService;
 // rocXolid cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractDocumentController;
 // rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentViewer;
 // rocXolid models
@@ -22,7 +22,7 @@ use Softworx\RocXolid\CMS\Models\Document;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Controller extends AbstractElementableController
+class Controller extends AbstractDocumentController
 {
     /**
      * {@inheritDoc}

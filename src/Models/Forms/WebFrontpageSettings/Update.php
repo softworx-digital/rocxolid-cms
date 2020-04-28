@@ -2,16 +2,9 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\WebFrontpageSettings;
 
-// rocXolid fundamentals
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// contracts
-use Softworx\RocXolid\Forms\Contracts\FormField;
-// fields
-use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
-use Softworx\RocXolid\Forms\Fields\Type\WysiwygTextarea;
-use Softworx\RocXolid\Forms\Fields\Type\UploadFile;
-use Softworx\RocXolid\Forms\Fields\Type\Select;
-use Softworx\RocXolid\Forms\Fields\Type\UploadImage;
+use Softworx\RocXolid\Forms\Fields\Type as FieldType;
+use Softworx\RocXolid\CMS\Facades\ThemeManager;
 
 /**
  *
@@ -26,8 +19,8 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $fields['template_set']['type'] = Select::class;
-        $fields['template_set']['options']['choices'] = $this->getModel()->getTemplateSetsOptions();
+        $fields['theme']['type'] = FieldType\Select::class;
+        $fields['theme']['options']['choices'] = ThemeManager::getThemes();
 
         /*
         $fields['logo']['type'] = UploadImage::class;

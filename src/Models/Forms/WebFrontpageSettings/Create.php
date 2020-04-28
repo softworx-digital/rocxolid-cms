@@ -3,8 +3,8 @@
 namespace Softworx\RocXolid\CMS\Models\Forms\WebFrontpageSettings;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// fields
-use Softworx\RocXolid\Forms\Fields\Type\Select;
+use Softworx\RocXolid\Forms\Fields\Type as FieldType;
+use Softworx\RocXolid\CMS\Facades\ThemeManager;
 
 class Create extends RocXolidAbstractCrudForm
 {
@@ -16,8 +16,8 @@ class Create extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $fields['template_set']['type'] = Select::class;
-        $fields['template_set']['options']['choices'] = $this->getModel()->getTemplateSetsOptions();
+        $fields['theme']['type'] = FieldType\Select::class;
+        $fields['theme']['options']['choices'] = ThemeManager::getThemes();
 
         return $fields;
     }

@@ -4,7 +4,7 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\AbstractDocument;
 use Softworx\RocXolid\CMS\Models\DocumentType;
 
 /**
@@ -14,31 +14,56 @@ use Softworx\RocXolid\CMS\Models\DocumentType;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Document extends AbstractElementable
+class Document extends AbstractDocument
 {
-    protected $is_page_element_template_choice_enabled = false;
+    /**
+     * {@inheritDoc}
+     */
+    protected $table = 'cms_documents';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'is_enabled',
         'web_id',
         'localization_id',
         'document_type_id',
+        'title',
+        'theme',
         'valid_from',
         'valid_to',
-        'name',
+        'dependencies',
+        'description',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $relationships = [
         'web',
         'localization',
         'documentType'
     ];
 
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
-    ];
+    /**
+     * {@inheritDoc}
+     */
+    protected static $title_column = 'title';
 
+    /**
+     * Theme definition for this elementable.
+     *
+     * @var string
+     * @todo: make this not hardcoded
+     */
+    protected static $theme = 'pdf';
+
+    /**
+     * Relation to document type
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
