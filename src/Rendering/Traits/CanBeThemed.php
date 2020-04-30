@@ -50,19 +50,4 @@ trait CanBeThemed
     {
         return !is_null($this->view_theme);
     }
-
-    /**
-     * Retrieve the rendering service responsible for retrieving and composing the views.
-     *
-     * @return \Softworx\RocXolid\Rendering\Services\Contracts\RenderingService
-     * @todo: find a way to inject dependency w/out explicit constructor
-     */
-    protected function getRenderingService(): RenderingService
-    {
-        if (!filled($this->rendering_service)) {
-            $this->rendering_service = app(RenderingService::class);
-        }
-
-        return $this->rendering_service;
-    }
 }

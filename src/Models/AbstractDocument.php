@@ -79,8 +79,8 @@ abstract class AbstractDocument extends AbstractCrudModel implements Elementable
      */
     public function getAvailableElements(): Collection
     {
-        return $this->getAvailableElementTypes()->map(function ($type) {
-            return app($type);
+        return $this->getAvailableElementTypes()->map(function ($options, $type) {
+            return app($type)->prepareSnippetsData($options);
         });
     }
 
@@ -115,7 +115,13 @@ abstract class AbstractDocument extends AbstractCrudModel implements Elementable
     {
         $config = static::getConfigFilePathKey();
 
-        return collect(config(sprintf('%s.available-elements.%s', $config, static::class), config(sprintf('%s.available-elements.default', $config), [])));
+        return collect(config(sprintf('%s.available-elements.%s', $config, static::class), config(sprintf('%s.available-elements.default', $config), [])))->mapWithKeys(function ($value, $index) {
+            return is_string($index) ? [
+                $index => collect($value)
+            ] : [
+                $value => collect()
+            ];
+        });
     }
 
     /**

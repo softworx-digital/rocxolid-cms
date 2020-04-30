@@ -1,3 +1,5 @@
 @foreach ($component->getModel()->getAvailableElements() as $element)
-    {!! $element->getModelViewerComponent()->setViewTheme($component->getModel()->provideViewTheme())->render('snippet') !!}
+
+    {!! $element->getSnippetModelViewerComponent($component->getModel()->provideViewTheme())->render() !!}
+
 @endforeach

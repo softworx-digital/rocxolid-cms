@@ -11,6 +11,8 @@ use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractDocumentController;
 // rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Services\Exceptions\InvalidStructureException;
+// rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms model elements contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
@@ -95,8 +97,12 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
 
             $parent->addElement($element);
 
-            if ($element_data->has('children')) {
-                $this->createElementStructure($element, collect($element_data->get('children')));
+            try {
+                if ($element_data->has('children')) {
+                    $this->createElementStructure($element, collect($element_data->get('children')));
+                }
+            } catch (\TypeError $e) {
+                throw new InvalidStructureException($parent, $element, $element_data);
             }
         });
 

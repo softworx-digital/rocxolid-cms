@@ -10,7 +10,9 @@ return [
         ],
         // document
         \Softworx\RocXolid\CMS\Models\Document::class => [
-            \Softworx\RocXolid\CMS\Elements\Models\GridRow::class,
+            \Softworx\RocXolid\CMS\Elements\Models\GridRow::class => [
+                'columns' => 1,
+            ],
             \Softworx\RocXolid\CMS\Elements\Models\Text::class,
         ],
         // article

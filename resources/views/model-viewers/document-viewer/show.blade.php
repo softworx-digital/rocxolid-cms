@@ -10,7 +10,7 @@
             data-element-detach-url="{{ $component->getController()->getRoute('detachElement', $component->getModel()) }}"
             data-element-destroy-url="{{ $component->getController()->getRoute('destroyElement', $component->getModel()) }}">
         @foreach ($component->getModel()->elements() as $element)
-            {!! $element->getModelViewerComponent()->setViewTheme('pdf')->render() !!}
+            {!! $element->getModelViewerComponent()->setViewTheme($component->getModel()->theme)->render() !!}
         @endforeach
         </div>
     </div>
@@ -27,17 +27,18 @@
 <script type="text/javascript" data-keditor="script">
 $(document).ready(function($)
 {
-    const serialize = function($node, position = 0, onlyData = [], onNodeCreated)
+    const makeElement = function($node, onlyData)
     {
         let element = {
             pivotData: {
-                position: position,
+                position: 0,
                 template: 'default'
             },
             elementData: {
                 gridLayout: {},
                 content: [],
-            }
+            },
+            children: []
         };
 
         for (let i in $node.data()) {
@@ -47,36 +48,50 @@ $(document).ready(function($)
             }
         }
 
-        if ($node.find('[data-element-type]').length) {
-            element.children = [];
-console.log($node);
-            // $node.children().each(function(position)
-            // naively assume that underlying valid elements are on the same level
-            $node.find('[data-element-type]').first().parent().children('[data-element-type]').each(function(position) {
-console.log('[' + element.elementType + '][' + element.elementId + '] child: ' + $(this).attr('data-element-type'));
-                element.children.push(serialize($(this), position, onlyData, onNodeCreated));
-            });
-
-        } else if ($node.is('[data-element-type="text"]')) {
-            // element.elementData.content.push($.trim($node.html()));
+        // @todo: prototype, make it not tied only to text
+        if ($node.is('[data-element-type="text"]')) {
             element.elementData.content = $.trim($node.html());
-        }/* else if ($node.children().length) {
-            $node.children().each(function(position)
-            {
-                element.elementData.content.push($.trim($(this).html()));
-            });
-        } else {
-            element.elementData.content.push($.trim($node.html()));
-        }*/
+        }
 
-        if (typeof onNodeCreated == 'function') {
+        return element;
+    };
+
+    const serialize = function($node, parent, onlyData = [], onNodeCreated)
+    {
+        if (!$node.find('[data-element-type]').length && !$node.is('[data-element-type]')) {
+            return;
+        }
+
+        if ((parent === null) || $node.is('[data-element-type]')) {
+            var element = makeElement($node, onlyData);
+
+            console.log('Created element', element);
+        }
+
+        $node.children().each(function() {
+            console.log('Child node [' + $(this).data('elementType') + '][' + $(this).data('elementId') + ']', $(this).get(0));
+
+            let to = element || parent;
+            let child = serialize($(this), to, onlyData, onNodeCreated);
+
+            if (child) {
+                child.pivotData.position = to.children.length;
+
+                console.log('Adding to [' + to.elementType + '][' + (to.elementId || '-') + '] child [' + child.elementType + '][' + (child.elementId || '-') + '][pos: ' + child.pivotData.position + ']');
+
+                to.children.push(child);
+            }
+        });
+
+        if (element && (typeof onNodeCreated == 'function')) {
             element = onNodeCreated($node, element, onlyData);
         }
 
         return element;
     };
 
-    const parseNodeContent = function($node, element, onlyData) {
+    const parseNodeContent = function($node, element, onlyData)
+    {
         if (typeof $node.attr('class') == 'string') {
             let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
                 if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
@@ -143,12 +158,7 @@ console.log('[' + element.elementType + '][' + element.elementId + '] child: ' +
             }*/
         ],
         snippetsUrl: $element.data('snippets-url'),
-        containerForQuickAddComponent: `
-            <div class="row" data-element-type="grid-row">
-                <div class="col-sm-12" data-type="container-content" data-element-type="grid-column">
-                </div>
-            </div>
-        `,
+        containerForQuickAddComponent: `{{ app(\Softworx\RocXolid\CMS\Elements\Models\GridRow::class)->addFakeColumns(1)->getModelViewerComponent()->setViewTheme($component->getModel()->theme)->render() }}`,
         extraTopbarItems: {
             pdf: {
                 html: '<a href="javascript:void(0);" title="PDF Preview" class="keditor-ui keditor-topbar-btn"><i class="fa fa-fw fa-file-pdf-o"></i></a>',
@@ -208,8 +218,10 @@ console.log('[' + element.elementType + '][' + element.elementId + '] child: ' +
             console.log('onDynamicContentLoaded');
         },
         onSave: function (content) {
-            const root = serialize($('<div>').html(content), 0, [], parseNodeContent);
-console.log(root);
+            const root = serialize($('<div>').html(content), null, [], parseNodeContent);
+
+            console.log('Elements tree', root);
+
             window.isContentDirty = false;
 
             elementableApi.storeComposition(root.children);
