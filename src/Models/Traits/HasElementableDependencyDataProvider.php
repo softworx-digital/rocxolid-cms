@@ -5,8 +5,6 @@ namespace Softworx\RocXolid\CMS\Models\Traits;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 // rocXolid cms support
 use Softworx\RocXolid\CMS\Support\FakerElementableDependencyDataProvider;
-// rocXolid cms elements model contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
 
 /**
  * Elementable dependencies data provider getter and setter.

@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+// rocXolid cms support
+use Softworx\RocXolid\CMS\Support\PlaceholderElementableDependencyProvider;
 // rocXolid cms elements model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
 
@@ -42,6 +44,16 @@ trait HasElementsDependenciesProvider
      */
     public function getDependenciesProvider(): ElementsDependenciesProvider
     {
-        return $this->dependencies_provider;
+        return $this->dependencies_provider ?? $this->getDefaultDependenciesProvider();
+    }
+
+    /**
+     * Obtain default dependencies provider.
+     *
+     * @return \Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider
+     */
+    public function getDefaultDependenciesProvider(): ElementsDependenciesProvider
+    {
+        return app(PlaceholderElementableDependencyProvider::class);
     }
 }

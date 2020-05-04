@@ -53,7 +53,7 @@ $(document).ready(function($)
             }
         }
 
-        if ($node.find('.content-container')) {
+        if ($node.find('.content-container .editable')) {
             element.elementData.content = $.trim($node.html());
         }
 
