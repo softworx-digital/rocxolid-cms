@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'quick-add-element' => [
+        'default' => [
+            \Softworx\RocXolid\CMS\Elements\Models\GridRow::class => [
+                'columns' => 1,
+            ],
+        ],
+    ],
     'available-elements' => [
         'default' => [
             // layout
@@ -23,6 +30,14 @@ return [
     'available-dependencies' => [
         'default' => [
             \Softworx\RocXolid\CMS\ElementableDependencies\None::class,
+        ],
+    ],
+    'styles' => [
+        'default' => [
+            // asset(mix('app.css', 'assets/css')),
+        ],
+        \Softworx\RocXolid\CMS\Models\Document::class => [
+            'assets/css/document.min.css',
         ],
     ],
 ];

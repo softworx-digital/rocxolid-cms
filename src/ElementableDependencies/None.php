@@ -2,12 +2,10 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm;
-// rocXolid cms elementable dependency contracts
+// rocXolid cms dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementDependency;
-// rocXolid cms elements model contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
  * Provide no dependency for elementable.
@@ -21,20 +19,15 @@ class None extends AbstractElementDependency
     /**
      * {@inheritDoc}
      */
-    protected $translation_key = 'none';
-
-    /**
-     * {@inheritDoc}
-     */
-    public function provideTypeDependency(Elementable $elementable): ?string
+    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency
     {
-        return null;
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, Elementable $elementable): array
+    public function provideDependencyFieldDefinition(ElementableDependencyDataProvider $data_provider): array
     {
         return [];
     }

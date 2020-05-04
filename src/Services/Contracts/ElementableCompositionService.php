@@ -18,13 +18,22 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 interface ElementableCompositionService extends ConsumerService
 {
     /**
-     * Compose elementable with provided structure of elements.
+     * Compose elementable with provided structure of elements and persist.
      *
      * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
      * @param \Illuminate\Support\Collection $structure
      * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable
      */
     public function compose(Elementable $model, Collection $structure): Elementable;
+
+    /**
+     * Compose elementable with provided structure of elements for preview - do not persist.
+     *
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     * @param \Illuminate\Support\Collection $structure
+     * @return \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable
+     */
+    public function composePreview(Elementable $model, Collection $structure): Elementable;
 
     /**
      * Remove given element and underlying structure from composition.

@@ -11,7 +11,7 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\ElementableViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\ElementableModelViewer;
 // rocXolid cms services
 use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
 
@@ -27,7 +27,7 @@ abstract class AbstractDocumentController extends AbstractCrudController
     /**
      * {@inheritDoc}
      */
-    protected static $model_viewer_type = ElementableViewer::class;
+    protected static $model_viewer_type = ElementableModelViewer::class;
 
     /**
      * {@inheritDoc}
@@ -118,7 +118,7 @@ abstract class AbstractDocumentController extends AbstractCrudController
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
      * @return \Illuminate\Support\Collection
      */
-    private function validateCompositionData(CrudRequest $request): Collection
+    protected function validateCompositionData(CrudRequest $request): Collection
     {
         // @todo: extend to validate complete structure
         return collect($request->validate([
@@ -135,7 +135,7 @@ abstract class AbstractDocumentController extends AbstractCrudController
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
      * @return \Illuminate\Support\Collection
      */
-    private function validateElementData(CrudRequest $request): Collection
+    protected function validateElementData(CrudRequest $request): Collection
     {
         // @todo: extend to validate complete structure
         return collect($request->validate([

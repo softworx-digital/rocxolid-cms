@@ -46,6 +46,17 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
     /**
      * {@inheritDoc}
      */
+    public function composePreview(Elementable $model, Collection $data): Elementable
+    {
+        $this
+            ->createElementStructure($model, collect($data->get('composition')));
+
+        return $model;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function destroyElement(Elementable $model, Collection $data): Elementable
     {
         // find the element to destroy
@@ -251,7 +262,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
      */
     protected function resolveElementPolymorphism(string $param): string
     {
-        $element_type = config(sprintf('rocXolid.main.polymorphism.%s', $param), $this->guessElementType($param));
+        $element_type = config(sprintf('rocXolid.main.polymorphism.%s', $param)) ?? $this->guessElementType($param);
 
         if (!class_exists($element_type)) {
             throw new \RuntimeException(sprintf('Invalid element type [%s] for param [%s], should be configured in [rocXolid.main.polymorphism.%s]', $element_type, $param, $param));
@@ -285,7 +296,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
         $element_type = sprintf('%s\%s', $element_namespace, Str::studly($param));
 
         if (!class_exists($element_type)) {
-            throw new \RuntimeException(sprintf('Service [%s] guessed unexisting element type [%s].', static::class, $element_type));
+            throw new \RuntimeException(sprintf('Service [%s] guessed unexisting element type [%s] for param [%s].', static::class, $element_type, $param));
         }
 
         if (!(new \ReflectionClass($element_type))->implementsInterface(Element::class)) {

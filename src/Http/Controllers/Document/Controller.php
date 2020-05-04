@@ -46,14 +46,14 @@ class Controller extends AbstractDocumentController
     public function previewPdf(CrudRequest $request, Document $document)
     {
         try {
-            $data = $request->validate([
-                'content' => 'required',
-            ]);
+            $document = $this->elementableCompositionService()->compose($document, $this->validateCompositionData($request));
 
-            $pdf = $this->pdfGeneratorService()->generatePdf($document, collect($data));
+            $html = $document->getModelViewerComponent()->setViewTheme($document->theme)->fetch('default');
+
+            $pdf = $this->pdfGeneratorService()->generatePdf($document, $html);
 
             return $this->response
-                ->file64($pdf)//, 'sample.pdf')
+                ->file64($pdf)//, 'sample.pdf') // provided name triggers download dialog
                 ->get();
         } catch (ValidationException $e) {
             return $this->response

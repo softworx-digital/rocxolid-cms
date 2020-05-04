@@ -2,6 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 // rocXolid traits
 use Softworx\RocXolid\Traits\Controllable;
 use Softworx\RocXolid\Traits\TranslationPackageProvider;
@@ -11,6 +13,7 @@ use Softworx\RocXolid\Traits\TranslationKeyProvider;
 use Softworx\RocXolid\Components\General\Message;
 // rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
  * Abstract elementable dependency.
@@ -25,6 +28,24 @@ abstract class AbstractElementDependency implements ElementableDependency
     use TranslationPackageProvider;
     use TranslationParamProvider;
     use TranslationKeyProvider;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency
+    {
+        $view->with($this->getDefaultViewPropertyName(), $data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName()));
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultViewPropertyName(): string
+    {
+        return Str::snake((new \ReflectionClass($this))->getShortName());
+    }
 
     /**
      * {@inheritDoc}

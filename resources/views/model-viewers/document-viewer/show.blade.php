@@ -10,7 +10,7 @@
             data-element-detach-url="{{ $component->getController()->getRoute('detachElement', $component->getModel()) }}"
             data-element-destroy-url="{{ $component->getController()->getRoute('destroyElement', $component->getModel()) }}">
         @foreach ($component->getModel()->elements() as $element)
-            {!! $element->getModelViewerComponent()->setViewTheme($component->getModel()->theme)->render() !!}
+            {!! $element->getModelViewerComponent()->render($element->getPivotData()->get('template')) !!}
         @endforeach
         </div>
     </div>
@@ -24,6 +24,11 @@
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor.js') }}"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor-components.js') }}"></script>
+
+@foreach($component->getModel()->getStyles() as $path)
+<style href="{{ asset($path) }}" data-type="keditor-style"></style>
+@endforeach
+
 <script type="text/javascript" data-keditor="script">
 $(document).ready(function($)
 {
@@ -48,8 +53,7 @@ $(document).ready(function($)
             }
         }
 
-        // @todo: prototype, make it not tied only to text
-        if ($node.is('[data-element-type="text"]')) {
+        if ($node.find('.content-container')) {
             element.elementData.content = $.trim($node.html());
         }
 
@@ -104,6 +108,17 @@ $(document).ready(function($)
     };
 
     const elementableApi = {
+        previewComposition: function(composition) {
+            window.rxUtility().ajaxCall({
+                rx: window.rx(),
+                element: $element,
+                type: 'post',
+                url: $element.data('preview-pdf-url'),
+                data: {
+                    composition: composition
+                }
+            });
+        },
         storeComposition: function(composition) {
             window.rxUtility().ajaxCall({
                 rx: window.rx(),
@@ -130,11 +145,42 @@ $(document).ready(function($)
         },
     };
 
+    const locale = {
+        viewOnMobile: 'Zobraziť mobilnú verziu',
+        viewOnTablet: 'Zobraziť tabletovú verziu',
+        viewOnLaptop: 'Zobraziť laptopovú verziu',
+        viewOnDesktop: 'Zobraziť desktopovú verziu',
+        previewOn: 'Náhľad zapnutý',
+        previewOff: 'Náhľad vypnutý',
+        fullscreenOn: 'Zobrazenie na celú obrazovku zapnuté',
+        fullscreenOff: 'Zobrazenie na celú obrazovku vypnuté',
+        save: 'Uložiť',
+        addContent: 'Pridať obsah',
+        addContentBelow: 'Pridať obsah pod container',
+        pasteContent: 'Vložiť obsah',
+        pasteContentBelow: 'Vložiť obsah pod container',
+        move: 'Premiestniť',
+        moveUp: 'Presunúť vyššie',
+        moveDown: 'Presunúť nižšie',
+        setting: 'Nastavenia',
+        copy: 'Kopírovať',
+        cut: 'Vystrihnúť',
+        delete: 'Vymazať',
+        snippetCategoryLabel: 'Kategória',
+        snippetCategoryAll: 'Všetky',
+        snippetCategorySearch: 'Vyhľadať...',
+        columnResizeTitle: 'Zmeniť rozmer',
+        containerSetting: 'Nastavenia containera',
+        confirmDeleteContainerText: 'Naozaj vymazať tento container? Zmeny budú permanentné!',
+        confirmDeleteComponentText: 'Naozaj vymazať tento komponent? Zmeny budú permanentné!',
+    };
+
     let $element = $('.content-composition');
 
     $element.keditor({
         rx: window.rx(),
         title: '',
+        locale: locale,
         contentStyles: [
             {
                 id: 'keditor',
@@ -145,33 +191,19 @@ $(document).ready(function($)
                 href: "{{ asset('vendor/softworx/rocXolid/plugins/keditor/css/keditor-components.css') }}"
             },
             {
-                id: 'bootstrap',
-                href: "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
-            },
-            {
                 id: 'font-awesome',
                 href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-            },/*
-            {
-                id: 'summernote',
-                href: "https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css"
-            }*/
+            }
         ],
         snippetsUrl: $element.data('snippets-url'),
-        containerForQuickAddComponent: `{{ app(\Softworx\RocXolid\CMS\Elements\Models\GridRow::class)->addFakeColumns(1)->getModelViewerComponent()->setViewTheme($component->getModel()->theme)->render() }}`,
+        containerForQuickAddComponent: `{!! $component->getModel()->getDocumentEditorContainerForQuickAddComponent() !!}`,
         extraTopbarItems: {
             pdf: {
                 html: '<a href="javascript:void(0);" title="PDF Preview" class="keditor-ui keditor-topbar-btn"><i class="fa fa-fw fa-file-pdf-o"></i></a>',
                 click: function() {
-                    window.rxUtility().ajaxCall({
-                        rx: window.rx(),
-                        element: $element,
-                        type: 'post',
-                        url: $element.data('preview-pdf-url'),
-                        data: {
-                            content: $element.keditor('getContent')
-                        }
-                    });
+                    const root = serialize($('<div>').html($element.keditor('getContent')), null, [], parseNodeContent);
+
+                    elementableApi.previewComposition(root.children);
                 }
             }
         },

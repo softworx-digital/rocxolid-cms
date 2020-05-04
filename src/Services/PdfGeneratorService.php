@@ -2,16 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\Services;
 
-use View;
-use Spipu\Html2Pdf\Html2Pdf;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
+// rocXolid pdf generator contracts
+use Softworx\RocXolid\Generators\Pdf\Contracts\PdfGenerator;
+use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid service contracts
 use Softworx\RocXolid\Services\Contracts\ConsumerService;
 // rocXolid service traits
 use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
-// rocXolid models
-use Softworx\RocXolid\CMS\Models\Document;
 
 /**
  * Service to generate PDF files.
@@ -25,24 +22,35 @@ class PdfGeneratorService implements ConsumerService
     use HasServiceConsumer;
 
     /**
-     * {@inheritDoc}
+     * PDF generator reference.
+     *
+     * @var \Softworx\RocXolid\Generators\Pdf\Contracts\PdfGenerator
      */
-    public function generatePdf(Document $document, Collection $data)
+    protected $pdf_generator;
+
+    /**
+     * Constructor.
+     *
+     * @param \Softworx\RocXolid\Generators\Pdf\Contracts\PdfGenerator $pdf_generator
+     */
+    public function __construct(PdfGenerator $pdf_generator)
     {
-        $view = View::make('rocXolid::pdf', [
-            'content' => $data->get('content')
-        ]);
+        $this->pdf_generator = $pdf_generator;
+    }
 
-        // $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 5));
-        $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', [ 0, 0, 0, 0 ]);
-        // $html2pdf->writeHTML($data->get('content'));
-        $html2pdf->writeHTML($view->render());
-        // $html2pdf->writeHTML('<page><h1>HelloWorld</h1>This is my first page</page>');
-
-
-        $pdf = $html2pdf->output('abc.pdf', 'S');
-
-        // Storage::put('_delete/test.pdf', $pdf);
+    /**
+     * Generate PDF content.
+     *
+     * @param \Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider $provider
+     * @param string $html
+     * @return string
+     */
+    public function generatePdf(PdfDataProvider $provider, string $html)
+    {
+        $pdf = $this->pdf_generator
+            ->init()
+            ->setContent($html)
+            ->generate($provider);
 
         return $pdf;
     }

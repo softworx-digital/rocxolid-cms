@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid pdf generator contracts
+use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractDocument;
 use Softworx\RocXolid\CMS\Models\DocumentType;
@@ -14,7 +16,7 @@ use Softworx\RocXolid\CMS\Models\DocumentType;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Document extends AbstractDocument
+class Document extends AbstractDocument implements PdfDataProvider
 {
     /**
      * {@inheritDoc}
@@ -52,14 +54,6 @@ class Document extends AbstractDocument
     protected static $title_column = 'title';
 
     /**
-     * Theme definition for this elementable.
-     *
-     * @var string
-     * @todo: make this not hardcoded
-     */
-    protected static $theme = 'pdf';
-
-    /**
      * Relation to document type
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -67,5 +61,13 @@ class Document extends AbstractDocument
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideFilename(): string
+    {
+        return 'document.pdf';
     }
 }

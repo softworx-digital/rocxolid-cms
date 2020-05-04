@@ -4,14 +4,12 @@ namespace Softworx\RocXolid\CMS\Rendering\Traits;
 
 // rocXolid cms rendering contracts
 use Softworx\RocXolid\CMS\Rendering\Contracts\Themeable;
-// rocXolid rendering service contracts
-use Softworx\RocXolid\Rendering\Services\Contracts\RenderingService;
 
 /**
  * Enables object to be theme-rendered at the front-end.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 trait CanBeThemed
@@ -49,5 +47,24 @@ trait CanBeThemed
     public function hasViewTheme(): bool
     {
         return !is_null($this->view_theme);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function composePackageViewPath(string $view_package, string $view_dir, string $view_name): string
+    {
+        if ($this->hasViewTheme()) {
+            return sprintf(
+                '%s::%s.%s.%s.%s',
+                $view_package,
+                $this->getViewTheme(),
+                $view_dir,
+                $this->getModel()->getModelName(),
+                $view_name
+            );
+        }
+
+        return parent::composePackageViewPath($view_package, $view_dir, $view_name);
     }
 }

@@ -2,16 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies\Contracts;
 
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm;
+use Illuminate\View\View;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
 use Softworx\RocXolid\Contracts\TranslationProvider;
-// rocXolid controller contracts
-use Softworx\RocXolid\Http\Controllers\Contracts\Crudable;
-// rocXolid cms elements model contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
+// rocXolid cms dependencies contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
  * Enables to provide dependency for elementables.
@@ -23,19 +20,26 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 interface ElementableDependency extends Controllable, TranslationDiscoveryProvider, TranslationProvider
 {
     /**
-     * Provide dependent type declaration.
+     * Set properties to view.
      *
-     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $elementable
-     * @return string|null
+     * @param \Illuminate\View\View $view
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency
      */
-    public function provideTypeDependency(Elementable $elementable): ?string;
+    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency;
+
+    /**
+     * Obtain default property name this dependency sets to a view.
+     *
+     * @return string
+     */
+    public function getDefaultViewPropertyName(): string;
 
     /**
      * Provide dependency field definition.
      *
-     * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
-     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $elementable
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
      * @return array
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, Elementable $elementable): array;
+    public function provideDependencyFieldDefinition(ElementableDependencyDataProvider $data_provider): array;
 }
