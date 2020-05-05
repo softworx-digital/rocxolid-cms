@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
+use Illuminate\View\View;
 // rocXolid cms dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
