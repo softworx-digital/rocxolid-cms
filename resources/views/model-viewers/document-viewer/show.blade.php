@@ -19,11 +19,12 @@
 </div>
 
 @push('script')
+@if (false)
 <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor.js') }}"></script>
 <script src="{{ asset('vendor/softworx/rocXolid/plugins/keditor/js/keditor-components.js') }}"></script>
+@endif
 
 @foreach($component->getModel()->getStyles() as $path)
 <style href="{{ asset($path) }}" data-type="keditor-style"></style>
@@ -40,8 +41,6 @@ $(document).ready(function($)
                 template: 'default'
             },
             elementData: {
-                gridLayout: {},
-                content: [],
             },
             children: []
         };
@@ -51,10 +50,6 @@ $(document).ready(function($)
             if (!onlyData.length || onlyData.includes(i)) {
                 element[i] = $node.data(i);
             }
-        }
-
-        if ($node.find('.content-container .editable')) {
-            element.elementData.content = $.trim($node.html());
         }
 
         return element;
@@ -88,20 +83,38 @@ $(document).ready(function($)
         });
 
         if (element && (typeof onNodeCreated == 'function')) {
-            element = onNodeCreated($node, element, onlyData);
+            element = onNodeCreated($node, element);
         }
 
         return element;
     };
 
-    const parseNodeContent = function($node, element, onlyData)
+    const parseNodeContent = function($node, element)
     {
-        if (typeof $node.attr('class') == 'string') {
-            let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
-                if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
-                    element.elementData.gridLayout[col[1]] = col[2];
-                }
-            });
+        if ($node.is('[data-element-type="grid-column"]')) {
+            if (typeof $node.attr('class') == 'string') {
+                element.elementData.gridLayout = {};
+
+                let colAttrs = $node.attr('class').split(' ').forEach(function (className) {
+                    if (col = className.match(/\bcol-(\w+)-(\d+)/)) {
+                        element.elementData.gridLayout[col[1]] = col[2];
+                    }
+                });
+            }
+        }
+
+        if ($node.is('.content-container')) {
+            let isSingleEditable = ($node.find('.editable-content').length == 1);
+
+            if (isSingleEditable) {
+                element.elementData.content = $.trim($node.find('.editable-content').html());
+            } else {
+                element.elementData.content = {};
+
+                $node.find('.editable-content').each(function() {
+                    element.elementData.content[$(this).data('name')] = $(this).html();
+                })
+            }
         }
 
         return element;
@@ -155,10 +168,10 @@ $(document).ready(function($)
         fullscreenOn: 'Zobrazenie na celú obrazovku zapnuté',
         fullscreenOff: 'Zobrazenie na celú obrazovku vypnuté',
         save: 'Uložiť',
-        addContent: 'Pridať obsah',
-        addContentBelow: 'Pridať obsah pod container',
-        pasteContent: 'Vložiť obsah',
-        pasteContentBelow: 'Vložiť obsah pod container',
+        addContent: 'Pridať...',
+        addContentBelow: 'Pridať pod...',
+        pasteContent: 'Vložiť...',
+        pasteContentBelow: 'Vložiť pod...',
         move: 'Premiestniť',
         moveUp: 'Presunúť vyššie',
         moveDown: 'Presunúť nižšie',
@@ -170,9 +183,9 @@ $(document).ready(function($)
         snippetCategoryAll: 'Všetky',
         snippetCategorySearch: 'Vyhľadať...',
         columnResizeTitle: 'Zmeniť rozmer',
-        containerSetting: 'Nastavenia containera',
-        confirmDeleteContainerText: 'Naozaj vymazať tento container? Zmeny budú permanentné!',
-        confirmDeleteComponentText: 'Naozaj vymazať tento komponent? Zmeny budú permanentné!',
+        containerSetting: 'Nastavenia',
+        confirmDeleteContainerText: 'Naozaj vymazať? Zmeny budú permanentné!',
+        confirmDeleteComponentText: 'Naozaj vymazať? Zmeny budú permanentné!',
     };
 
     let $element = $('.content-composition');

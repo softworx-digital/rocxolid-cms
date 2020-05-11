@@ -33,4 +33,14 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     {
         return collect();
     }
+
+    /**
+     * Check if the data provider is ready (has set dependency values).
+     *
+     * @return boolean
+     */
+    public function isReady(): bool
+    {
+        return false;
+    }
 }

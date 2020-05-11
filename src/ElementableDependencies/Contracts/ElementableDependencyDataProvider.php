@@ -33,4 +33,11 @@ interface ElementableDependencyDataProvider
      * @return mixed
      */
     public function getDependencyValues(ElementableDependency $dependency);
+
+    /**
+     * Check if the data provider is ready to provide dependency values.
+     *
+     * @return boolean
+     */
+    public function isReady(): bool;
 }
