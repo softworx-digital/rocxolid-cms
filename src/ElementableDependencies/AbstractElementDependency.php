@@ -2,8 +2,9 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
-use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 // rocXolid traits
 use Softworx\RocXolid\Traits\Controllable;
 use Softworx\RocXolid\Traits\TranslationPackageProvider;
@@ -35,6 +36,16 @@ abstract class AbstractElementDependency implements ElementableDependency
     public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency
     {
         $view->with($this->getDefaultViewPropertyName(), $data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName()));
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider): ElementableDependency
+    {
+        $assignments->put($this->getDefaultViewPropertyName(), $data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName()));
 
         return $this;
     }

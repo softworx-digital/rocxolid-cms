@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\ElementableDependencies\Contracts;
 
 use Illuminate\View\View;
+use Illuminate\Support\Collection;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
@@ -27,6 +28,15 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
      * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency
      */
     public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency;
+
+    /**
+     * Set properties to a collection.
+     *
+     * @param \Illuminate\Support\Collection $assignments
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency
+     */
+    public function setAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider): ElementableDependency;
 
     /**
      * Obtain default property name this dependency sets to a view.
