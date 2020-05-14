@@ -52,10 +52,10 @@ trait CanBeThemed
     /**
      * {@inheritDoc}
      */
-    public function composePackageViewPath(string $view_package, string $view_dir, string $view_name): string
+    public function composePackageViewPaths(string $view_package, string $view_dir, string $view_name): array
     {
         if ($this->hasViewTheme()) {
-            return sprintf(
+            $with_model_name = sprintf(
                 '%s::%s.%s.%s.%s',
                 $view_package,
                 $this->getViewTheme(),
@@ -63,8 +63,18 @@ trait CanBeThemed
                 $this->getModel()->getModelName(),
                 $view_name
             );
+
+            $without_model_name = sprintf(
+                '%s::%s.%s.%s',
+                $view_package,
+                $this->getViewTheme(),
+                $view_dir,
+                $view_name
+            );
+
+            return [ $with_model_name, $without_model_name ];
         }
 
-        return parent::composePackageViewPath($view_package, $view_dir, $view_name);
+        return parent::composePackageViewPaths($view_package, $view_dir, $view_name);
     }
 }

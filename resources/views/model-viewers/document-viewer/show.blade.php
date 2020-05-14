@@ -106,7 +106,7 @@ $(document).ready(function($)
         if ($node.is('.content-container')) {
             let isSingleEditable = ($node.find('.editable-content').length == 1);
 
-            if (isSingleEditable) {
+            if (isSingleEditable && !$node.find('.editable-content').is('[data-name]')) {
                 element.elementData.content = $.trim($node.find('.editable-content').html());
             } else {
                 element.elementData.content = {};
@@ -232,7 +232,7 @@ $(document).ready(function($)
             window.isContentDirty = true;
         },
         onComponentReady: function (component) {
-            console.log('onComponentReady', component);
+            // console.log('onComponentReady', component);
         },
         onContainerSnippetAdded: function (event, newContainer, selectedSnippet, contentArea) {
             console.log('onContainerSnippetAdded');

@@ -46,6 +46,8 @@ class Controller extends AbstractDocumentController
     public function previewPdf(CrudRequest $request, Document $document)
     {
         try {
+            // $document = $this->elementableCompositionService()->composePreview($document, $this->validateCompositionData($request));
+            // @todo: temporary, not saving's causing troubles right now
             $document = $this->elementableCompositionService()->compose($document, $this->validateCompositionData($request));
 
             $html = $document->getModelViewerComponent()->setViewTheme($document->theme)->fetch('default');
