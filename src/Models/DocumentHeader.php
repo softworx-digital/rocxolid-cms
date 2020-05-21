@@ -3,20 +3,17 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-// rocXolid pdf generator contracts
-use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
-use Softworx\RocXolid\CMS\Models\Document;
+use Softworx\RocXolid\CMS\Models\AbstractDocumentPart;
 
 /**
- * Document model.
+ * Document header model.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class DocumentHeader extends AbstractDocument implements PdfDataProvider
+class DocumentHeader extends AbstractDocumentPart
 {
     /**
      * {@inheritDoc}
@@ -26,34 +23,8 @@ class DocumentHeader extends AbstractDocument implements PdfDataProvider
     /**
      * {@inheritDoc}
      */
-    protected $fillable = [
-        'is_enabled',
-        'web_id',
-        'localization_id',
-        'title',
-    ];
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $relationships = [
-        'web',
-        'localization',
-        'document'
-    ];
-
-    /**
-     * {@inheritDoc}
-     */
-    protected static $title_column = 'title';
-
-    /**
-     * Relation to document.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function document(): BelongsTo
+    public function getOwnerRelation(): BelongsTo
     {
-        return $this->belongsTo(Document::class);
+        return $this->getOwner()->header();
     }
 }

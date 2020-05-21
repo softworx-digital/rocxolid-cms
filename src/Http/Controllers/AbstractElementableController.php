@@ -22,7 +22,7 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractDocumentController extends AbstractCrudController
+abstract class AbstractElementableController extends AbstractCrudController
 {
     /**
      * {@inheritDoc}
@@ -43,7 +43,10 @@ abstract class AbstractDocumentController extends AbstractCrudController
         'create' => 'create',
         'store' => 'create',
         'edit' => 'update',
-        'update' => 'update',
+        'edit.header' => 'update-header',
+        'edit.update' => 'update-header',
+        'edit.footer' => 'update-footer',
+        'edit.footer' => 'update-footer',
     ];
 
     /**
@@ -67,12 +70,7 @@ abstract class AbstractDocumentController extends AbstractCrudController
     {
         $model = $this->elementableCompositionService()->compose($model, $this->validateCompositionData($request));
 
-        $model_viewer_component = $this->getModelViewerComponent($model);
-
-        return $this->response
-            ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->redirect($this->getRoute('show', $model)) // to reload with element ids for new elements
-            ->get();
+        return $this->successCompositionStoredResponse($request, $model);
     }
 
     /**
@@ -110,6 +108,22 @@ abstract class AbstractDocumentController extends AbstractCrudController
     public function preview(CrudRequest $request, Elementable $model)
     {
         dd('@todo', __METHOD__);
+    }
+
+    /**
+     * Get the response for stored composition.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
+    protected function successCompositionStoredResponse(CrudRequest $request, Elementable $model)
+    {
+        $model_viewer_component = $this->getModelViewerComponent($model);
+
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->redirect($this->getRoute('show', $model)) // to reload with element ids for new elements
+            ->get();
     }
 
     /**

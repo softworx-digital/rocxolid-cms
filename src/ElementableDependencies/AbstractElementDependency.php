@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
-use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid traits
@@ -33,19 +32,15 @@ abstract class AbstractElementDependency implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency
+    public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $dependency_data_provider, ?string $key = null): ElementableDependency
     {
-        $view->with($this->getDefaultViewPropertyName(), $data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName()));
+        $key = $key ?? $this->getDefaultViewPropertyName();
 
-        return $this;
-    }
+        if ($assignments->has($key)) {
+            throw new \RuntimeException(sprintf('Assignment key [%s] is already set to assignments [%s]', $key, print_r($assignments, true)));
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider): ElementableDependency
-    {
-        $assignments->put($this->getDefaultViewPropertyName(), $data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName()));
+        $assignments->put($key, $this->getDependencyValue($dependency_data_provider));
 
         return $this;
     }
@@ -76,5 +71,16 @@ abstract class AbstractElementDependency implements ElementableDependency
         }
 
         return $this->getController()->provideTranslationParam();
+    }
+
+    /**
+     * Retrieve the actual value of the dependency.
+     *
+     * @param ElementableDependencyDataProvider $dependency_data_provider
+     * @return mixed
+     */
+    protected function getDependencyValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        return $dependency_data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName());
     }
 }

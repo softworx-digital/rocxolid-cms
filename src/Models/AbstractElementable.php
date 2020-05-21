@@ -6,14 +6,13 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
-// rocXolid model contracts
-use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid common traits
 use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProviderable;
 // rocXolid cms elements models contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms elements models traits
@@ -28,7 +27,7 @@ use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractDocument extends AbstractCrudModel implements ElementsDependenciesProvider, Elementable
+abstract class AbstractElementable extends AbstractCrudModel implements ElementsDependenciesProvider, ElementsDependenciesProviderable, Elementable
 {
     use SoftDeletes;
     use HasElements;
@@ -48,60 +47,9 @@ abstract class AbstractDocument extends AbstractCrudModel implements ElementsDep
     /**
      * {@inheritDoc}
      */
-    public function fillCustom(Collection $data): Crudable
-    {
-        $this->dependencies = json_encode($data->get('dependencies'));
-
-        return parent::fillCustom($data);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function elementsPivots(): HasOneOrMany
     {
         return $this->hasMany($this->getElementsPivotType(), 'parent_id');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function provideDependencies(): Collection
-    {
-        return $this->dependencies->map(function ($dependency_type) {
-            return app($dependency_type);
-        });
-    }
-
-    /**
-     * Return self as dependencies provider for elements.
-     *
-     * @return Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider
-     */
-    public function getDependenciesProvider(): ElementsDependenciesProvider
-    {
-        return $this;
-    }
-
-    /**
-     * Dependencies attribute getter mutator.
-     *
-     * @param mixed $value
-     * @return \Illuminate\Support\Collection
-     */
-    public function getDependenciesAttribute($value): Collection
-    {
-        return collect($value ? json_decode($value) : [])->filter();
-    }
-
-    /**
-     * Provide view theme to underlying elements.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function provideViewTheme(): string
-    {
-        return $this->theme;
     }
 
     /**
@@ -152,18 +100,6 @@ abstract class AbstractDocument extends AbstractCrudModel implements ElementsDep
     }
 
     /**
-     * Obtain available dependencies that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAvailableDependencies(): Collection
-    {
-        return $this->getAvailableDependencyTypes()->transform(function ($type) {
-            return app($type);
-        });
-    }
-
-    /**
      * Obtain styles to apply to the model.
      *
      * @return \Illuminate\Support\Collection
@@ -197,16 +133,6 @@ abstract class AbstractDocument extends AbstractCrudModel implements ElementsDep
                 $value => collect()
             ];
         });
-    }
-
-    /**
-     * Obtain dependency types that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function getAvailableDependencyTypes(): Collection
-    {
-        return static::getConfigData('available-dependencies');
     }
 
     /**

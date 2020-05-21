@@ -12,7 +12,7 @@ use Softworx\RocXolid\Traits\Modellable;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\ProxyElementable;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
@@ -23,7 +23,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class PageProxy extends AbstractDocument implements ProxyElementable //, Cloneable
+class PageProxy extends AbstractElementable implements ProxyElementable //, Cloneable
 {
     use Modellable;
 
@@ -49,6 +49,26 @@ class PageProxy extends AbstractDocument implements ProxyElementable //, Cloneab
         'localization',
         'pageTemplate',
     ];
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(): Collection
+    {
+        dd('@todo', __METHOD__);
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd('@todo', __METHOD__);
+
+        return '';
+    }
 
 
     /*

@@ -3,10 +3,11 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
  * Page template model.
@@ -15,7 +16,7 @@ use Softworx\RocXolid\CMS\Models\AbstractDocument;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class PageTemplate extends AbstractDocument // implements Cloneable
+class PageTemplate extends AbstractElementable // implements Cloneable
 {
     protected $table = 'cms_page_templates';
 
@@ -51,5 +52,25 @@ class PageTemplate extends AbstractDocument // implements Cloneable
         $this->seo_url_slug = Str::slug($this->seo_url_slug);
 
         return $this;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(): Collection
+    {
+        dd('@todo', __METHOD__);
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd('@todo', __METHOD__);
+
+        return '';
     }
 }

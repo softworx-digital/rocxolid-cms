@@ -9,7 +9,7 @@ use Softworx\RocXolid\Services\Contracts\ServiceConsumer;
 // rocXolid service traits
 use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
 // rocXolid cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractDocumentController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Services\Exceptions\InvalidStructureException;
 // rocXolid cms model contracts
@@ -262,7 +262,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
      */
     protected function resolveElementPolymorphism(string $param): string
     {
-        $element_type = config(sprintf('rocXolid.main.polymorphism.%s', $param)) ?? $this->guessElementType($param);
+        $element_type = config($this->getConfigPath($param)) ?? $this->guessElementType($param);
 
         if (!class_exists($element_type)) {
             throw new \RuntimeException(sprintf('Invalid element type [%s] for param [%s], should be configured in [rocXolid.main.polymorphism.%s]', $element_type, $param, $param));
@@ -296,11 +296,22 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
         $element_type = sprintf('%s\%s', $element_namespace, Str::studly($param));
 
         if (!class_exists($element_type)) {
-            throw new \RuntimeException(sprintf('Service [%s] guessed unexisting element type [%s] for param [%s].', static::class, $element_type, $param));
+            throw new \RuntimeException(sprintf(
+                'Service [%s] guessed unexisting element type [%s] for param [%s], register the class within [%s].',
+                static::class, $element_type,
+                $param,
+                $this->getConfigPath($param)
+            ));
         }
 
         if (!(new \ReflectionClass($element_type))->implementsInterface(Element::class)) {
-            throw new \RuntimeException(sprintf('Service [%s] guessed element type [%s] that is not [%s].', static::class, $element_type, Element::class));
+            throw new \RuntimeException(sprintf(
+                'Service [%s] guessed element type [%s] that is not [%s], register the class within [%s].',
+                static::class,
+                $element_type,
+                Element::class,
+                $this->getConfigPath($param)
+            ));
         }
 
         return $element_type;
@@ -311,6 +322,17 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
      */
     protected function validateServiceConsumer(ServiceConsumer $consumer): bool
     {
-        return ($consumer instanceof AbstractDocumentController);
+        return ($consumer instanceof AbstractElementableController);
+    }
+
+    /**
+     * Get configuration path for polymorphic types resolution.
+     *
+     * @param string $param
+     * @return string
+     */
+    protected function getConfigPath(string $param): string
+    {
+        return sprintf('rocXolid.main.polymorphism.%s', $param);
     }
 }

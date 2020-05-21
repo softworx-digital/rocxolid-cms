@@ -10,7 +10,7 @@ use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
@@ -20,7 +20,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Page extends AbstractDocument // implements Cloneable
+class Page extends AbstractElementable // implements Cloneable
 {
     protected $table = 'cms_pages';
 
@@ -57,6 +57,26 @@ class Page extends AbstractDocument // implements Cloneable
             'default' => [ 'width' => 1080, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
         ],
     ];
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(): Collection
+    {
+        dd('@todo', __METHOD__);
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd('@todo', __METHOD__);
+
+        return '';
+    }
 
 
 

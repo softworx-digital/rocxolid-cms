@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid pdf generator contracts
 use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\DocumentType;
 
 /**
@@ -16,8 +16,13 @@ use Softworx\RocXolid\CMS\Models\DocumentType;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Document extends AbstractDocument implements PdfDataProvider
+class Document extends AbstractElementable implements PdfDataProvider
 {
+    use Traits\HasHeader;
+    use Traits\HasFooter;
+    use Traits\HasDependencies;
+    use Traits\ProvidesViewTheme;
+
     /**
      * {@inheritDoc}
      */
@@ -54,7 +59,7 @@ class Document extends AbstractDocument implements PdfDataProvider
     protected static $title_column = 'title';
 
     /**
-     * Relation to document type
+     * Relation to document type.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

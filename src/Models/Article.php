@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
 // rocXolid common models
@@ -10,7 +11,7 @@ use Softworx\RocXolid\Common\Models\Image;
 // rocXolid cms model traits
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\AbstractDocument;
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
  * Article model.
@@ -19,7 +20,7 @@ use Softworx\RocXolid\CMS\Models\AbstractDocument;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Article extends AbstractDocument
+class Article extends AbstractElementable
 {
     use HasImage;
     use IsProxyPaged;
@@ -80,5 +81,25 @@ class Article extends AbstractDocument
     public function openGraphImage()
     {
         return $this->morphOne(Image::class, 'model')->where(sprintf('%s.model_attribute', (new Image())->getTable()), 'openGraphImage')->orderBy(sprintf('%s.model_attribute_position', (new Image())->getTable()));
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(): Collection
+    {
+        dd('@todo', __METHOD__);
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd('@todo', __METHOD__);
+
+        return '';
     }
 }

@@ -71,6 +71,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
             CrudRouterService::create('document-type', \DocumentType\Controller::class);
             ElementableRouterService::create('document', \Document\Controller::class);
+            ElementableRouterService::create('document_header', \DocumentHeader\Controller::class);
+            ElementableRouterService::create('document_footer', \DocumentFooter\Controller::class);
         });
 
         return $this;
@@ -95,6 +97,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
         //
         $router->model('document_type', \Softworx\RocXolid\CMS\Models\DocumentType::class);
         $router->model('document', \Softworx\RocXolid\CMS\Models\Document::class);
+        $router->model('document_header', \Softworx\RocXolid\CMS\Models\DocumentHeader::class);
+        $router->model('document_footer', \Softworx\RocXolid\CMS\Models\DocumentFooter::class);
 
         return $this;
     }

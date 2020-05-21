@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies\Contracts;
 
-use Illuminate\View\View;
 use Illuminate\Support\Collection;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
@@ -21,22 +20,15 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
 interface ElementableDependency extends Controllable, TranslationDiscoveryProvider, TranslationProvider
 {
     /**
-     * Set properties to view.
-     *
-     * @param \Illuminate\View\View $view
-     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
-     * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency
-     */
-    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency;
-
-    /**
-     * Set properties to a collection.
+     * Add assignment this dependency handles to a assignments collection.
      *
      * @param \Illuminate\Support\Collection $assignments
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @param string|null $key
      * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency
+     * @throws \RuntimeException If assignments key already set.
      */
-    public function setAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider): ElementableDependency;
+    public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider, ?string $key = null): ElementableDependency;
 
     /**
      * Obtain default property name this dependency sets to a view.

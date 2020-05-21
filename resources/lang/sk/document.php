@@ -20,6 +20,10 @@ return [
             'dependency' => 'Závislosť (na základe ktorej budú od používateľa požadované údaje)',
         ],
     ],
+    'button' => [
+        'create-header' => 'Pridať hlavičku',
+        'create-footer' => 'Pridať pätičku',
+    ],
     'model' => [
         'title' => [
             'singular' => 'Dokument',
@@ -30,6 +34,8 @@ return [
         'show' => 'Kompozícia',
         'preview' => 'Náhľad',
         'pdf' => 'PDF',
+        'edit-header' => 'Výber hlavičky dokumentu',
+        'edit-footer' => 'Výber pätičky dokumentu',
     ],
     'legend' => [
         'base' => 'Základné údaje',
@@ -38,4 +44,9 @@ return [
     'element-dependency' => [
         'none' => 'Bez požiadaviek',
     ],
+    'text' => [
+        'header' => 'Hlavička dokumentu',
+        'body' => 'Telo dokumentu',
+        'footer' => 'Pätička dokumentu',
+    ]
 ];

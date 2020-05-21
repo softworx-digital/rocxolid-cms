@@ -5,15 +5,24 @@ namespace Softworx\RocXolid\CMS\Http\Controllers\Document;
 use Illuminate\Validation\ValidationException;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
+// rocXolid forms
+use Softworx\RocXolid\Forms\AbstractCrudForm;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid cms services
 use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
 use Softworx\RocXolid\CMS\Services\PdfGeneratorService;
 // rocXolid cms controllers
-use Softworx\RocXolid\CMS\Http\Controllers\AbstractDocumentController;
+use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms components
 use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentViewer;
-// rocXolid models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\Document;
+use Softworx\RocXolid\CMS\Models\DocumentHeader;
+use Softworx\RocXolid\CMS\Models\DocumentFooter;
+// rocXolid cms model forms
+use Softworx\RocXolid\CMS\Models\Forms\Document\UpdateHeader;
+use Softworx\RocXolid\CMS\Models\Forms\Document\UpdateFooter;
 
 /**
  * Document controller.
@@ -22,7 +31,7 @@ use Softworx\RocXolid\CMS\Models\Document;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Controller extends AbstractDocumentController
+class Controller extends AbstractElementableController
 {
     /**
      * {@inheritDoc}
@@ -36,6 +45,60 @@ class Controller extends AbstractDocumentController
         ElementableCompositionService::class,
         PdfGeneratorService::class,
     ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function onUpdateFormValid(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)//: Response
+    {
+        // @todo: this doesn't belong here / find some other way
+        if ($form instanceof UpdateHeader) {
+            if ($form->getFormField('document_header_id')->isFieldValue(0)) {
+                $header = $model->header;
+                $model->header()->dissociate();
+
+                if ($header->isBoundToDocument()) {
+                    $header->forceDelete();
+                }
+            } else {
+                $model->header()->associate(DocumentHeader::findOrFail($form->getFormField('document_header_id')->getFinalValue()));
+            }
+        }
+
+        // @todo: this doesn't belong here / find some other way
+        if ($form instanceof UpdateFooter) {
+            if ($form->getFormField('document_footer_id')->isFieldValue(0)) {
+                $footer = $model->footer;
+                $model->footer()->dissociate();
+
+                if ($footer->isBoundToDocument()) {
+                    $footer->forceDelete();
+                }
+            } else {
+                $model->footer()->associate(DocumentFooter::findOrFail($form->getFormField('document_footer_id')->getFinalValue()));
+            }
+        }
+
+        return parent::onUpdateFormValid($request, $model, $form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function onModelUpdatedSuccessResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)//: Response
+    {
+        if (($form instanceof UpdateHeader) || ($form instanceof UpdateFooter)) {
+            $model_viewer_component = $this->getModelViewerComponent($model);
+
+            return $this->response
+                ->notifySuccess($model_viewer_component->translate('text.updated'))
+                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
+                ->redirect($model->getControllerRoute('show'))
+                ->get();
+        }
+
+        return $this->successUpdateResponse($request, $model, $form);
+    }
 
     /**
      * Create PDF document and send it to response in base 64 encoding.

@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\CMS\Rendering\Services;
 
 // rocXolid rendering contracts
 use Softworx\RocXolid\Rendering\Contracts\Renderable;
+// rocXolid cms elements services
+use Softworx\RocXolid\CMS\Elements\Services\ContentCompiler;
 
 /**
  * Retrieves themed view for given object and view name.
@@ -19,6 +21,7 @@ class BladeExtensionService
      *
      * @param string $method
      * @param string $args
+     * @return string
      */
     public static function compile(string $method, string $args): string
     {
@@ -70,24 +73,35 @@ class BladeExtensionService
         ?string $default_view_name = null,
         ?array $default_view_assignments = []
     ) {
-        if ($component->getModel()->isSetContent($content_part_name)) {
+        $element = $component->getModel();
+
+        if ($element->isSetContent($content_part_name)) {
 
             // Return the compiled content (part) if it is available.
 
-            $content = $component->getModel()->getCompiledContent($content_part_name, $content_part_assignments);
+            $content = $element->getContent($content_part_name);
 
-        } elseif ($component->getModel()->useDefaultContent($content_part_name)) {
+            try {
+                $content = ContentCompiler::init($element)->process($content, collect($content_part_assignments));
+            } catch (\Exception $e) {
+                $content = sprintf('!! %s !!', $e->getMessage());
+            }
+        } elseif ($element->useDefaultContent($content_part_name)) {
 
             // Used for newly added elements in document composition
             // or when the element content template was changed over time
             // and the element contains old-structured (incomplete) content.
 
-            $content = $default_view_name
-                     ? $component->render($default_view_name, array_merge([ 'content_part_name' => $content_part_name ], $default_view_assignments))
-                     : $component->getModel()->getDefaultContent($content_part_name);
+            try {
+                $content = $default_view_name
+                        ? $component->render($default_view_name, array_merge([ 'content_part_name' => $content_part_name ], $default_view_assignments))
+                        : $element->getDefaultContent($content_part_name);
+            } catch (\Exception $e) {
+                $content = sprintf('!! %s !!', $e->getMessage());
+            }
         } else {
 
-            // If the content is not available / set and the rendering
+            // If the content is not available (set) and the rendering
             // happens outside document composition.
 
             $content = null;
@@ -108,12 +122,21 @@ class BladeExtensionService
         Renderable $component,
         string $dependency,
         string $title,
-        bool $remove = false
+        bool $remove = false,
+        ?array $assignments = []
     ) {
-        echo $component->render('placeholder', [
+        $element = $component->getModel();
+
+        $content = (string)$component->render('placeholder', [
             'dependency' => $dependency,
             'title' => $component->translate(sprintf('placeholder.%s', $title)),
             'remove' => $remove,
         ]);
+
+        try {
+            echo ContentCompiler::init($element)->process($content, collect($assignments));
+        } catch (\Exception $e) {
+            echo sprintf('!! %s !!', $e->getMessage());
+        }
     }
 }

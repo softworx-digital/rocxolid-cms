@@ -2,40 +2,44 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
-// rocXolid models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// rocXolid common traits
-use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\Document;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
-// rocXolid cms elements models contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
-// rocXolid cms elements models traits
-use Softworx\RocXolid\CMS\Elements\Models\Traits\HasElements;
-// rocXolid cms elements builders
-use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
 
 /**
- * Elementable model abstraction.
+ * Document part abstraction.
+ * Can be assigned to several documents.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractDocument extends AbstractCrudModel implements ElementsDependenciesProvider, Elementable
+abstract class AbstractDocumentPart extends AbstractElementable
 {
-    use SoftDeletes;
-    use HasElements;
-    use CommonTraits\HasWeb;
-    // use CommonTraits\UserGroupAssociatedWeb;
-    use CommonTraits\HasLocalization;
-    use Traits\HasElementableDependencyDataProvider;
+    /**
+     * Owning document reference.
+     *
+     * @var \Softworx\RocXolid\CMS\Models\Document
+     */
+    protected $document;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $fillable = [
+        'is_enabled',
+        'web_id',
+        'localization_id',
+        'is_bound_to_document',
+        'title',
+    ];
 
     /**
      * {@inheritDoc}
@@ -43,192 +47,118 @@ abstract class AbstractDocument extends AbstractCrudModel implements ElementsDep
     protected $relationships = [
         'web',
         'localization',
+        'documents'
     ];
 
     /**
      * {@inheritDoc}
      */
-    public function fillCustom(Collection $data): Crudable
-    {
-        $this->dependencies = json_encode($data->get('dependencies'));
+    protected static $title_column = 'title';
 
-        return parent::fillCustom($data);
+    /**
+     * {@inheritDoc}
+     */
+    protected function getDefaultControllerRouteParams(string $method): array
+    {
+        return isset($this->document) ? [
+            'document_id' => $this->document->getKey()
+        ] : [];
     }
 
     /**
      * {@inheritDoc}
      */
-    public function elementsPivots(): HasOneOrMany
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
-        return $this->hasMany($this->getElementsPivotType(), 'parent_id');
-    }
+        $this->setOwner(Document::find($data->get('document_id')));
 
-    /**
-     * {@inheritDoc}
-     */
-    public function provideDependencies(): Collection
-    {
-        return $this->dependencies->map(function ($dependency_type) {
-            return app($dependency_type);
-        });
-    }
+        $this->web()->associate($this->document->web);
+        $this->localization()->associate($this->document->localization);
 
-    /**
-     * Return self as dependencies provider for elements.
-     *
-     * @return Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider
-     */
-    public function getDependenciesProvider(): ElementsDependenciesProvider
-    {
         return $this;
     }
 
     /**
-     * Dependencies attribute getter mutator.
+    * {@inheritDoc}
+    */
+   public function provideDependencies(): Collection
+   {
+       return $this->document->provideDependencies();
+   }
+
+    /**
+    * {@inheritDoc}
+    */
+   public function provideViewTheme(): string
+   {
+       return $this->document->provideViewTheme();
+   }
+
+    /**
+     * Set owning document to be able to provide dependencies for underlying elements.
      *
-     * @param mixed $value
-     * @return \Illuminate\Support\Collection
+     * @param \Softworx\RocXolid\CMS\Models\Document $document
+     * @return \Softworx\RocXolid\CMS\Models\AbstractDocumentPart
      */
-    public function getDependenciesAttribute($value): Collection
+    public function setOwner(Document $document): AbstractDocumentPart
     {
-        return collect($value ? json_decode($value) : [])->filter();
+        $this->document = $document;
+
+        return $this;
     }
 
     /**
-     * Provide view theme to underlying elements.
+     * Set owning document to be able to provide dependencies for underlying elements.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Softworx\RocXolid\CMS\Models\Document
+     * @throws \RuntimeException
      */
-    public function provideViewTheme(): string
+    public function getOwner(): Document
     {
-        return $this->theme;
+        // @todo: hotfixed as fuck
+        if (request()->has('document_id') && ($document = Document::find(request()->get('document_id')))) {
+            $this->setOwner($document);
+        }
+
+        if (!isset($this->document)) {
+            throw new \RuntimeException(sprintf('Owner not yet set to [%s]', get_class($this)));
+        }
+
+        return $this->document;
     }
 
     /**
-     * Obtain container for quick-add-component for document editor.
+     * Relation that document has to its part.
      *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function getDocumentEditorContainerForQuickAddComponent(): string
+    abstract public function getOwnerRelation(): BelongsTo;
+
+    /**
+     * Relation to documents.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
     {
-        return $this->getQuickAddComponentElementTypes()->transform(function ($options, $type) {
-            return ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), collect($options))
-                ->getModelViewerComponent()
-                ->fetch();
-        })->join("\n");
+        return $this->hasMany(Document::class);
     }
 
     /**
-     * Obtain available element models that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     * @todo: more elegant code please
+     * {@inheritDoc}
      */
-    public function getAvailableElements(string $group = null): Collection
+    public function getDependenciesProvider(): ElementsDependenciesProvider
     {
-        $elements = collect();
-
-        $this->getAvailableElementTypes()->each(function ($options, $type) use ($group, &$elements) {
-            // passed options for only one instance
-            if ($options->isEmpty() || Arr::isAssoc($options->all())) {
-                $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
-
-                if (is_null($group) || $element->belongsToGroup($group)) {
-                    $elements->push($element);
-                }
-            } else {
-                // multiple instance options
-                $elements = $elements->merge($options->transform(function ($options) use ($group, $type) {
-                    $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), collect($options));
-
-                    if (is_null($group) || $element->belongsToGroup($group)) {
-                        return $element;
-                    }
-                })->filter());
-            }
-        });
-
-        return $elements;
+        return $this->getOwner();
     }
 
     /**
-     * Obtain available dependencies that can be assigned to the model.
+     * Check if elementable part is bound to document.
      *
-     * @return \Illuminate\Support\Collection
+     * @return bool
      */
-    public function getAvailableDependencies(): Collection
+    public function isBoundToDocument(): bool
     {
-        return $this->getAvailableDependencyTypes()->transform(function ($type) {
-            return app($type);
-        });
-    }
-
-    /**
-     * Obtain styles to apply to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getStyles(): Collection
-    {
-        return static::getConfigData('styles');
-    }
-
-    /**
-     * Obtain container type to be used for 'quick-add-component' with options.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function getQuickAddComponentElementTypes(): Collection
-    {
-        return static::getConfigData('quick-add-element');
-    }
-
-    /**
-     * Obtain element types that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function getAvailableElementTypes(): Collection
-    {
-        return static::getConfigData('available-elements')->mapWithKeys(function ($value, $index) {
-            return is_string($index) ? [
-                $index => collect($value)
-            ] : [
-                $value => collect()
-            ];
-        });
-    }
-
-    /**
-     * Obtain dependency types that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function getAvailableDependencyTypes(): Collection
-    {
-        return static::getConfigData('available-dependencies');
-    }
-
-    /**
-     * Obtain model specific (fallbacks to 'default') configuration.
-     *
-     * @param string $key
-     * @return \Illuminate\Support\Collection
-     */
-    protected static function getConfigData(string $key): Collection
-    {
-        $config = static::getConfigFilePathKey();
-
-        return collect(config(sprintf('%s.%s.%s', $config, $key, static::class), config(sprintf('%s.%s.default', $config, $key), [])));
-    }
-
-    /**
-     * Obtain config file path key.
-     *
-     * @return string
-     */
-    protected static function getConfigFilePathKey(): string
-    {
-        return 'rocXolid.cms.elementable';
+        return $this->is_bound_to_document;
     }
 }

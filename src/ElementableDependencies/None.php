@@ -2,10 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
-use Illuminate\View\View;
 // rocXolid cms dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementDependency;
-use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
@@ -17,14 +15,6 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  */
 class None extends AbstractElementDependency
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function setViewProperties(View &$view, ElementableDependencyDataProvider $data_provider): ElementableDependency
-    {
-        return $this;
-    }
-
     /**
      * {@inheritDoc}
      */

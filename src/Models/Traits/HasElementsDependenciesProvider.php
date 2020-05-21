@@ -38,9 +38,7 @@ trait HasElementsDependenciesProvider
     }
 
     /**
-     * Get dependencies provider.
-     *
-     * @return \Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider
+     * {@inheritDoc}
      */
     public function getDependenciesProvider(): ElementsDependenciesProvider
     {
