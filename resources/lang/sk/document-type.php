@@ -13,8 +13,8 @@ return [
     ],
     'model' => [
         'title' => [
-            'singular' => 'Kategória dokumentu',
-            'plural' => 'Kategórie dokumentov',
+            'singular' => 'Kategória šablón',
+            'plural' => 'Kategórie šablón',
         ],
     ],
 ];

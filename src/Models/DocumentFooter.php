@@ -23,8 +23,8 @@ class DocumentFooter extends AbstractDocumentPart
     /**
      * {@inheritDoc}
      */
-    public function getOwnerRelation(): BelongsTo
+    public function getOwnerRelationName(): string
     {
-        return $this->getOwner()->footer();
+        return 'footer';
     }
 }

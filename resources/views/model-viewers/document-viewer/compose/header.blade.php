@@ -17,7 +17,7 @@
 </div>
 <div class="panel-body padding-0">
 @if ($component->getModel()->hasHeader())
-    <div class="d-none editable-part" data-keditor="html">
+    <div id="{{ $component->getDomId('compose-header') }}" class="d-none editable-part" data-keditor="html">
         <div
             class="content-composition"
             data-snippets-url="{{ $component->getModel()->getHeader()->getControllerRoute('elementSnippets') }}"

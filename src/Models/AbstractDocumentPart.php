@@ -128,11 +128,21 @@ abstract class AbstractDocumentPart extends AbstractElementable
     }
 
     /**
+     * Relation name that document has to its part.
+     *
+     * @return string
+     */
+    abstract public function getOwnerRelationName(): string;
+
+    /**
      * Relation that document has to its part.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    abstract public function getOwnerRelation(): BelongsTo;
+    public function getOwnerRelation(): BelongsTo
+    {
+        return $this->getOwner()->{$this->getOwnerRelationName()}();
+    }
 
     /**
      * Relation to documents.

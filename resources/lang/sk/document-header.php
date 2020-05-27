@@ -19,5 +19,7 @@ return [
     ],
     'text' => [
         'no_elements_content' => 'prázdny obsah',
+        'following-documents' => 'je použitá v nasledujúcich dokumentoch',
+        'no-following-documents' => 'nie je použitá v žiadnom dokumente',
     ],
 ];

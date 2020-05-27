@@ -16,6 +16,8 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPartViewer;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
+// @todo: be more abstract
+use Softworx\RocXolid\CMS\Models\Document;
 
 /**
  * CMS controller for models that can contain elements.
@@ -28,6 +30,12 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
 {
     /**
      * {@inheritDoc}
+     */
+    protected $use_ajax_destroy_confirmation = true;
+
+    /**
+     * {@inheritDoc}
+     * @todo: be more abstract
      */
     protected static $model_viewer_type = DocumentPartViewer::class;
 
@@ -61,6 +69,37 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
     {
         return $this->response
             ->redirect($model->getOwner()->getControllerRoute('show'))
+            ->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function onModelDestroyedSuccessResponse(CrudRequest $request, CrudableModel $model)
+    {
+        $elementable_relation_name = $model->getOwnerRelationName();
+
+        $elementable_part_param = sprintf('compose-%s', $elementable_relation_name);
+        $elementable_form_param = sprintf('update-%s', $elementable_relation_name);
+
+        // @todo: be more abstract (pass model_type as well)
+        $elementable = Document::find($request->input('_data.model_id'));
+        $elementable_controller = $elementable->getCrudController();
+        $elementable_form = $elementable_controller->getForm($request, $elementable, $elementable_form_param);
+        $elementable_form_component = $elementable_controller->getFormComponent($elementable_form);
+
+        $model_viewer_component = $this->getModelViewerComponent($model);
+
+        if (is_null($elementable->{$elementable_relation_name}) || ($elementable->{$elementable_relation_name}->is($model))) {
+            $elementable_model_viewer_component = $elementable_controller->getModelViewerComponent($elementable);
+
+            $this->response
+                ->destroy($elementable_model_viewer_component->getDomId($elementable_part_param));
+        }
+
+        return $this->response
+            ->replace($elementable_form_component->getDomId('fieldset'), $elementable_form_component->fetch('include.fieldset'))
+            ->modalClose($model_viewer_component->getDomId('modal-destroy-confirm', $model->getKey()))
             ->get();
     }
 }

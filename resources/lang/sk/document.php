@@ -2,17 +2,17 @@
 
 return [
     'column' => [
-        'document_type_id' => 'Typ dokumentu',
+        'document_type_id' => 'Kategória šablón',
         'title' => 'Názov',
-        'theme' => 'Množina šablón',
+        'theme' => 'Téma',
         'valid_from' => 'Platnosť od',
         'valid_to' => 'Platnosť do',
         'page_element' => 'Element',
     ],
     'field' => [
-        'document_type_id' => 'Typ dokumentu',
+        'document_type_id' => 'Kategória šablón',
         'title' => 'Názov',
-        'theme' => 'Množina šablón',
+        'theme' => 'Téma',
         'valid_from' => 'Platnosť od',
         'valid_to' => 'Platnosť do',
         'page_element' => 'Element',
@@ -26,16 +26,16 @@ return [
     ],
     'model' => [
         'title' => [
-            'singular' => 'Dokument',
-            'plural' => 'Dokumenty',
+            'singular' => 'Šablóna',
+            'plural' => 'Šablóny',
         ],
     ],
     'action' => [
         'show' => 'Kompozícia',
         'preview' => 'Náhľad',
         'pdf' => 'PDF',
-        'edit-header' => 'Výber hlavičky dokumentu',
-        'edit-footer' => 'Výber pätičky dokumentu',
+        'edit-header' => 'Výber hlavičky',
+        'edit-footer' => 'Výber pätičky',
     ],
     'legend' => [
         'base' => 'Základné údaje',
@@ -45,8 +45,8 @@ return [
         'none' => 'Bez požiadaviek',
     ],
     'text' => [
-        'header' => 'Hlavička dokumentu',
-        'body' => 'Telo dokumentu',
-        'footer' => 'Pätička dokumentu',
+        'header' => 'Hlavička',
+        'body' => 'Telo',
+        'footer' => 'Pätička',
     ]
 ];

@@ -77,9 +77,9 @@ $(document).ready(function($)
         }
 
         if ($node.is('.content-container')) {
-            let isSingleEditable = ($node.find('.editable-content').length == 1);
+            let isSingleEditable = ($node.find('.editable-content').length === 1);
 
-            if (isSingleEditable && !$node.find('.editable-content').is('[data-name]')) {
+            if (isSingleEditable && !$node.find('.editable-content').data('name')) {
                 element.elementData.content = $.trim($node.find('.editable-content').html());
             } else {
                 element.elementData.content = {};

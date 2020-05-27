@@ -17,7 +17,7 @@
 </div>
 <div class="panel-body padding-0">
 @if ($component->getModel()->hasFooter())
-    <div class="d-none editable-part" data-keditor="html">
+    <div id="{{ $component->getDomId('compose-footer') }}" class="d-none editable-part" data-keditor="html">
         <div
             class="content-composition"
             data-snippets-url="{{ $component->getModel()->getFooter()->getControllerRoute('elementSnippets') }}"

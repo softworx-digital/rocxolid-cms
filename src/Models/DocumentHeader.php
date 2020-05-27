@@ -23,8 +23,8 @@ class DocumentHeader extends AbstractDocumentPart
     /**
      * {@inheritDoc}
      */
-    public function getOwnerRelation(): BelongsTo
+    public function getOwnerRelationName(): string
     {
-        return $this->getOwner()->header();
+        return 'header';
     }
 }
