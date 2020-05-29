@@ -1,7 +1,7 @@
 <div class="x_panel ajax-overlay">
     {!! $component->render('include.header-panel') !!}
 
-    <div id="{{ $component->getDomId() }}" class="panel panel-primary">
+    <div id="{{ $component->getDomId() }}" class="panel-group panel-group-collapsed">
         {!! $component->render('compose.header') !!}
         {!! $component->render('compose.body') !!}
         {!! $component->render('compose.footer') !!}

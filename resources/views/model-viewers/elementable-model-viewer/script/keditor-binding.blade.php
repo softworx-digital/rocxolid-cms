@@ -204,7 +204,7 @@ $(document).ready(function($)
                     $element
                         .closest('[data-keditor]')
                         .removeClass('d-none')
-                        .addClass('animated fadeIn faster');
+                        .addClass('animated slideInDown speed-400');
                 }, 500);
             },
             onContentChanged: function (event, contentArea) {

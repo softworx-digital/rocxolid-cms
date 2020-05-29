@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
 use Softworx\RocXolid\Contracts\TranslationProvider;
+// rocXolid forms
+use Softworx\RocXolid\Forms\AbstractCrudForm;
 // rocXolid cms dependencies contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
@@ -35,13 +37,22 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
      *
      * @return string
      */
-    public function getDefaultViewPropertyName(): string;
+    public function getAssignmentDefaultName(): string;
+
+    /**
+     * Provide dependency field names.
+     *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @return \Illuminate\Support\Collection
+     */
+    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
 
     /**
      * Provide dependency field definition.
      *
+     * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
      * @return array
      */
-    public function provideDependencyFieldDefinition(ElementableDependencyDataProvider $data_provider): array;
+    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $data_provider): array;
 }

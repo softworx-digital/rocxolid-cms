@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+// rocXolid forms
+use Softworx\RocXolid\Forms\AbstractCrudForm;
 // rocXolid traits
 use Softworx\RocXolid\Traits\Controllable;
 use Softworx\RocXolid\Traits\TranslationPackageProvider;
@@ -30,17 +32,30 @@ abstract class AbstractElementDependency implements ElementableDependency
     use TranslationKeyProvider;
 
     /**
+     * Dependency field names.
+     *
+     * @var array
+     */
+    protected $dependency_fields_definition = [];
+
+    /**
      * {@inheritDoc}
      */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $dependency_data_provider, ?string $key = null): ElementableDependency
     {
-        $key = $key ?? $this->getDefaultViewPropertyName();
-
         if ($assignments->has($key)) {
             throw new \RuntimeException(sprintf('Assignment key [%s] is already set to assignments [%s]', $key, print_r($assignments, true)));
         }
 
-        $assignments->put($key, $this->getDependencyValue($dependency_data_provider));
+        $this->getDependencyValues($dependency_data_provider)->each(function ($value, $dependency_key) use (&$assignments, $key) {
+            $key = $key ?? $dependency_key;
+
+            if ($assignments->has($key)) {
+                throw new \RuntimeException(sprintf('Assignment key [%s] is already set to assignments [%s]', $key, print_r($assignments, true)));
+            }
+
+            $assignments->put($key, $value);
+        });
 
         return $this;
     }
@@ -48,9 +63,25 @@ abstract class AbstractElementDependency implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function getDefaultViewPropertyName(): string
+    public function getAssignmentDefaultName(): string
     {
         return Str::snake((new \ReflectionClass($this))->getShortName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    {
+        return collect($this->dependency_fields_definition)->keys();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $data_provider): array
+    {
+        return $this->dependency_fields_definition;
     }
 
     /**
@@ -74,13 +105,35 @@ abstract class AbstractElementDependency implements ElementableDependency
     }
 
     /**
-     * Retrieve the actual value of the dependency.
+     * Retrieve the actual value(s) of the dependency extracting it from the dependency data provider's values.
      *
-     * @param ElementableDependencyDataProvider $dependency_data_provider
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    {
+        $raw = collect($dependency_data_provider->getDependencyData($this)->only($this->provideDependencyFieldNames($dependency_data_provider)->toArray()));
+
+        $keyed = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
+            return $this->getAssignmentDefaultName();
+        }) : $raw;
+
+        $a = $keyed->transform(function ($value, $key) {
+            return $this->tranformDependencyValue($key, $value);
+        });
+
+        return $a;
+    }
+
+    /**
+     * Transform the dependency value specifically for the dependency.
+     *
+     * @param string $key
+     * @param mixed $value
      * @return mixed
      */
-    protected function getDependencyValue(ElementableDependencyDataProvider $dependency_data_provider)
+    protected function tranformDependencyValue(string $key, $value)
     {
-        return $dependency_data_provider->getDependencyValues($this)->get($this->getDefaultViewPropertyName());
+        return $value;
     }
 }

@@ -24,7 +24,7 @@ interface ElementableDependencyDataProvider
      * @param \Illuminate\Support\Collection $data
      * @return \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider
      */
-    public function setDependencyValues(ElementsDependenciesProvider $dependencies_provider, Collection $data): ElementableDependencyDataProvider;
+    public function setDependencyData(ElementsDependenciesProvider $dependencies_provider, Collection $data): ElementableDependencyDataProvider;
 
     /**
      * Retrieve dependency value.
@@ -32,7 +32,7 @@ interface ElementableDependencyDataProvider
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency $dependency
      * @return mixed
      */
-    public function getDependencyValues(ElementableDependency $dependency);
+    public function getDependencyData(ElementableDependency $dependency);
 
     /**
      * Check if the data provider is ready to provide dependency values.

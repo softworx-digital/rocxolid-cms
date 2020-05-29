@@ -21,7 +21,7 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     /**
      * {@inheritDoc}
      */
-    public function setDependencyValues(ElementsDependenciesProvider $document, Collection $data): ElementableDependencyDataProvider
+    public function setDependencyData(ElementsDependenciesProvider $document, Collection $data): ElementableDependencyDataProvider
     {
         return $this;
     }
@@ -29,7 +29,7 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     /**
      * {@inheritDoc}
      */
-    public function getDependencyValues(ElementableDependency $dependency)
+    public function getDependencyData(ElementableDependency $dependency)
     {
         return collect();
     }
