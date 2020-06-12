@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
+use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 use Softworx\RocXolid\Contracts\TranslationProvider;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
@@ -31,6 +32,14 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
      * @throws \RuntimeException If assignments key already set.
      */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider, ?string $key = null): ElementableDependency;
+
+    /**
+     * Retrieve translated dependency title.
+     *
+     * @param \Softworx\RocXolid\Contracts\TranslationPackageProvider\TranslationPackageProvider $controller
+     * @return string
+     */
+    public function getTitle(TranslationPackageProvider $controller): string;
 
     /**
      * Obtain default property name this dependency sets to a view.

@@ -6,8 +6,19 @@
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }}@if (false) <small>{{ $component->translate(sprintf('action.%s', $route_method)) }}</small>@endif</h4>
             </div>
             <div class="modal-body">
-            @foreach ($component->getModel()->getAvailableDependencyPlaceholders() as $param => $event_model)
+            @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies() as $dependency)
+                @dump($dependency)
 
+                <div class="panel panel-primary">
+                    <div class="panel-heading" data-toggle="collapse" href="{{ $component->getDomIdHash($dependency->getAssignmentDefaultName()) }}" style="cursor: pointer;">
+                        <span>{{ $dependency->getTitle($component->getModel()->getCrudController()) }}</span>
+                    </div>
+                    <div id="{{ $component->getDomId($dependency->getAssignmentDefaultName()) }}" class="panel-collapse collapse">
+                        <div class="panel-body panel-permissions">
+
+                        </div>
+                    </div>
+                </div>
             @endforeach
             </div>
             <div class="modal-footer">

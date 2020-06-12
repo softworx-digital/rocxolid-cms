@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
+// rocXolid contracts
+use Softworx\RocXolid\Contracts\TranslationPackageProvider as TranslationPackageProviderContract;
 // rocXolid traits
 use Softworx\RocXolid\Traits\Controllable;
 use Softworx\RocXolid\Traits\TranslationPackageProvider;
@@ -58,6 +60,14 @@ abstract class AbstractElementDependency implements ElementableDependency
         });
 
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTitle(TranslationPackageProviderContract $controller): string
+    {
+        return $this->setController($controller)->translate(sprintf('element-dependency.%s', $this->provideTranslationKey()));
     }
 
     /**
