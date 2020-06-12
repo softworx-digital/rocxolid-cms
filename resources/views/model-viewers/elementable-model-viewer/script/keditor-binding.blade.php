@@ -182,6 +182,12 @@ $(document).ready(function($)
                 }
             ],
             snippetsUrl: $element.data('snippets-url'),
+            bootstrap: {
+                ...$.fn.keditor.constructor.DEFAULTS.bootstrap,
+                deviceClass: {
+                    DESKTOP: 'lg'
+                },
+            },
             containerForQuickAddComponent: `{!! $component->getModel()->getDocumentEditorContainerForQuickAddComponent() !!}`,
             extraTopbarItems: (function($container) {
                 let extraItems = {};

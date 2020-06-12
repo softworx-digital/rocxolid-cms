@@ -31,6 +31,7 @@ return [
         ],
     ],
     'action' => [
+        'create' => 'Nová',
         'show' => 'Kompozícia',
         'preview' => 'Náhľad',
         'pdf' => 'PDF',

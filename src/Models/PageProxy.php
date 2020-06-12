@@ -26,6 +26,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
 class PageProxy extends AbstractElementable implements ProxyElementable //, Cloneable
 {
     use Modellable;
+    use Traits\HasDependencies;
 
     protected $table = 'cms_page_proxies';
 

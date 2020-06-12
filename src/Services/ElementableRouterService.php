@@ -23,6 +23,11 @@ class ElementableRouterService extends CrudRouterService
             'uses' => $this->controller . '@elementSnippets',
         ]);
 
+        Route::get($this->name . sprintf('/{%s}/placeholders', $param), [
+            'as' => 'crud.' . $this->name . '.content-placeholders',
+            'uses' => $this->controller . '@contentPlaceholders',
+        ]);
+
         Route::post($this->name . sprintf('/{%s}/composition', $param), [
             'as' => 'crud.' . $this->name . '.composition.update',
             'uses' => $this->controller . '@storeComposition',

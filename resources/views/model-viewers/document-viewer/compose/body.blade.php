@@ -25,6 +25,7 @@
             <div
                 class="content-composition"
                 data-snippets-url="{{ $component->getModel()->getControllerRoute('elementSnippets') }}"
+                data-placeholders-url="{{ $component->getModel()->getControllerRoute('contentPlaceholders') }}"
                 data-update-url="{{ $component->getModel()->getControllerRoute('storeComposition') }}"
                 data-preview-pdf-url="{{ $component->getModel()->getControllerRoute('previewPdf') }}"
                 data-element-detach-url="{{ $component->getModel()->getControllerRoute('detachElement') }}"

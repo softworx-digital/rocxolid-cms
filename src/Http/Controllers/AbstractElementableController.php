@@ -21,6 +21,7 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
+ * @todo: return type hints
  */
 abstract class AbstractElementableController extends AbstractCrudController
 {
@@ -58,6 +59,21 @@ abstract class AbstractElementableController extends AbstractCrudController
     public function elementSnippets(CrudRequest $request, Elementable $model)
     {
         return $this->getModelViewerComponent($model)->render('snippets');
+    }
+
+    /**
+     * Get content placeholders listing.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
+    public function contentPlaceholders(CrudRequest $request, Elementable $model)
+    {
+        $model_viewer_component = $this->getModelViewerComponent($model);
+
+        return $this->response
+            ->modal($model_viewer_component->fetch('modal.content-placeholders'))
+            ->get();
     }
 
     /**
