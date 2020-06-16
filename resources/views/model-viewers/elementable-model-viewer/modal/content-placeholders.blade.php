@@ -7,15 +7,25 @@
             </div>
             <div class="modal-body">
             @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies() as $dependency)
-                @dump($dependency)
-
                 <div class="panel panel-primary">
                     <div class="panel-heading" data-toggle="collapse" href="{{ $component->getDomIdHash($dependency->getAssignmentDefaultName()) }}" style="cursor: pointer;">
-                        <span>{{ $dependency->getTitle($component->getModel()->getCrudController()) }}</span>
+                        <span>{{ $dependency->getTitle($component->getController()) }}</span>
                     </div>
                     <div id="{{ $component->getDomId($dependency->getAssignmentDefaultName()) }}" class="panel-collapse collapse">
-                        <div class="panel-body panel-permissions">
-
+                        <div class="panel-body padding-0">
+                            <ul class="list-group padding-0 margin-0">
+                            @foreach ($dependency->provideDependencyDataPlaceholders() as $placeholder)
+                                <li class="list-group-item padding-0">
+                                    <button
+                                        class="btn btn-sm btn-primary margin-2 margin-right-5"
+                                        data-dependency="{{ $placeholder->getToken() }}"
+                                        data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
+                                        <i class="fa fa-chevron-left"></i>
+                                    </button>
+                                    <span class="margin-top-2">{{ $placeholder->getTitle($component->getController()) }}</span>
+                                </li>
+                            @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>

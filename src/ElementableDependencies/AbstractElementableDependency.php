@@ -18,6 +18,8 @@ use Softworx\RocXolid\Components\General\Message;
 // rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
+// rocXolid cms elementable dependency data
+use Softworx\RocXolid\CMS\ElementableDependencies\Data\Placeholder;
 
 /**
  * Abstract elementable dependency.
@@ -26,7 +28,7 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractElementDependency implements ElementableDependency
+abstract class AbstractElementableDependency implements ElementableDependency
 {
     use Controllable;
     use TranslationPackageProvider;
@@ -67,7 +69,7 @@ abstract class AbstractElementDependency implements ElementableDependency
      */
     public function getTitle(TranslationPackageProviderContract $controller): string
     {
-        return $this->setController($controller)->translate(sprintf('element-dependency.%s', $this->provideTranslationKey()));
+        return $this->setController($controller)->translate(sprintf('element-dependency.%s.title', $this->provideTranslationKey()));
     }
 
     /**
@@ -89,9 +91,23 @@ abstract class AbstractElementDependency implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $data_provider): array
+    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
         return $this->dependency_fields_definition;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideDependencyDataPlaceholders(): Collection
+    {
+        $config = static::getConfigFilePathKey();
+        $key = 'data-placeholders';
+
+        return collect(config(sprintf('%s.%s.%s', $config, $key, static::class), config(sprintf('%s.%s.default', $config, $key), [])))
+            ->transform(function ($definition, $name) {
+                return new Placeholder($this, $name, $definition);
+            });
     }
 
     /**
@@ -145,5 +161,15 @@ abstract class AbstractElementDependency implements ElementableDependency
     protected function tranformDependencyValue(string $key, $value)
     {
         return $value;
+    }
+
+    /**
+     * Obtain config file path key.
+     *
+     * @return string
+     */
+    protected static function getConfigFilePathKey(): string
+    {
+        return 'rocXolid.cms.dependency';
     }
 }

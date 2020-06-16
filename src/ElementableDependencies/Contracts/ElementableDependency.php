@@ -51,7 +51,7 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
     /**
      * Provide dependency field names.
      *
-     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return \Illuminate\Support\Collection
      */
     public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
@@ -60,8 +60,15 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
      * Provide dependency field definition.
      *
      * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
-     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return array
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $data_provider): array;
+    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
+
+    /**
+     * Provide set of dependency data placeholders with their options that can be used in content composition.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function provideDependencyDataPlaceholders(): Collection;
 }
