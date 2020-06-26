@@ -23,6 +23,8 @@ return [
     'button' => [
         'create-header' => 'Pridať hlavičku',
         'create-footer' => 'Pridať pätičku',
+        'add-placeholder' => 'Pridať',
+        'add-placeholder-close' => 'Pridať a zavrieť',
     ],
     'model' => [
         'title' => [

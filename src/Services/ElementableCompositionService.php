@@ -233,7 +233,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
     protected function createElement(Collection $data): Element
     {
         if (!$data->has('elementType')) {
-            throw new \InvalidArgumentException('Missing [elementType] in node data');
+            throw new \InvalidArgumentException(sprintf('Missing [elementType] in node data: %s', $data->toJson()));
         }
 
         $element_type = $this->resolveElementPolymorphism($data->get('elementType'));

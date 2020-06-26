@@ -21,7 +21,12 @@ $(document).ready(function($)
         for (let i in $node.data()) {
             // put only defined data, or all if not defined
             if (!onlyData.length || onlyData.includes(i)) {
-                element[i] = $node.data(i);
+
+                if (i === 'elementTemplate') {
+                    element.pivotData.template = $node.data(i);
+                } else {
+                    element[i] = $node.data(i);
+                }
             }
         }
 

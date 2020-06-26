@@ -70,30 +70,36 @@ abstract class AbstractElementable extends AbstractCrudModel implements Elements
      * Obtain available element models that can be assigned to the model.
      *
      * @return \Illuminate\Support\Collection
-     * @todo: more elegant code please
+     * @todo: ugly, find nicer approach
      */
     public function getAvailableElements(string $group = null): Collection
     {
         $elements = collect();
 
         $this->getAvailableElementTypes()->each(function ($options, $type) use ($group, &$elements) {
-            // passed options for only one instance
-            if ($options->isEmpty() || Arr::isAssoc($options->all())) {
-                $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
+            $type::getAvailableTemplates($this->provideViewTheme())->each(function ($template) use ($options, $type, $group, &$elements) {
+                // options passed for only one instance
+                if ($options->isEmpty() || Arr::isAssoc($options->all())) {
+                    $options->put('template', $template);
 
-                if (is_null($group) || $element->belongsToGroup($group)) {
-                    $elements->push($element);
-                }
-            } else {
-                // multiple instance options
-                $elements = $elements->merge($options->transform(function ($options) use ($group, $type) {
-                    $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), collect($options));
+                    $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
 
                     if (is_null($group) || $element->belongsToGroup($group)) {
-                        return $element;
+                        $elements->push($element);
                     }
-                })->filter());
-            }
+                // multiple instance options
+                } else {
+                    $elements = $elements->merge($options->transform(function ($options) use ($group, $type, $template) {
+                        $options = collect($options)->put('template', $template);
+
+                        $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
+
+                        if (is_null($group) || $element->belongsToGroup($group)) {
+                            return $element;
+                        }
+                    })->filter());
+                }
+            });
         });
 
         return $elements;

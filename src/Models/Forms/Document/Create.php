@@ -230,7 +230,7 @@ class Create extends RocXolidAbstractCrudForm
         $fields['dependencies']['options']['collection'] = $this->getModel()->getAvailableDependencies()->map(function ($dependency) {
             return [
                 (new \ReflectionClass($dependency))->getName(),
-                $dependency->setController($this->getController())->translate(sprintf('element-dependency.%s', $dependency->provideTranslationKey())),
+                $dependency->getTitle($this->getController()),
             ];
         })->toAssoc();
 

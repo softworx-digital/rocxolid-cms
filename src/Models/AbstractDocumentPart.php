@@ -58,6 +58,20 @@ abstract class AbstractDocumentPart extends AbstractElementable
     /**
      * {@inheritDoc}
      */
+    public function resolveRouteBinding($value)
+    {
+        $model = $this->where($this->getRouteKeyName(), $value)->first();
+
+        if (request()->has('document_id') && ($document = Document::find(request()->get('document_id')))) {
+            $model->setOwner($document);
+        }
+
+        return $model;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected function getDefaultControllerRouteParams(string $method): array
     {
         return isset($this->document) ? [
@@ -70,10 +84,10 @@ abstract class AbstractDocumentPart extends AbstractElementable
      */
     public function onCreateBeforeSave(Collection $data): Crudable
     {
-        $this->setOwner(Document::find($data->get('document_id')));
-
-        $this->web()->associate($this->document->web);
-        $this->localization()->associate($this->document->localization);
+        // $this->setOwner(Document::find($data->get('document_id')));
+dd(__METHOD__, $this);
+        $this->web()->associate($this->getOwner()->web);
+        $this->localization()->associate($this->getOwner()->localization);
 
         return $this;
     }
@@ -83,7 +97,7 @@ abstract class AbstractDocumentPart extends AbstractElementable
     */
    public function provideDependencies(): Collection
    {
-       return $this->document->provideDependencies();
+       return $this->getOwner()->provideDependencies();
    }
 
     /**
@@ -91,7 +105,7 @@ abstract class AbstractDocumentPart extends AbstractElementable
     */
    public function provideViewTheme(): string
    {
-       return $this->document->provideViewTheme();
+       return $this->getOwner()->provideViewTheme();
    }
 
     /**
@@ -115,11 +129,6 @@ abstract class AbstractDocumentPart extends AbstractElementable
      */
     public function getOwner(): Document
     {
-        // @todo: hotfixed as fuck
-        if (request()->has('document_id') && ($document = Document::find(request()->get('document_id')))) {
-            $this->setOwner($document);
-        }
-
         if (!isset($this->document)) {
             throw new \RuntimeException(sprintf('Owner not yet set to [%s]', get_class($this)));
         }

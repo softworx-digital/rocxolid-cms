@@ -16,12 +16,23 @@
                             <ul class="list-group padding-0 margin-0">
                             @foreach ($dependency->provideDependencyDataPlaceholders() as $placeholder)
                                 <li class="list-group-item padding-0">
-                                    <button
-                                        class="btn btn-sm btn-primary margin-2 margin-right-5"
-                                        data-dependency="{{ $placeholder->getToken() }}"
-                                        data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
-                                        <i class="fa fa-chevron-left"></i>
-                                    </button>
+                                    <div class="btn-group btn-group-sm padding-0 margin-0 margin-right-5" style="min-height: 0;">
+                                        <button
+                                            class="btn btn-primary"
+                                            title="{{ $component->translate('button.add-placeholder') }}"
+                                            data-dependency="{{ $placeholder->getToken() }}"
+                                            data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-primary"
+                                            title="{{ $component->translate('button.add-placeholder-close') }}"
+                                            data-dependency="{{ $placeholder->getToken() }}"
+                                            data-dismiss="modal"
+                                            data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
+                                            <i class="fa fa-chevron-circle-left"></i>
+                                        </button>
+                                    </div>
                                     <span class="margin-top-2">{{ $placeholder->getTitle($component->getController()) }}</span>
                                 </li>
                             @endforeach
