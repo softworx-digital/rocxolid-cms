@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Rendering\Services;
 
+use Log;
 // rocXolid rendering contracts
 use Softworx\RocXolid\Rendering\Contracts\Renderable;
 // rocXolid cms elements services
@@ -85,6 +86,8 @@ class BladeExtensionService
                 $content = ContentCompiler::init($element)->process($content, collect($content_part_assignments));
             } catch (\Exception $e) {
                 $content = sprintf('!! %s !!', $e->getMessage());
+
+                Log::error($e);
             }
         } elseif ($element->useDefaultContent($content_part_name)) {
 
@@ -98,6 +101,8 @@ class BladeExtensionService
                         : $element->getDefaultContent($content_part_name);
             } catch (\Exception $e) {
                 $content = sprintf('!! %s !!', $e->getMessage());
+
+                Log::error($e);
             }
         } else {
 

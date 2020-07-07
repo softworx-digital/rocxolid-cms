@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 
 /**
- * Fakes dependency data provider.
+ * Fakes dependency provider.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS

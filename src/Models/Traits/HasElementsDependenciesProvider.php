@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
+// rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 // rocXolid cms support
 use Softworx\RocXolid\CMS\Support\PlaceholderElementableDependencyProvider;

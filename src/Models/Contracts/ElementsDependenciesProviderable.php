@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Contracts;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 
 /**
- * Enables dependecies to be provided to elements.
+ * Enables to retrieve a dependencies provider.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS

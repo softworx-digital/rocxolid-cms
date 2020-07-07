@@ -21,6 +21,7 @@ class Document extends AbstractElementable implements PdfDataProvider
     use Traits\HasHeader;
     use Traits\HasFooter;
     use Traits\HasDependencies;
+    use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
 
     /**

@@ -12,6 +12,9 @@ use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\Document;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
+// rocXolid cms mutators contracts
+use Softworx\RocXolid\CMS\Mutators\Contracts\Mutator;
 
 /**
  * Document part abstraction.
@@ -95,18 +98,34 @@ dd(__METHOD__, $this);
     /**
     * {@inheritDoc}
     */
-   public function provideDependencies(): Collection
-   {
-       return $this->getOwner()->provideDependencies();
-   }
+    public function provideDependencies(): Collection
+    {
+        return $this->getOwner()->provideDependencies();
+    }
 
     /**
     * {@inheritDoc}
     */
-   public function provideViewTheme(): string
-   {
-       return $this->getOwner()->provideViewTheme();
-   }
+    public function provideViewTheme(): string
+    {
+        return $this->getOwner()->provideViewTheme();
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideMutators(): Collection
+    {
+        return $this->getOwner()->provideMutators();
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getMutator(string $key): ?Mutator
+    {
+        return $this->getOwner()->getMutator($key);
+    }
 
     /**
      * Set owning document to be able to provide dependencies for underlying elements.
@@ -167,6 +186,14 @@ dd(__METHOD__, $this);
      * {@inheritDoc}
      */
     public function getDependenciesProvider(): ElementsDependenciesProvider
+    {
+        return $this->getOwner();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMutatorsProvider(): ElementsMutatorsProvider
     {
         return $this->getOwner();
     }

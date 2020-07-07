@@ -25,6 +25,7 @@ return [
         'create-footer' => 'Pridať pätičku',
         'add-placeholder' => 'Pridať',
         'add-placeholder-close' => 'Pridať a zavrieť',
+        'add-mutator-close' => 'Pridať a zavrieť',
     ],
     'model' => [
         'title' => [
@@ -46,6 +47,12 @@ return [
     ],
     'element-dependency' => [
         'none' => 'Bez požiadaviek',
+    ],
+    'element-mutator' => [
+        'reverse' => [
+            'title' => 'Obrátene',
+            'hint' => 'Tento mutátor obráti vyznačený text',
+        ],
     ],
     'text' => [
         'header' => 'Hlavička',

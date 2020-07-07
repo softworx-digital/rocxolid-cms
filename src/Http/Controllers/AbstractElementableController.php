@@ -79,6 +79,21 @@ abstract class AbstractElementableController extends AbstractCrudController
     }
 
     /**
+     * Get content mutators listing.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable $model
+     */
+    public function contentMutators(CrudRequest $request, Elementable $model)
+    {
+        $model_viewer_component = $this->getModelViewerComponent($model);
+
+        return $this->response
+            ->modal($model_viewer_component->fetch('modal.content-mutators'))
+            ->get();
+    }
+
+    /**
      * Store the elementable composition.
      *
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request

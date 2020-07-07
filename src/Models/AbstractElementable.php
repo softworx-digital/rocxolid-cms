@@ -13,6 +13,8 @@ use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProviderable;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProviderable;
 // rocXolid cms elements models contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms elements models traits
@@ -27,7 +29,12 @@ use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractElementable extends AbstractCrudModel implements ElementsDependenciesProvider, ElementsDependenciesProviderable, Elementable
+abstract class AbstractElementable extends AbstractCrudModel implements
+    ElementsDependenciesProvider,
+    ElementsDependenciesProviderable,
+    ElementsMutatorsProvider,
+    ElementsMutatorsProviderable,
+    Elementable
 {
     use SoftDeletes;
     use HasElements;
@@ -60,9 +67,13 @@ abstract class AbstractElementable extends AbstractCrudModel implements Elements
     public function getDocumentEditorContainerForQuickAddComponent(): string
     {
         return $this->getQuickAddComponentElementTypes()->transform(function ($options, $type) {
-            return ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), collect($options))
-                ->getModelViewerComponent()
-                ->fetch();
+            return ElementBuilder::buildSnippetElement(
+                $type,
+                $this->getDependenciesProvider(),
+                $this->getMutatorsProvider(),
+                $this->getDependenciesDataProvider(),
+                collect($options)
+            )->getModelViewerComponent()->fetch();
         })->join("\n");
     }
 
@@ -82,7 +93,13 @@ abstract class AbstractElementable extends AbstractCrudModel implements Elements
                 if ($options->isEmpty() || Arr::isAssoc($options->all())) {
                     $options->put('template', $template);
 
-                    $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
+                    $element = ElementBuilder::buildSnippetElement(
+                        $type,
+                        $this->getDependenciesProvider(),
+                        $this->getMutatorsProvider(),
+                        $this->getDependenciesDataProvider(),
+                        $options
+                    );
 
                     if (is_null($group) || $element->belongsToGroup($group)) {
                         $elements->push($element);
@@ -92,7 +109,13 @@ abstract class AbstractElementable extends AbstractCrudModel implements Elements
                     $elements = $elements->merge($options->transform(function ($options) use ($group, $type, $template) {
                         $options = collect($options)->put('template', $template);
 
-                        $element = ElementBuilder::buildSnippetElement($type, $this->getDependenciesProvider(), $this->getDependenciesDataProvider(), $options);
+                        $element = ElementBuilder::buildSnippetElement(
+                            $type,
+                            $this->getDependenciesProvider(),
+                            $this->getMutatorsProvider(),
+                            $this->getDependenciesDataProvider(),
+                            $options
+                        );
 
                         if (is_null($group) || $element->belongsToGroup($group)) {
                             return $element;

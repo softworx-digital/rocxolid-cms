@@ -36,6 +36,11 @@ abstract class AbstractElementableDependency implements ElementableDependency
     use TranslationKeyProvider;
 
     /**
+     * {@inheritDoc}
+     */
+    // protected $translation_package = 'rocXolid:cms'; // will throw exception, cause this is defined in the trait
+
+    /**
      * Dependency field names.
      *
      * @var array
