@@ -8,6 +8,7 @@ use Softworx\RocXolid\CMS\Facades\ThemeManager;
 // models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\CMS\Models\DocumentType;
+use Softworx\RocXolid\CMS\Models\DataDependency;
 
 /**
  *
@@ -209,6 +210,8 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        $web =
+
         // $fields['web_id']['options']['show-null-option'] = true;
         $fields['web_id']['options']['collection'] = Web::all()->pluck('name', 'id');
         $fields['web_id']['options']['validation']['rules'][] = 'required';
@@ -225,9 +228,17 @@ class Update extends RocXolidAbstractCrudForm
         $fields['dependencies']['options']['collection'] = $this->getModel()->getAvailableDependencies()->map(function ($dependency) {
             return [
                 (new \ReflectionClass($dependency))->getName(),
-                $dependency->getTitle($this->getController()),
+                $dependency->getTranslatedTitle($this->getController()),
             ];
-        })->toAssoc();
+        })->merge(DataDependency::where([
+            'web_id' => $this->getInputFieldValue('web_id') ?? $this->getModel()->web->getKey(),
+            'localization_id' => $this->getInputFieldValue('localization_id') ?? $this->getModel()->localization->getKey(),
+        ])->get()->map(function ($dependency) {
+            return [
+                sprintf('%s:%s', DataDependency::class, $dependency->getKey()),
+                $dependency->getTitle(),
+            ];
+        }))->toAssoc();
 
         // $fields['dependencies']['options']['values'] = $this->getModel()->getDependencies();
 

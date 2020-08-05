@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+// rocXolid cms elementable dependencies
+use Softworx\RocXolid\CMS\ElementableDependencies\General;
 
 
 /**
@@ -39,7 +41,7 @@ trait HasDependencies
      */
     public function getDependenciesAttribute($value): Collection
     {
-        return collect($value ? json_decode($value) : [])->filter();
+        return collect($value ? json_decode($value) : [])->filter()->prepend(General::class);
     }
 
     /**
@@ -47,8 +49,10 @@ trait HasDependencies
      */
     public function provideDependencies(): Collection
     {
-        return $this->dependencies->map(function ($dependency_type) {
-            return app($dependency_type);
+        return $this->dependencies->map(function ($dependency_type_id) {
+            list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
+
+            return filled($dependency_id) ? $dependency_type::findOrFail($dependency_id) : app($dependency_type);
         });
     }
 

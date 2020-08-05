@@ -87,8 +87,8 @@ abstract class AbstractDocumentPart extends AbstractElementable
      */
     public function onCreateBeforeSave(Collection $data): Crudable
     {
-        // $this->setOwner(Document::find($data->get('document_id')));
-dd(__METHOD__, $this);
+        $this->setOwner(Document::find($data->get('document_id')));
+
         $this->web()->associate($this->getOwner()->web);
         $this->localization()->associate($this->getOwner()->localization);
 

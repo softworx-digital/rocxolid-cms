@@ -24,6 +24,7 @@
         <div class="d-none" data-keditor="html">
             <div
                 class="content-composition"
+                data-iframe-id="document-body"
                 data-snippets-url="{{ $component->getModel()->getControllerRoute('elementSnippets') }}"
                 data-placeholders-url="{{ $component->getModel()->getControllerRoute('contentPlaceholders') }}"
                 data-mutators-url="{{ $component->getModel()->getControllerRoute('contentMutators') }}"

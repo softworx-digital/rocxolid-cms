@@ -44,7 +44,7 @@ abstract class AbstractMutator implements Mutator
     /**
      * {@inheritDoc}
      */
-    public function getTitle(TranslationPackageProviderContract $controller): string
+    public function getTranslatedTitle(TranslationPackageProviderContract $controller): string
     {
         return $this->setController($controller)->translate(sprintf('element-mutator.%s.title', $this->provideTranslationKey()));
     }

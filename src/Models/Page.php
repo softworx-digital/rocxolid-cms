@@ -23,6 +23,7 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
 class Page extends AbstractElementable // implements Cloneable
 {
     use Traits\HasDependencies;
+    use Traits\HasMutators;
 
     protected $table = 'cms_pages';
 

@@ -21,7 +21,10 @@ return [
      * ```
      */
     'data-placeholders' => [
-        'default' => [
+        Softworx\RocXolid\CMS\ElementableDependencies\General::class => [
+            'current_date' => [
+                'token' => 'general::getCurrentDate',
+            ],
         ],
     ],
 ];

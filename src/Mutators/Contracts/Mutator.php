@@ -26,7 +26,7 @@ interface Mutator extends Paramable, Controllable, TranslationDiscoveryProvider,
      * @param \Softworx\RocXolid\Contracts\TranslationPackageProvider\TranslationPackageProvider $controller
      * @return string
      */
-    public function getTitle(TranslationPackageProvider $controller): string;
+    public function getTranslatedTitle(TranslationPackageProvider $controller): string;
 
     /**
      * Retrieve translated mutator hint message.

@@ -9,7 +9,7 @@
             @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies() as $dependency)
                 <div class="panel panel-primary">
                     <div class="panel-heading" data-toggle="collapse" href="{{ $component->getDomIdHash($dependency->getAssignmentDefaultName()) }}" style="cursor: pointer;">
-                        <span>{{ $dependency->getTitle($component->getController()) }}</span>
+                        <span>{{ $dependency->getTranslatedTitle($component->getController()) }}</span>
                     </div>
                     <div id="{{ $component->getDomId($dependency->getAssignmentDefaultName()) }}" class="panel-collapse collapse">
                         <div class="panel-body padding-0">
@@ -21,7 +21,7 @@
                                             class="btn btn-primary"
                                             title="{{ $component->translate('button.add-placeholder') }}"
                                             data-dependency="{{ $placeholder->getToken() }}"
-                                            data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
+                                            data-title="[{{ $placeholder->getTranslatedTitle($component->getController()) }}]">
                                             <i class="fa fa-chevron-left"></i>
                                         </button>
                                         <button
@@ -29,11 +29,11 @@
                                             title="{{ $component->translate('button.add-placeholder-close') }}"
                                             data-dependency="{{ $placeholder->getToken() }}"
                                             data-dismiss="modal"
-                                            data-title="[{{ $placeholder->getTitle($component->getController()) }}]">
+                                            data-title="[{{ $placeholder->getTranslatedTitle($component->getController()) }}]">
                                             <i class="fa fa-chevron-circle-left"></i>
                                         </button>
                                     </div>
-                                    <span class="margin-top-2">{{ $placeholder->getTitle($component->getController()) }}</span>
+                                    <span class="margin-top-2">{{ $placeholder->getTranslatedTitle($component->getController()) }}</span>
                                 </li>
                             @endforeach
                             </ul>

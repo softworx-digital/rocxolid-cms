@@ -6,8 +6,15 @@ namespace Softworx\RocXolid\CMS\Models\Tables\Document;
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 // rocXolid table buttons
 use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
-// rocXolid CMS tables
+// rocXolid table filters
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+// rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\DocumentType;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Web;
+use Softworx\RocXolid\Common\Models\Localization;
 
 /**
  *
@@ -176,4 +183,53 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
     ];
+
+    protected $filters = [
+        'web_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'label' => [
+                    'title' => 'web_id'
+                ],
+                'collection' => [
+                    'model' => Web::class,
+                    'column' => 'name',
+                ],
+            ],
+        ],
+        'localization_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'label' => [
+                    'title' => 'localization_id'
+                ],
+                'collection' => [
+                    'model' => Localization::class,
+                    'column' => 'name',
+                ],
+            ],
+        ],
+        'document_type_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'label' => [
+                    'title' => 'document_type_id'
+                ],
+                'collection' => [
+                    'model' => DocumentType::class,
+                    'column' => 'title',
+                ],
+            ],
+        ],
+    ];
+
+    protected function adjustFiltersDefinition($filters)
+    {
+        // @todo: hotfixed
+        $filters['web_id']['options']['label']['title'] = $this->getController()->translate('field.web_id');
+        $filters['localization_id']['options']['label']['title'] = $this->getController()->translate('field.localization_id');
+        $filters['document_type_id']['options']['label']['title'] = $this->getController()->translate('field.document_type_id');
+
+        return $filters;
+    }
 }

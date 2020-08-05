@@ -32,7 +32,9 @@ trait HasMutators
      */
     public function getMutator(string $key): ?Mutator
     {
-        return app($this->getAvailableMutatorTypes()->get($key));
+        $type = $this->getAvailableMutatorTypes()->get($key);
+
+        return $type ? app($type) : null;
     }
 
     /**

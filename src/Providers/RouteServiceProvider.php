@@ -69,7 +69,10 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
             CrudRouterService::create('faq', \Faq\Controller::class);
 
+            CrudRouterService::create('data-dependency', \DataDependency\Controller::class);
+
             CrudRouterService::create('document-type', \DocumentType\Controller::class);
+
             ElementableRouterService::create('document', \Document\Controller::class);
             ElementableRouterService::create('document_header', \DocumentHeader\Controller::class);
             ElementableRouterService::create('document_footer', \DocumentFooter\Controller::class);
@@ -94,6 +97,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
         //
         $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
         $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);
+        //
+        $router->model('data_dependency', \Softworx\RocXolid\CMS\Models\DataDependency::class);
         //
         $router->model('document_type', \Softworx\RocXolid\CMS\Models\DocumentType::class);
         $router->model('document', \Softworx\RocXolid\CMS\Models\Document::class);

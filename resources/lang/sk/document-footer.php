@@ -10,6 +10,9 @@ return [
     'button' => [
         'create-new' => 'Vytvoriť novú pätičku',
         'detach' => 'Bez pätičky',
+        'add-placeholder' => 'Pridať',
+        'add-placeholder-close' => 'Pridať a zavrieť',
+        'add-mutator-close' => 'Pridať a zavrieť',
     ],
     'model' => [
         'title' => [

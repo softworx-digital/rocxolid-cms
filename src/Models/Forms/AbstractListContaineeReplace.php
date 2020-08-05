@@ -65,6 +65,7 @@ class AbstractListContaineeReplace extends RocXolidAbstractCrudForm
             throw new \RuntimeException(sprintf('Class [%s] does not contain property [%s]', $containee_class, 'list_sortable_attributes'));
         }
 
+        // @todo: refactor
         $containee_model_viewer_component = (new $containee_class())->getModelViewerComponent();
 
         $collection = collect();

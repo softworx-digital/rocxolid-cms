@@ -211,6 +211,8 @@ $(document).ready(function($)
                 return extraItems;
             })($element),
             onInitIframe: function (iframe, iframeHead, iframeBody) {
+                $(iframe).attr('id', $element.data('iframeId'));
+
                 setTimeout(function() {
                     $element
                         .closest('[data-keditor]')

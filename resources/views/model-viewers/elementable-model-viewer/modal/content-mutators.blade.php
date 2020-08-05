@@ -17,11 +17,11 @@
                                 @if ($mutator->hasAllowedTextSelectionRegex()) data-mutator-allowed-selection-regex="{{ $mutator->getAllowedTextSelectionRegex() }}" @endif
                                 @if ($mutator->isAllowedPlaceholderSelection()) data-mutator-allowed-placeholder="true" @endif
                                 data-dismiss="modal"
-                                data-title="{{ $mutator->getTitle($component->getController()) }}">
+                                data-title="{{ $mutator->getTranslatedTitle($component->getController()) }}">
                                 <i class="fa fa-chevron-circle-left"></i>
                             </button>
                         </div>
-                        <span class="margin-top-2">{{ $mutator->getTitle($component->getController()) }}</span>
+                        <span class="margin-top-2">{{ $mutator->getTranslatedTitle($component->getController()) }}</span>
                         <i class="fa fa-info-circle margin-left-5" title="{{ $mutator->getHint($component->getController()) }}"></i>
                     </li>
                 @endforeach

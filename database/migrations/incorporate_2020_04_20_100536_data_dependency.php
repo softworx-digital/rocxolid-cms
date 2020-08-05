@@ -15,9 +15,26 @@ class DataDependency extends Migration
     {
         Schema::create('cms_data_dependencies', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('is_enabled')->default(0);
             $table->unsignedInteger('web_id');
             $table->unsignedInteger('localization_id');
             $table->enum('type', ['boolean', 'integer', 'decimal', 'string', 'text', 'enum', 'set']);
+            $table->string('title');
+            $table->decimal('min', 15, 6)->nullable();
+            $table->decimal('max', 15, 6)->nullable();
+            $table->boolean('is_required')->default(1);
+            $table->boolean('default_value_boolean')->nullable();
+            $table->integer('default_value_integer')->nullable();
+            $table->decimal('default_value_decimal', 15, 6)->nullable();
+            $table->string('default_value_string')->nullable();
+            $table->text('default_value_text')->nullable();
+            $table->enum('default_value_date', [ null, 'today' ])->nullable();
+            $table->json('default_value_enum')->nullable();
+            $table->json('default_value_set')->nullable();
+            $table->string('yes_title')->nullable();
+            $table->string('no_title')->nullable();
+            $table->json('values');
+            $table->string('conjunction')->nullable();
             $table->text('description')->nullable();
             $table->text('note')->nullable();
 
@@ -26,21 +43,16 @@ class DataDependency extends Migration
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();
-        });
 
-        Schema::create('cms_data_dependency_values', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('data_dependency_id');
-            $table->string('title');
-            $table->timestamps();
-            $table->softDeletes();
-            $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
-            $table->unsignedInteger('deleted_by')->nullable();
-
-            $table->foreign('data_dependency_id')
+            $table->foreign('web_id')
                 ->references('id')
-                ->on('cms_data_dependencies')
+                ->on('webs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('localization_id')
+                ->references('id')
+                ->on('localizations')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

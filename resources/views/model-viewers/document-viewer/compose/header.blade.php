@@ -33,7 +33,10 @@
         <div id="{{ $component->getDomId('compose-header') }}" class="d-none editable-part" data-keditor="html">
             <div
                 class="content-composition"
+                data-iframe-id="document-header"
                 data-snippets-url="{{ $component->getModel()->getHeader()->getControllerRoute('elementSnippets') }}"
+                data-placeholders-url="{{ $component->getModel()->getHeader()->getControllerRoute('contentPlaceholders') }}"
+                data-mutators-url="{{ $component->getModel()->getHeader()->getControllerRoute('contentMutators') }}"
                 data-update-url="{{ $component->getModel()->getHeader()->getControllerRoute('storeComposition') }}"
                 data-element-detach-url="{{ $component->getModel()->getHeader()->getControllerRoute('detachElement') }}"
                 data-element-destroy-url="{{ $component->getModel()->getHeader()->getControllerRoute('destroyElement') }}">

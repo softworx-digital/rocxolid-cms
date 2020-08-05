@@ -7,12 +7,12 @@ use Illuminate\Support\Collection;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
 // rocXolid contracts
-use Softworx\RocXolid\Contracts\TranslationPackageProvider as TranslationPackageProviderContract;
+use Softworx\RocXolid\Contracts\Controllable;
+use Softworx\RocXolid\Contracts\TranslationPackageProvider;
+use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
+use Softworx\RocXolid\Contracts\TranslationProvider;
 // rocXolid traits
-use Softworx\RocXolid\Traits\Controllable;
-use Softworx\RocXolid\Traits\TranslationPackageProvider;
-use Softworx\RocXolid\Traits\TranslationParamProvider;
-use Softworx\RocXolid\Traits\TranslationKeyProvider;
+use Softworx\RocXolid\Traits as Traits;
 // rocXolid components
 use Softworx\RocXolid\Components\General\Message;
 // rocXolid cms elementable dependency contracts
@@ -28,12 +28,12 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Data\Placeholder;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractElementableDependency implements ElementableDependency
+abstract class AbstractElementableDependency implements ElementableDependency, Controllable, TranslationDiscoveryProvider, TranslationProvider
 {
-    use Controllable;
-    use TranslationPackageProvider;
-    use TranslationParamProvider;
-    use TranslationKeyProvider;
+    use Traits\Controllable;
+    use Traits\TranslationPackageProvider;
+    use Traits\TranslationParamProvider;
+    use Traits\TranslationKeyProvider;
 
     /**
      * {@inheritDoc}
@@ -50,12 +50,16 @@ abstract class AbstractElementableDependency implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function getAssignmentDefaultName(): string
+    {
+        return Str::snake((new \ReflectionClass($this))->getShortName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $dependency_data_provider, ?string $key = null): ElementableDependency
     {
-        if ($assignments->has($key)) {
-            throw new \RuntimeException(sprintf('Assignment key [%s] is already set to assignments [%s]', $key, print_r($assignments, true)));
-        }
-
         $this->getDependencyValues($dependency_data_provider)->each(function ($value, $dependency_key) use (&$assignments, $key) {
             $key = $key ?? $dependency_key;
 
@@ -67,22 +71,6 @@ abstract class AbstractElementableDependency implements ElementableDependency
         });
 
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTitle(TranslationPackageProviderContract $controller): string
-    {
-        return $this->setController($controller)->translate(sprintf('element-dependency.%s.title', $this->provideTranslationKey()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAssignmentDefaultName(): string
-    {
-        return Str::snake((new \ReflectionClass($this))->getShortName());
     }
 
     /**
@@ -104,15 +92,32 @@ abstract class AbstractElementableDependency implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name)
+    {
+        $value = $data->get($field_name);
+
+        return is_scalar($value) ? $value : collect($value)->filter();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provideDependencyDataPlaceholders(): Collection
     {
         $config = static::getConfigFilePathKey();
-        $key = 'data-placeholders';
 
-        return collect(config(sprintf('%s.%s.%s', $config, $key, static::class), config(sprintf('%s.%s.default', $config, $key), [])))
+        return collect(config(sprintf('%s.data-placeholders.%s', $config, static::class), config(sprintf('%s.data-placeholders.default', $config), [])))
             ->transform(function ($definition, $name) {
                 return new Placeholder($this, $name, $definition);
             });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslatedTitle(TranslationPackageProvider $controller): string
+    {
+        return $this->setController($controller)->translate(sprintf('element-dependency.%s.title', $this->provideTranslationKey()));
     }
 
     /**
@@ -149,11 +154,9 @@ abstract class AbstractElementableDependency implements ElementableDependency
             return $this->getAssignmentDefaultName();
         }) : $raw;
 
-        $a = $keyed->transform(function ($value, $key) {
+        return $keyed->transform(function ($value, $key) {
             return $this->tranformDependencyValue($key, $value);
         });
-
-        return $a;
     }
 
     /**

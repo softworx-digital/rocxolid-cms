@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\CMS\ElementableDependencies\Data;
 
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Optionable;
+use Softworx\RocXolid\Contracts\TranslationProvider;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid traits
 use Softworx\RocXolid\Traits\MethodOptionable;
@@ -103,17 +104,22 @@ class Placeholder implements Optionable
     }
 
     /**
-     * Get human readable placeholder title.
+     * Get translated meaningful placeholder title.
      *
      * @return string
      */
-    public function getTitle(TranslationPackageProvider $controller): string
+    public function getTranslatedTitle(TranslationPackageProvider $controller): string
     {
-        return $this->getDependency()->setController($controller)->translate(sprintf(
-            'element-dependency.%s.placeholder.%s',
-            $this->getDependency()->provideTranslationKey(),
-            $this->getName()
-        ));
+        // @todo: hotfixed
+        if ($this->getDependency() instanceof TranslationProvider) {
+            return $this->getDependency()->setController($controller)->translate(sprintf(
+                'element-dependency.%s.placeholder.%s',
+                $this->getDependency()->provideTranslationKey(),
+                $this->getName()
+            ));
+        }
+
+        return $this->getName();
     }
 
     /**

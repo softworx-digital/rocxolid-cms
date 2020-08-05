@@ -4,10 +4,7 @@ namespace Softworx\RocXolid\CMS\ElementableDependencies\Contracts;
 
 use Illuminate\Support\Collection;
 // rocXolid contracts
-use Softworx\RocXolid\Contracts\Controllable;
-use Softworx\RocXolid\Contracts\TranslationDiscoveryProvider;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
-use Softworx\RocXolid\Contracts\TranslationProvider;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
 // rocXolid cms dependencies contracts
@@ -20,10 +17,17 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-interface ElementableDependency extends Controllable, TranslationDiscoveryProvider, TranslationProvider
+interface ElementableDependency
 {
     /**
-     * Add assignment this dependency handles to a assignments collection.
+     * Obtain default property name this dependency sets (to a view).
+     *
+     * @return string
+     */
+    public function getAssignmentDefaultName(): string;
+
+    /**
+     * Add the assignment this dependency handles to an (view) assignments collection.
      *
      * @param \Illuminate\Support\Collection $assignments
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
@@ -32,21 +36,6 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
      * @throws \RuntimeException If assignments key already set.
      */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider, ?string $key = null): ElementableDependency;
-
-    /**
-     * Retrieve translated dependency title.
-     *
-     * @param \Softworx\RocXolid\Contracts\TranslationPackageProvider\TranslationPackageProvider $controller
-     * @return string
-     */
-    public function getTitle(TranslationPackageProvider $controller): string;
-
-    /**
-     * Obtain default property name this dependency sets to a view.
-     *
-     * @return string
-     */
-    public function getAssignmentDefaultName(): string;
 
     /**
      * Provide dependency field names.
@@ -66,9 +55,27 @@ interface ElementableDependency extends Controllable, TranslationDiscoveryProvid
     public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
 
     /**
+     * Provide dependency field definition.
+     *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
+     * @param \Illuminate\Support\Collection $data
+     * @param string $field_name
+     * @return mixed
+     */
+    public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name);
+
+    /**
      * Provide set of dependency data placeholders with their options that can be used in content composition.
      *
      * @return \Illuminate\Support\Collection
      */
     public function provideDependencyDataPlaceholders(): Collection;
+
+    /**
+     * Retrieve translated dependency title.
+     *
+     * @param \Softworx\RocXolid\Contracts\TranslationPackageProvider\TranslationPackageProvider $controller
+     * @return string
+     */
+    public function getTranslatedTitle(TranslationPackageProvider $controller): string;
 }

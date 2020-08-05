@@ -33,7 +33,10 @@
         <div id="{{ $component->getDomId('compose-footer') }}" class="d-none editable-part" data-keditor="html">
             <div
                 class="content-composition"
+                data-iframe-id="document-footer"
                 data-snippets-url="{{ $component->getModel()->getFooter()->getControllerRoute('elementSnippets') }}"
+                data-placeholders-url="{{ $component->getModel()->getFooter()->getControllerRoute('contentPlaceholders') }}"
+                data-mutators-url="{{ $component->getModel()->getFooter()->getControllerRoute('contentMutators') }}"
                 data-update-url="{{ $component->getModel()->getFooter()->getControllerRoute('storeComposition') }}"
                 data-element-detach-url="{{ $component->getModel()->getFooter()->getControllerRoute('detachElement') }}"
                 data-element-destroy-url="{{ $component->getModel()->getFooter()->getControllerRoute('destroyElement') }}">

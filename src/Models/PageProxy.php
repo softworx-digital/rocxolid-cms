@@ -27,6 +27,7 @@ class PageProxy extends AbstractElementable implements ProxyElementable //, Clon
 {
     use Modellable;
     use Traits\HasDependencies;
+    use Traits\HasMutators;
 
     protected $table = 'cms_page_proxies';
 

@@ -17,4 +17,7 @@ return [
             'plural' => 'Kategórie šablón',
         ],
     ],
+    'action' => [
+        'create' => 'Nová',
+    ],
 ];

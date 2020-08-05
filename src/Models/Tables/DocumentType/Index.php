@@ -3,10 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Tables\DocumentType;
 
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\Icon;
-use Softworx\RocXolid\Tables\Columns\Type\SwitchFlag;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 
 /**
  *
@@ -15,7 +12,7 @@ class Index extends AbstractCrudTable
 {
     protected $columns = [
         'is_enabled' => [
-            'type' => SwitchFlag::class,
+            'type' => ColumnType\SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'
@@ -23,7 +20,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'icon' => [
-            'type' => Icon::class,
+            'type' => ColumnType\Icon::class,
             'options' => [
                 'label' => [
                     'title' => 'icon'
@@ -36,7 +33,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'title' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'title'
@@ -49,7 +46,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'description' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'description'

@@ -25,6 +25,7 @@ class Article extends AbstractElementable
     use HasImage;
     use IsProxyPaged;
     use Traits\HasDependencies;
+    use Traits\HasMutators;
 
     protected $table = 'cms_articles';
 
