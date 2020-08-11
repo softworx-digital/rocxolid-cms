@@ -2,13 +2,19 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\Document;
 
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
-// models
+// rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
-use Softworx\RocXolid\CMS\Models\DocumentType;
+// rocXolid cms form fields
+use Softworx\RocXolid\CMS\Forms\Fields\Type\DependencySelection;
+// rocXolid cms facades
 use Softworx\RocXolid\CMS\Facades\ThemeManager;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\DocumentType;
 // filters
 // use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 // use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
@@ -18,6 +24,8 @@ use Softworx\RocXolid\CMS\Facades\ThemeManager;
  */
 class Create extends RocXolidAbstractCrudForm
 {
+    use Traits\DocumentForm;
+
     protected $options = [
         'method' => 'POST',
         'route-action' => 'store',
@@ -191,21 +199,10 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'dependencies' => [
-            'type' => FieldType\CollectionSelect::class,
+            'type' => DependencySelection::class,
             'options' => [
-                'array' => true,
-                'group' => FieldType\FormFieldGroupAddable::DEFAULT_NAME,
                 'label' => [
                     'title' => '_dependencies.dependency',
-                ],
-                'attributes' => [
-                    'col' => 'col-xs-12',
-                    'class' => 'form-control width-100',
-                ],
-                'validation' => [
-                    'rules' => [
-                        'distinct',
-                    ],
                 ],
             ],
         ],
@@ -232,7 +229,16 @@ class Create extends RocXolidAbstractCrudForm
                 (new \ReflectionClass($dependency))->getName(),
                 $dependency->getTranslatedTitle($this->getController()),
             ];
-        })->toAssoc();
+        })->merge(DataDependency::where([
+            'web_id' => $this->getInputFieldValue('web_id') ?? $this->getModel()->web->getKey(),
+            'localization_id' => $this->getInputFieldValue('localization_id') ?? $this->getModel()->localization->getKey(),
+        ])->get()->map(function ($dependency) {
+            return [
+                sprintf('%s:%s', DataDependency::class, $dependency->getKey()),
+                $dependency->getTitle(),
+            ];
+        }))->toAssoc();
+        $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
 
         return $fields;
     }

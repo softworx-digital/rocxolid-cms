@@ -37,7 +37,7 @@ class General extends AbstractElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
         return collect('general');
     }
@@ -45,7 +45,7 @@ class General extends AbstractElementableDependency
     /**
      * {@inheritDoc}
      */
-    protected function tranformDependencyValue(string $key, $value)
+    protected function tranformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $this;
     }

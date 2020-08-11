@@ -36,6 +36,8 @@ abstract class AbstractMutator implements Mutator
 
     const ALLOWED_PLACEHOLDER_SELECTION = false;
 
+    const MULTIPLE_PLACEHOLDER_SELECTION = false;
+
     /**
      * {@inheritDoc}
      */
@@ -84,6 +86,14 @@ abstract class AbstractMutator implements Mutator
     public function isAllowedPlaceholderSelection(): bool
     {
         return static::ALLOWED_PLACEHOLDER_SELECTION;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isMultiplePlaceholderSelection(): bool
+    {
+        return static::MULTIPLE_PLACEHOLDER_SELECTION;
     }
 
     /**

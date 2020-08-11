@@ -213,7 +213,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
         return collect($this->getAssignmentDefaultName());
     }
@@ -221,9 +221,9 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
-        return $this->getTypeDecorator()->provideDependencyFieldDefinition($form, $dependency_data_provider);
+        return $this->getTypeDecorator()->provideDependencyFieldsDefinition($form, $dependency_data_provider);
     }
 
     /**

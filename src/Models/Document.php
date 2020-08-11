@@ -42,6 +42,7 @@ class Document extends AbstractElementable implements PdfDataProvider
         'valid_from',
         'valid_to',
         'dependencies',
+        'dependencies_filters',
         'description',
     ];
 

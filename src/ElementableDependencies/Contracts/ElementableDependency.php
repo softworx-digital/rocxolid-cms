@@ -43,7 +43,7 @@ interface ElementableDependency
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return \Illuminate\Support\Collection
      */
-    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
 
     /**
      * Provide dependency field definition.
@@ -52,7 +52,7 @@ interface ElementableDependency
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return array
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
 
     /**
      * Provide dependency field definition.

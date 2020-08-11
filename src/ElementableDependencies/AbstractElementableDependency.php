@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
+// rocXolid form fields
+use Softworx\RocXolid\Forms\Contracts\FormField;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
@@ -41,11 +43,18 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     // protected $translation_package = 'rocXolid:cms'; // will throw exception, cause this is defined in the trait
 
     /**
-     * Dependency field names.
+     * Definition of the fields the dependency provides to dependency data provider form.
      *
      * @var array
      */
     protected $dependency_fields_definition = [];
+
+    /**
+     * ???
+     *
+     * @var array
+     */
+    protected $dependency_fields_values_filter_definition = [];
 
     /**
      * {@inheritDoc}
@@ -76,7 +85,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
         return collect($this->dependency_fields_definition)->keys();
     }
@@ -84,9 +93,14 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
         return $this->dependency_fields_definition;
+    }
+
+    public function provideDependencyFieldValuesFilterFieldsDefinition()
+    {
+        return $this->dependency_fields_values_filter_definition;
     }
 
     /**
@@ -148,25 +162,26 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      */
     protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
-        $raw = collect($dependency_data_provider->getDependencyData($this)->only($this->provideDependencyFieldNames($dependency_data_provider)->toArray()));
+        $raw = collect($dependency_data_provider->getDependencyData($this)->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
 
-        $keyed = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
+        $values = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
             return $this->getAssignmentDefaultName();
         }) : $raw;
 
-        return $keyed->transform(function ($value, $key) {
-            return $this->tranformDependencyValue($key, $value);
+        return $values->transform(function ($value, $key) use ($dependency_data_provider) {
+            return $this->tranformDependencyValue($dependency_data_provider, $key, $value);
         });
     }
 
     /**
      * Transform the dependency value specifically for the dependency.
      *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @param string $key
      * @param mixed $value
      * @return mixed
      */
-    protected function tranformDependencyValue(string $key, $value)
+    protected function tranformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $value;
     }

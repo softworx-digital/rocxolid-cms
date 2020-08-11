@@ -40,7 +40,7 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    abstract public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
+    abstract public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
 
     /**
      * {@inheritDoc}
@@ -66,9 +66,9 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
-        return $this->elementable_dependency->provideDependencyFieldNames($dependency_data_provider);
+        return $this->elementable_dependency->provideDependencyFieldsNames($dependency_data_provider);
     }
 
     /**

@@ -5,6 +5,8 @@ namespace Softworx\RocXolid\CMS\Models;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid form contracts
+use Softworx\RocXolid\Forms\Contracts\FormField;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid cms models
@@ -70,6 +72,18 @@ abstract class AbstractDocumentPart extends AbstractElementable
         }
 
         return $model;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function initAsFieldItem(FormField $form_field)
+    {
+        if ($form_field->getForm()->getRequest()->has('document_id') && ($document = Document::find(request()->get('document_id')))) {
+            $this->setOwner($document);
+        }
+
+        return $this;
     }
 
     /**

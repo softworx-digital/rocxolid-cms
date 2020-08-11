@@ -24,7 +24,7 @@ class EnumDecorator extends AbstractDataDependencyDecorator
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
         $index = $form->getInputFieldValue($this->getAssignmentDefaultName()) ?? $this->elementable_dependency->is_default_value->search(1);
 

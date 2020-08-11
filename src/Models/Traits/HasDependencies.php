@@ -2,14 +2,12 @@
 
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
-// rocXolid cms elementable dependencies
-use Softworx\RocXolid\CMS\ElementableDependencies\General;
-
 
 /**
  * Trait for dependable elementable.
@@ -30,6 +28,23 @@ trait HasDependencies
             $this->dependencies = json_encode($data->get('dependencies'));
         }
 
+        $dependencies_filters = [];
+
+        // @todo: "hotfixed"
+        if (collect(request()->input('_data'))->each(function ($value, $key) use (&$dependencies_filters) {
+            if (Str::startsWith($key, 'filter:')) {
+                list($p, $dependency_field, $filter_field) = explode(':', $key);
+
+                $dependencies_filters[$dependency_field][$filter_field] = $value;
+            }
+        }));
+
+        if (filled($dependencies_filters)) {
+            $this->dependencies_filters = json_encode($dependencies_filters);
+        } else {
+            $this->dependencies_filters = null;
+        }
+
         return parent::fillCustom($data);
     }
 
@@ -41,7 +56,18 @@ trait HasDependencies
      */
     public function getDependenciesAttribute($value): Collection
     {
-        return collect($value ? json_decode($value) : [])->filter()->prepend(General::class);
+        return collect($value ? json_decode($value) : [])->filter();
+    }
+
+    /**
+     * Dependencies filters attribute getter mutator.
+     *
+     * @param mixed $value
+     * @return \Illuminate\Support\Collection
+     */
+    public function getDependenciesFiltersAttribute($value): Collection
+    {
+        return collect($value ? json_decode($value, true) : [])->filter();
     }
 
     /**
@@ -49,11 +75,14 @@ trait HasDependencies
      */
     public function provideDependencies(): Collection
     {
-        return $this->dependencies->map(function ($dependency_type_id) {
-            list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
+        return $this
+            ->getImplicitDependencyTypes()
+            ->merge($this->dependencies)
+            ->map(function ($dependency_type_id) {
+                list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
 
-            return filled($dependency_id) ? $dependency_type::findOrFail($dependency_id) : app($dependency_type);
-        });
+                return filled($dependency_id) ? $dependency_type::findOrFail($dependency_id) : app($dependency_type);
+            });
     }
 
     /**
@@ -84,5 +113,15 @@ trait HasDependencies
     protected static function getAvailableDependencyTypes(): Collection
     {
         return static::getConfigData('available-dependencies');
+    }
+
+    /**
+     * Obtain dependency types that are implicitly assigned to the model.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected static function getImplicitDependencyTypes(): Collection
+    {
+        return static::getConfigData('implicit-dependencies');
     }
 }

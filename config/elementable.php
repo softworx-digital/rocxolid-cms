@@ -40,6 +40,13 @@ return [
         ],
     ],
     /**
+     * List of implicit dependencies for given elementable.
+     */
+    'implicit-dependencies' => [
+        'default' => [
+        ],
+    ],
+    /**
      * List of available dependencies for given elementable.
      */
     'available-dependencies' => [

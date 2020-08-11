@@ -24,7 +24,7 @@ class SetDecorator extends AbstractDataDependencyDecorator
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
         $custom_values = collect($form->getInputFieldValue($this->getAssignmentDefaultName()) ?? [])->filter(function ($value) {
             return !is_numeric($value) || !$this->elementable_dependency->values->keys()->contains($value);

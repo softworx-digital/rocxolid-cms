@@ -9,12 +9,16 @@ use Softworx\RocXolid\CMS\Facades\ThemeManager;
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\CMS\Models\DocumentType;
 use Softworx\RocXolid\CMS\Models\DataDependency;
+// rocXolid cms form fields
+use Softworx\RocXolid\CMS\Forms\Fields\Type\DependencySelection;
 
 /**
  *
  */
 class Update extends RocXolidAbstractCrudForm
 {
+    use Traits\DocumentForm;
+
     protected $options = [
         'method' => 'POST',
         'route-action' => 'update',
@@ -185,24 +189,10 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'dependencies' => [
-            'type' => FieldType\CollectionSelect::class,
+            'type' => DependencySelection::class,
             'options' => [
-                'array' => true,
-                'group' => FieldType\FormFieldGroupAddable::DEFAULT_NAME,
                 'label' => [
                     'title' => '_dependencies.dependency',
-                ],
-                'placeholder' => [
-                    'title' => 'select',
-                ],
-                'attributes' => [
-                    'col' => 'col-xs-12',
-                    'class' => 'form-control width-100',
-                ],
-                'validation' => [
-                    'rules' => [
-                        'distinct',
-                    ],
                 ],
             ],
         ],
@@ -210,8 +200,6 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $web =
-
         // $fields['web_id']['options']['show-null-option'] = true;
         $fields['web_id']['options']['collection'] = Web::all()->pluck('name', 'id');
         $fields['web_id']['options']['validation']['rules'][] = 'required';
@@ -239,6 +227,7 @@ class Update extends RocXolidAbstractCrudForm
                 $dependency->getTitle(),
             ];
         }))->toAssoc();
+        $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
 
         // $fields['dependencies']['options']['values'] = $this->getModel()->getDependencies();
 

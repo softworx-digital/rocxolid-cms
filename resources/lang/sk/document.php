@@ -18,6 +18,9 @@ return [
         'page_element' => 'Element',
         '_dependencies' => [
             'dependency' => 'Závislosť (na základe ktorej budú od používateľa požadované údaje)',
+            'filter' => [
+                'estate_type_id' => 'Typ nehnuteľnosti pre výber z hodnôt závislosti', // @todo: this doesn't belong here
+            ],
         ],
     ],
     'button' => [

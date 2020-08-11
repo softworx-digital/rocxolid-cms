@@ -25,7 +25,7 @@ class DateDecorator extends AbstractDataDependencyDecorator
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
+    public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array
     {
         switch ($this->elementable_dependency->default_value_date) {
             case 'today':

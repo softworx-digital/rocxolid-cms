@@ -46,9 +46,10 @@ class UpdateHeader extends RocXolidAbstractCrudForm
         $fields['document_header_id']['options']['collection']['filters'] = [[
             'class' => Closurable::class,
             'data' => function(Builder $query, Model $model) {
-                return $query->where('is_bound_to_document', 0)
-                ->where('web_id', $this->getModel()->web->getKey())
-                ->where('localization_id', $this->getModel()->localization->getKey());
+                return $query
+                    ->where('is_bound_to_document', 0)
+                    ->where('web_id', $this->getModel()->web->getKey())
+                    ->where('localization_id', $this->getModel()->localization->getKey());
             }
         ]];
 
