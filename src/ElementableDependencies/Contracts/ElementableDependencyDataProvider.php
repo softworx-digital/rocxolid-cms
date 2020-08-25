@@ -30,9 +30,9 @@ interface ElementableDependencyDataProvider
      * Retrieve dependency value.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency $dependency
-     * @return mixed
+     * @return \Illuminate\Support\Collection
      */
-    public function getDependencyData(ElementableDependency $dependency);
+    public function getDependencyData(ElementableDependency $dependency): Collection;
 
     /**
      * Check if the data provider is ready to provide dependency values.

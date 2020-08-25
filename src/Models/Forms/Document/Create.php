@@ -15,6 +15,7 @@ use Softworx\RocXolid\CMS\Forms\Fields\Type\DependencySelection;
 use Softworx\RocXolid\CMS\Facades\ThemeManager;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\DocumentType;
+use Softworx\RocXolid\CMS\Models\DataDependency;
 // filters
 // use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 // use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
@@ -77,7 +78,7 @@ class Create extends RocXolidAbstractCrudForm
                     'title' => 'web_id',
                 ],
                 'attributes' => [
-                    'title' => 'select',
+                    'placeholder' => 'select',
                 ],
                 'validation' => [
                     'rules' => [
@@ -92,6 +93,9 @@ class Create extends RocXolidAbstractCrudForm
                 'group' => 'base',
                 'label' => [
                     'title' => 'localization_id',
+                ],
+                'attributes' => [
+                    'placeholder' => 'select',
                 ],
                 'validation' => [
                     'rules' => [
@@ -230,8 +234,8 @@ class Create extends RocXolidAbstractCrudForm
                 $dependency->getTranslatedTitle($this->getController()),
             ];
         })->merge(DataDependency::where([
-            'web_id' => $this->getInputFieldValue('web_id') ?? $this->getModel()->web->getKey(),
-            'localization_id' => $this->getInputFieldValue('localization_id') ?? $this->getModel()->localization->getKey(),
+            'web_id' => $this->getInputFieldValue('web_id') ?? null,
+            'localization_id' => $this->getInputFieldValue('localization_id') ?? null,
         ])->get()->map(function ($dependency) {
             return [
                 sprintf('%s:%s', DataDependency::class, $dependency->getKey()),

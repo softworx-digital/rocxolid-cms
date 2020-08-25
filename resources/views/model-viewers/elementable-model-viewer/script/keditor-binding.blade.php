@@ -46,7 +46,7 @@ $(document).ready(function($)
         }
 
         $node.children().each(function() {
-            console.log('Child node [' + $(this).data('elementType') + '][' + $(this).data('elementId') + ']', $(this).get(0));
+            console.log('Child node [' + $(this).data('elementType') + '][' + $(this).data('elementId') + ']', $(this)[0]);
 
             let to = element || parent;
             let child = serialize($(this), to, onlyData, onNodeCreated);
@@ -79,6 +79,10 @@ $(document).ready(function($)
                     }
                 });
             }
+        }
+
+        if ($node.is('[data-element-meta]')) {
+            element.elementData.metaData = JSON.parse($node.attr('data-element-meta') || '{}');
         }
 
         if ($node.is('.content-container')) {
@@ -164,6 +168,9 @@ $(document).ready(function($)
         containerSetting: 'Nastavenia',
         confirmDeleteContainerText: 'Naozaj vymazať? Zmeny budú permanentné!',
         confirmDeleteComponentText: 'Naozaj vymazať? Zmeny budú permanentné!',
+        metaData: {
+            'text-numbering': 'Číslovanie vnorených textových blokov'
+        }
     };
 
     const options = function($element)
@@ -193,7 +200,6 @@ $(document).ready(function($)
                     DESKTOP: 'lg'
                 },
             },
-            containerForQuickAddComponent: `{!! $component->getModel()->getDocumentEditorContainerForQuickAddComponent() !!}`,
             extraTopbarItems: (function($container) {
                 let extraItems = {};
 
@@ -210,6 +216,115 @@ $(document).ready(function($)
 
                 return extraItems;
             })($element),
+            containerForQuickAddComponent: `{!! $component->getModel()->getDocumentEditorContainerForQuickAddComponent() !!}`,
+            containerSettingEnabled: true,
+            containerSettingInitFunction: function (form, keditor) {
+                form.append(`
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="text-numbering">${keditor.options.locale.metaData['text-numbering']}</label>
+                            <input type="text" class="form-control" name="text-numbering" />
+                        </div>
+                        <button type="submit" class="btn btn-primary col-xs-12"><i class="fa fa-save margin-right-10"></i>${keditor.options.locale.save}</button>
+                    </form>
+                `);
+
+                form.find(':input')
+                    .keypress(function (e) {
+                        switch (e.which) {
+                            case 13: // enter
+                                form.submit();
+                                return false;
+                            case 27: // esc
+                                keditor.sidebarCloser.click();
+                                return false;
+                        }
+                });
+
+                /*
+                form.find(':input[name="text-numbering"]').on('change', function () {
+                    var container = keditor.getSettingContainer();
+                    var container_element = container.find('[data-element-type="grid-column"]');
+                    var container_element_meta_data = JSON.parse(container_element.attr('data-element-meta') || '{}');
+                    var container_meta_data_viewer_element = container.find('.keditor-meta-data');
+
+                    if (this.value) {
+                        container_element_meta_data = {
+                            ...container_element_meta_data,
+                            'text-numbering': this.value
+                        };
+                    } else if (typeof container_element_meta_data['text-numbering'] !== 'undefined') {
+                        delete container_element_meta_data['text-numbering'];
+                    }
+
+                    if (!$.isEmptyObject(container_element_meta_data)) {
+                        var $list = $('<ul>');
+
+                        for (var key in container_element_meta_data) {
+                            $list.append(`<li>${keditor.options.locale.metaData[key]}: ${container_element_meta_data[key]}</li>`);
+                        }
+
+                        container_meta_data_viewer_element.html($list);
+                        container_element.attr('data-element-meta', JSON.stringify(container_element_meta_data));
+                        container.addClass('meta-data-active');
+                    } else {
+                        container_meta_data_viewer_element.text('');
+                        container_element.removeAttr('data-element-meta');
+                        container.removeClass('meta-data-active');
+                    }
+                });
+                */
+
+                form.on('submit', function () {
+                    var container = keditor.getSettingContainer();
+                    var container_element = container.find('[data-element-type="grid-column"]');
+                    var container_element_meta_data = JSON.parse(container_element.attr('data-element-meta') || '{}');
+                    var container_meta_data_viewer_element = container.find('.keditor-meta-data');
+
+                    form.find(':input').each(function () {
+                        if (this.value) {
+                            container_element_meta_data[this.name] = this.value;
+                        } else if (typeof container_element_meta_data[this.name] !== 'undefined') {
+                            delete container_element_meta_data[this.name];
+                        }
+                    });
+
+                    if (!$.isEmptyObject(container_element_meta_data)) {
+                        var $list = $('<ul>');
+
+                        for (var key in container_element_meta_data) {
+                            $list.append(`<li>${keditor.options.locale.metaData[key]}: ${container_element_meta_data[key]}</li>`);
+                        }
+
+                        container_meta_data_viewer_element.html($list);
+                        container_element.attr('data-element-meta', JSON.stringify(container_element_meta_data));
+                        container.addClass('meta-data-active');
+                    } else {
+                        container_meta_data_viewer_element.text('');
+                        container_element.removeAttr('data-element-meta');
+                        container.removeClass('meta-data-active');
+                    }
+
+                    keditor.sidebarCloser.click();
+
+                    return false;
+                });
+            },
+            containerSettingShowFunction: function (form, container, keditor) {
+                var container = keditor.getSettingContainer();
+                var container_element = container.find('[data-element-type="grid-column"]');
+                var container_element_meta_data = JSON.parse(container_element.attr('data-element-meta') || '{}');
+
+                $(form).find('form')[0].reset();
+
+                for (var key in container_element_meta_data) {
+                    form.find(`:input[name="${key}"]`).val(container_element_meta_data[key]);
+                }
+            },
+            containerSettingHideFunction: function (form, keditor) {
+                // Clean value of background color textbox when hiding settings form
+                form.find('.txt-bg-color').val('');
+            },
             onInitIframe: function (iframe, iframeHead, iframeBody) {
                 $(iframe).attr('id', $element.data('iframeId'));
 

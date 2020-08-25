@@ -229,8 +229,6 @@ class Update extends RocXolidAbstractCrudForm
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
 
-        // $fields['dependencies']['options']['values'] = $this->getModel()->getDependencies();
-
         return $fields;
     }
 }

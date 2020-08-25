@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\CMS\Support;
 
 use Illuminate\Support\Collection;
+use OCI_Collection;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 // rocXolid cms dependencies contracts
@@ -29,7 +30,7 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     /**
      * {@inheritDoc}
      */
-    public function getDependencyData(ElementableDependency $dependency)
+    public function getDependencyData(ElementableDependency $dependency): Collection
     {
         return collect();
     }
