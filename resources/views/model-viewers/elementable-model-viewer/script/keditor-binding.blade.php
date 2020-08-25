@@ -241,40 +241,6 @@ $(document).ready(function($)
                         }
                 });
 
-                /*
-                form.find(':input[name="text-numbering"]').on('change', function () {
-                    var container = keditor.getSettingContainer();
-                    var container_element = container.find('[data-element-type="grid-column"]');
-                    var container_element_meta_data = JSON.parse(container_element.attr('data-element-meta') || '{}');
-                    var container_meta_data_viewer_element = container.find('.keditor-meta-data');
-
-                    if (this.value) {
-                        container_element_meta_data = {
-                            ...container_element_meta_data,
-                            'text-numbering': this.value
-                        };
-                    } else if (typeof container_element_meta_data['text-numbering'] !== 'undefined') {
-                        delete container_element_meta_data['text-numbering'];
-                    }
-
-                    if (!$.isEmptyObject(container_element_meta_data)) {
-                        var $list = $('<ul>');
-
-                        for (var key in container_element_meta_data) {
-                            $list.append(`<li>${keditor.options.locale.metaData[key]}: ${container_element_meta_data[key]}</li>`);
-                        }
-
-                        container_meta_data_viewer_element.html($list);
-                        container_element.attr('data-element-meta', JSON.stringify(container_element_meta_data));
-                        container.addClass('meta-data-active');
-                    } else {
-                        container_meta_data_viewer_element.text('');
-                        container_element.removeAttr('data-element-meta');
-                        container.removeClass('meta-data-active');
-                    }
-                });
-                */
-
                 form.on('submit', function () {
                     var container = keditor.getSettingContainer();
                     var container_element = container.find('[data-element-type="grid-column"]');
