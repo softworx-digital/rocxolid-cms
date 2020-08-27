@@ -221,16 +221,18 @@ $(document).ready(function($)
             containerSettingInitFunction: function (form, keditor) {
                 form.append(`
                     <form class="form-horizontal">
-                        <div class="form-group">
-                            <label for="text-numbering">${keditor.options.locale.metaData['text-numbering']}</label>
-                            <input type="text" class="form-control" name="text-numbering" />
+                        <div class=" col-xs-12">
+                            <div class="form-group">
+                                <label for="text-numbering">${keditor.options.locale.metaData['text-numbering']}</label>
+                                <input type="text" class="form-control" name="text-numbering" />
+                            </div>
+                            <button type="submit" class="btn btn-primary col-xs-12"><i class="fa fa-save margin-right-10"></i>${keditor.options.locale.save}</button>
                         </div>
-                        <button type="submit" class="btn btn-primary col-xs-12"><i class="fa fa-save margin-right-10"></i>${keditor.options.locale.save}</button>
                     </form>
                 `);
 
                 form.find(':input')
-                    .keypress(function (e) {
+                    .keydown(function (e) {
                         switch (e.which) {
                             case 13: // enter
                                 form.submit();
