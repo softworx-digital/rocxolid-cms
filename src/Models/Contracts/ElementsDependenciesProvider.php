@@ -14,6 +14,13 @@ use Illuminate\Support\Collection;
 interface ElementsDependenciesProvider
 {
     /**
+     * Obtain available dependencies that can be assigned to the model.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAvailableDependencies(): Collection;
+
+    /**
      * Retrieve dependency definitions for elements.
      *
      * @return \Illuminate\Support\Collection

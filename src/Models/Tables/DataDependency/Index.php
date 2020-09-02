@@ -71,6 +71,19 @@ class Index extends AbstractCrudCMSTable
                     ],
                 ],
             ],
+        ],
+        'type' => [
+            'type' => ColumnType\Enum::class,
+            'options' => [
+                'label' => [
+                    'title' => 'type'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
         ],/*
         'note' => [
             'type' => ColumnType\Text::class,

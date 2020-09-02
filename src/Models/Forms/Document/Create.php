@@ -6,6 +6,8 @@ namespace Softworx\RocXolid\CMS\Models\Forms\Document;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
+// rocXolid contracts
+use Softworx\RocXolid\Triggers\Contracts\Trigger;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
@@ -53,7 +55,17 @@ class Create extends RocXolidAbstractCrudForm
                     ],
                 ],
             ]
-        ]
+        ],
+        'triggers' => [
+            'type' => FieldType\FormFieldGroupAddable::class,
+            'options' => [
+                'wrapper' => [
+                    'legend' => [
+                        'title' => 'triggers',
+                    ],
+                ],
+            ]
+        ],
     ];
 
     protected $fields = [/*
@@ -206,7 +218,31 @@ class Create extends RocXolidAbstractCrudForm
             'type' => DependencySelection::class,
             'options' => [
                 'label' => [
-                    'title' => '_dependencies.dependency',
+                    'title' => '_dependencies.title',
+                    'hint' => '_dependencies.hint',
+                ],
+            ],
+        ],
+        'triggers' => [
+            'type' => FieldType\CollectionSelect::class,
+            'options' => [
+                'array' => true,
+                'group' => 'triggers',
+                'label' => [
+                    'title' => '_triggers.title',
+                    'hint' => '_triggers.hint',
+                ],
+                'placeholder' => [
+                    'title' => 'select',
+                ],
+                'attributes' => [
+                    'col' => 'col-xs-12',
+                    'class' => 'form-control width-100',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'distinct',
+                    ],
                 ],
             ],
         ],
@@ -243,6 +279,13 @@ class Create extends RocXolidAbstractCrudForm
             ];
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        //
+        $fields['triggers']['options']['collection'] = $this->getModel()->getAvailableTriggers()->map(function (Trigger $trigger) {
+            return [
+                (new \ReflectionClass($trigger))->getName(),
+                $trigger->getTranslatedTitle($this->getController()),
+            ];
+        })->toAssoc();
 
         return $fields;
     }

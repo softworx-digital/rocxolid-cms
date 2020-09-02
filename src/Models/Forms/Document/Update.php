@@ -2,13 +2,21 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\Document;
 
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
-use Softworx\RocXolid\CMS\Facades\ThemeManager;
-// models
+// rocXolid contracts
+use Softworx\RocXolid\Triggers\Contracts\Trigger;
+// rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
+// rocXolid cms facades
+use Softworx\RocXolid\CMS\Facades\ThemeManager;
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\DocumentType;
 use Softworx\RocXolid\CMS\Models\DataDependency;
+// rocXolid cms contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 // rocXolid cms form fields
 use Softworx\RocXolid\CMS\Forms\Fields\Type\DependencySelection;
 
@@ -45,7 +53,17 @@ class Update extends RocXolidAbstractCrudForm
                     ],
                 ],
             ]
-        ]
+        ],
+        'triggers' => [
+            'type' => FieldType\FormFieldGroupAddable::class,
+            'options' => [
+                'wrapper' => [
+                    'legend' => [
+                        'title' => 'triggers',
+                    ],
+                ],
+            ]
+        ],
     ];
 
     protected $fields = [/*
@@ -192,7 +210,67 @@ class Update extends RocXolidAbstractCrudForm
             'type' => DependencySelection::class,
             'options' => [
                 'label' => [
-                    'title' => '_dependencies.dependency',
+                    'title' => '_dependencies.title',
+                    'hint' => '_dependencies.hint',
+                ],
+            ],
+        ],
+        'triggers' => [
+            'type' => FieldType\CollectionSelect::class,
+            'options' => [
+                'array' => true,
+                'group' => 'triggers',
+                'label' => [
+                    'title' => '_triggers.title',
+                    'hint' => '_triggers.hint',
+                ],
+                'placeholder' => [
+                    'title' => 'select',
+                ],
+                'attributes' => [
+                    'col' => 'col-xs-12',
+                    'class' => 'form-control width-100',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'distinct',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    protected $buttons = [
+        'compose' => [
+            'type' => FieldType\ButtonAnchor::class,
+            'options' => [
+                'group' => FieldType\ButtonGroup::DEFAULT_NAME,
+                'label' => [
+                    'icon' => 'fa fa-object-group',
+                    'title' => 'compose',
+                ],
+                'attributes' => [
+                    'class' => 'btn btn-primary',
+                ],
+                'policy-ability' => 'view',
+                'action' => 'show',
+                'ajax' => false,
+            ],
+        ],
+        // submit - default group
+        'submit' => [
+            'type' => FieldType\ButtonSubmitActions::class,
+            'options' => [
+                'group' => FieldType\ButtonGroup::DEFAULT_NAME,
+                'label' => [
+                    'title' => 'submit-back',
+                ],
+                'actions' => [
+                    'submit-edit' => 'submit-edit',
+                    'submit-new' => 'submit-new',
+                ],
+                'attributes' => [
+                    'class' => 'btn btn-success'
                 ],
             ],
         ],
@@ -213,7 +291,7 @@ class Update extends RocXolidAbstractCrudForm
         //
         $fields['document_type_id']['options']['collection'] = DocumentType::all()->pluck('title', 'id');
         //
-        $fields['dependencies']['options']['collection'] = $this->getModel()->getAvailableDependencies()->map(function ($dependency) {
+        $fields['dependencies']['options']['collection'] = $this->getModel()->getAvailableDependencies()->map(function (ElementableDependency $dependency) {
             return [
                 (new \ReflectionClass($dependency))->getName(),
                 $dependency->getTranslatedTitle($this->getController()),
@@ -228,6 +306,13 @@ class Update extends RocXolidAbstractCrudForm
             ];
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        //
+        $fields['triggers']['options']['collection'] = $this->getModel()->getAvailableTriggers()->map(function (Trigger $trigger) {
+            return [
+                (new \ReflectionClass($trigger))->getName(),
+                $trigger->getTranslatedTitle($this->getController()),
+            ];
+        })->toAssoc();
 
         return $fields;
     }

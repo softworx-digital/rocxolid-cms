@@ -19,15 +19,27 @@ use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 trait HasDependencies
 {
     /**
-     * @todo: this doesn't belong here / find some other way
-     * {@inheritDoc}
+     * Fill dependencies configuration from request.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @return \Softworx\RocXolid\Models\Contracts\Crudable
      */
-    public function fillCustom(Collection $data): Crudable
+    public function fillDependencies(Collection $data): Crudable
     {
         if ($data->has('dependencies')) {
             $this->dependencies = json_encode($data->get('dependencies'));
         }
 
+        return $this;
+    }
+    /**
+     * Fill dependencies filters configuration from request.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @return \Softworx\RocXolid\Models\Contracts\Crudable
+     */
+    public function fillDependenciesFilters(Collection $data): Crudable
+    {
         $dependencies_filters = [];
 
         // @todo: "hotfixed"
@@ -45,7 +57,7 @@ trait HasDependencies
             $this->dependencies_filters = null;
         }
 
-        return parent::fillCustom($data);
+        return $this;
     }
 
     /**
@@ -73,12 +85,22 @@ trait HasDependencies
     /**
      * {@inheritDoc}
      */
+    public function getAvailableDependencies(): Collection
+    {
+        return $this->getAvailableDependencyTypes()->transform(function (string $type) {
+            return app($type);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provideDependencies(): Collection
     {
         return $this
             ->getImplicitDependencyTypes()
             ->merge($this->dependencies)
-            ->map(function ($dependency_type_id) {
+            ->transform(function (string $dependency_type_id) {
                 list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
 
                 return filled($dependency_id) ? $dependency_type::findOrFail($dependency_id) : app($dependency_type);
@@ -91,18 +113,6 @@ trait HasDependencies
     public function getDependenciesProvider(): ElementsDependenciesProvider
     {
         return $this;
-    }
-
-    /**
-     * Obtain available dependencies that can be assigned to the model.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAvailableDependencies(): Collection
-    {
-        return $this->getAvailableDependencyTypes()->transform(function ($type) {
-            return app($type);
-        });
     }
 
     /**

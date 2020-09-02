@@ -20,6 +20,8 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 // rocXolid cms elementable dependency data
 use Softworx\RocXolid\CMS\ElementableDependencies\Data\Placeholder;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 
 /**
  * Elementable data dependency model.
@@ -187,6 +189,32 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     }
 
     /**
+     * Check if the dependency is assigned to any document.
+     *
+     * @param string $provider_type
+     * @return bool
+     */
+    public function isAssignedToProvider(string $provider_type): bool
+    {
+        return $this->getAssignedProviders($provider_type)->isNotEmpty();
+    }
+
+    /**
+     * Obtain providers that have the dependency assigned.
+     *
+     * @param string $provider_type
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAssignedProviders(string $provider_type): Collection
+    {
+         return $provider_type::all()->filter(function (ElementsDependenciesProvider $provider) {
+             return $provider->provideDependencies()->filter(function (ElementableDependency $dependency) {
+                return ($dependency instanceof $this) && ($dependency->getKey() === $this->getKey());
+             })->isNotEmpty();
+         });
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getAssignmentDefaultName(): string
@@ -248,6 +276,14 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     public function getTranslatedTitle(TranslationPackageProvider $controller): string
     {
         return $this->getTitle();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function isDecimalAttribute(string $attribute): bool
+    {
+        return collect($this->decimals)->contains($attribute) && ($this->type === 'decimal');
     }
 
     /**

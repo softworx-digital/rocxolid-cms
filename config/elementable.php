@@ -63,6 +63,14 @@ return [
         ],
     ],
     /**
+     * List of available triggers for given elementable.
+     */
+    'available-triggers' => [
+        'default' => [
+            \Softworx\RocXolid\Triggers\None::class,
+        ],
+    ],
+    /**
      * List of available styles for given elementable.
      */
     'styles' => [

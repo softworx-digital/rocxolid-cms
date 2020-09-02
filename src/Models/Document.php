@@ -2,9 +2,16 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
+use Softworx\RocXolid\Models\Contracts\TriggersProvider;
 // rocXolid pdf generator contracts
 use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
+// rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\DocumentType;
@@ -16,10 +23,15 @@ use Softworx\RocXolid\CMS\Models\DocumentType;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Document extends AbstractElementable implements PdfDataProvider
+class Document extends AbstractElementable implements
+    PdfDataProvider,
+    TriggersProvider,
+    ElementsDependenciesProvider,
+    ElementsMutatorsProvider
 {
     use Traits\HasHeader;
     use Traits\HasFooter;
+    use Traits\HasTriggers;
     use Traits\HasDependencies;
     use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
@@ -43,6 +55,7 @@ class Document extends AbstractElementable implements PdfDataProvider
         'valid_to',
         'dependencies',
         'dependencies_filters',
+        'triggers',
         'description',
     ];
 
@@ -59,6 +72,19 @@ class Document extends AbstractElementable implements PdfDataProvider
      * {@inheritDoc}
      */
     protected static $title_column = 'title';
+
+    /**
+    * {@inheritDoc}
+    */
+   public function fillCustom(Collection $data): Crudable
+   {
+        $this
+            ->fillDependencies($data)
+            ->fillDependenciesFilters($data)
+            ->fillTriggers($data);
+
+       return parent::fillCustom($data);
+   }
 
     /**
      * Relation to document type.

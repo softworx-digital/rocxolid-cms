@@ -2,7 +2,18 @@
 
 return [
     'column' => [
+        'type' => 'Typ',
         'title' => 'Názov',
+        '_type' => [
+            'boolean' => 'Áno / nie hodnota',
+            'integer' => 'Celočíselná hodnota',
+            'decimal' => 'Číselná hodnota',
+            'string' => 'Reťazec',
+            'text' => 'Text',
+            'date' => 'Dátum',
+            'enum' => 'Exkluzívny výber z množiny textov',
+            'set' => 'Inkluzívny výber z množiny textov',
+        ],
     ],
     'field' => [
         'type' => 'Typ',
@@ -58,5 +69,9 @@ return [
     'date' => [
         'null' => 'Nepredvyplniť dátumom',
         'today' => 'Aktuálny dátum',
+    ],
+    'text' => [
+        'cannot-destroy-assigned' => 'Tento vstupný údaj nie je možné vymazať vzhľadom na to, že je použitý ako závislosť v nasledovných šablónach:',
+        'cannot-destroy-release' => 'Pre jeho zmazanie je potrebné ho zo závislostí šablón uvoľniť.',
     ],
 ];

@@ -3,9 +3,13 @@
 namespace Softworx\RocXolid\CMS\Http\Controllers\DataDependency;
 
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
-use Softworx\RocXolid\CMS\Models\DataDependency;
+// rocXolid cms components
+use Softworx\RocXolid\CMS\Components\ModelViewers\DataDependencyViewer;
 
 class Controller extends AbstractCrudController
 {
-
+    /**
+     * {@inheritDoc}
+     */
+    protected static $model_viewer_type = DataDependencyViewer::class;
 }

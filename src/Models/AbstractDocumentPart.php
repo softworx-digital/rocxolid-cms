@@ -110,32 +110,40 @@ abstract class AbstractDocumentPart extends AbstractElementable
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
+    public function getAvailableDependencies(): Collection
+    {
+        return $this->getOwner()->getAvailableDependencies();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provideDependencies(): Collection
     {
         return $this->getOwner()->provideDependencies();
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public function provideViewTheme(): string
     {
         return $this->getOwner()->provideViewTheme();
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public function provideMutators(): Collection
     {
         return $this->getOwner()->provideMutators();
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public function getMutator(string $key): ?Mutator
     {
         return $this->getOwner()->getMutator($key);

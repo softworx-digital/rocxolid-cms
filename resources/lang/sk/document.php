@@ -11,16 +11,26 @@ return [
     ],
     'field' => [
         'document_type_id' => 'Kategória šablón',
+        'documentType' => 'Kategória šablón',
         'title' => 'Názov',
         'theme' => 'Téma',
         'valid_from' => 'Platnosť od',
         'valid_to' => 'Platnosť do',
         'page_element' => 'Element',
+        'dependencies' => 'Závislosti',
+        'dependencies_filters' => 'Závislosti - filtre',
+        'triggers' => 'Akcie',
+        // @todo: nicer
         '_dependencies' => [
-            'dependency' => 'Závislosť (na základe ktorej budú od používateľa požadované údaje)',
+            'title' => 'Závislosť',
+            'hint' => 'Na jej základe budú od používateľa požadované dodatočné údaje potrebné k vygenerovaniu dokumentu',
             'filter' => [
                 'estate_type_id' => 'Typ nehnuteľnosti pre výber z hodnôt závislosti', // @todo: this doesn't belong here
             ],
+        ],
+        '_triggers' => [
+            'title' => 'Akcia',
+            'hint' => ' Definuje väzbu na ďalšie akcie spojené so generovaním dokumentu s touto šablónou',
         ],
     ],
     'button' => [
@@ -47,6 +57,7 @@ return [
     'legend' => [
         'base' => 'Základné údaje',
         'dependencies' => 'Závislosti',
+        'triggers' => 'Nadväzujúce akcie',
     ],
     'element-dependency' => [
         'none' => 'Bez požiadaviek',

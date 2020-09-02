@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\CMS\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractDocumentPart;
 

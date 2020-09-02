@@ -8,6 +8,7 @@ use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 
 /**
  * Fakes dependency provider.
+ * Serves as default dependencies provider if none yet set durng processing / dsplaying for an element.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
@@ -15,6 +16,14 @@ use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
  */
 class PlaceholderElementableDependencyProvider implements ElementsDependenciesProvider
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function getAvailableDependencies(): Collection
+    {
+        return collect();
+    }
+
     /**
      * {@inheritDoc}
      */
