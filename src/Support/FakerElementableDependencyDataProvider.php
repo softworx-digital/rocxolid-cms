@@ -7,7 +7,6 @@ use OCI_Collection;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 // rocXolid cms dependencies contracts
-use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
@@ -30,7 +29,7 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     /**
      * {@inheritDoc}
      */
-    public function getDependencyData(ElementableDependency $dependency): Collection
+    public function getDependencyData(): Collection
     {
         return collect();
     }
@@ -38,7 +37,7 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     /**
      * Check if the data provider is ready (has set dependency values).
      *
-     * @return boolean
+     * @return bool
      */
     public function isReady(): bool
     {

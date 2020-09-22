@@ -225,6 +225,14 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function hasAssignment(ElementableDependencyDataProvider $dependency_data_provider): bool
+    {
+        return $dependency_data_provider->getDependencyData()->get($this->getAssignmentDefaultName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $dependency_data_provider, ?string $key = null): ElementableDependency
     {
         $key = $key ?? $this->getAssignmentDefaultName();
@@ -233,7 +241,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
             throw new \RuntimeException(sprintf('Assignment key [%s] is already set to assignments [%s]', $key, print_r($assignments, true)));
         }
 
-        $assignments->put($key, $dependency_data_provider->getDependencyData($this)->get($key));
+        $assignments->put($key, $dependency_data_provider->getDependencyData()->get($key));
 
         return $this;
     }

@@ -21,7 +21,7 @@ interface ElementsDependenciesProvider
     public function getAvailableDependencies(): Collection;
 
     /**
-     * Retrieve dependency definitions for elements.
+     * Obtain all dependencies assigned to the model.
      *
      * @return \Illuminate\Support\Collection
      */

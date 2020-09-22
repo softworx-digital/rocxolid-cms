@@ -48,7 +48,7 @@ interface Mutator extends Paramable, Controllable, TranslationDiscoveryProvider,
     /**
      * Check if the mutator provides allowed selection regular expression pattern.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasAllowedTextSelectionRegex(): bool;
 

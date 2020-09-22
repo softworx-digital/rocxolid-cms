@@ -32,6 +32,7 @@ trait HasDependencies
 
         return $this;
     }
+
     /**
      * Fill dependencies filters configuration from request.
      *

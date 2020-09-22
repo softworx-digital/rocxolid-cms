@@ -3,8 +3,6 @@
 namespace Softworx\RocXolid\CMS\ElementableDependencies\Contracts;
 
 use Illuminate\Support\Collection;
-// rocXolid cms dependency contracts
-use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 
@@ -29,15 +27,14 @@ interface ElementableDependencyDataProvider
     /**
      * Retrieve dependency value.
      *
-     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency $dependency
      * @return \Illuminate\Support\Collection
      */
-    public function getDependencyData(ElementableDependency $dependency): Collection;
+    public function getDependencyData(): Collection;
 
     /**
      * Check if the data provider is ready to provide dependency values.
      *
-     * @return boolean
+     * @return bool
      */
     public function isReady(): bool;
 }

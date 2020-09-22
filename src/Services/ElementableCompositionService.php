@@ -243,7 +243,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
             : app($element_type);
 
         if ($data->has('elementData')) {
-            $element->onCreateBeforeSave(collect($data->get('elementData')));
+            $element->setElementData(collect($data->get('elementData')));
         }
 
         if ($data->has('pivotData')) {

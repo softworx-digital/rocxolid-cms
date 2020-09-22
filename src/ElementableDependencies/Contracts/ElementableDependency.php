@@ -27,6 +27,14 @@ interface ElementableDependency
     public function getAssignmentDefaultName(): string;
 
     /**
+     * Decide if there is an assignment for the dependency in data provider dependency values.
+     *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
+     * @return boolean
+     */
+    public function hasAssignment(ElementableDependencyDataProvider $data_provider): bool;
+
+    /**
      * Add the assignment this dependency handles to an (view) assignments collection.
      *
      * @param \Illuminate\Support\Collection $assignments

@@ -58,6 +58,14 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function hasAssignment(ElementableDependencyDataProvider $dependency_data_provider): bool
+    {
+        return $this->elementable_dependency->hasAssignment($dependency_data_provider);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider, ?string $key = null): ElementableDependency
     {
         return $this->elementable_dependency->addAssignment($assignments, $data_provider, $key);

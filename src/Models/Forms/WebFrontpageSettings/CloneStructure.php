@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms\WebFrontpageSettings;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Filters\NotMe;
-// fields
+// rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type\Input;
 use Softworx\RocXolid\Forms\Fields\Type\Email;
 use Softworx\RocXolid\Forms\Fields\Type\Textarea;

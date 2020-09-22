@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
-// rocXolid form fields
-use Softworx\RocXolid\Forms\Contracts\FormField;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Controllable;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
@@ -62,6 +60,14 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     public function getAssignmentDefaultName(): string
     {
         return Str::snake((new \ReflectionClass($this))->getShortName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasAssignment(ElementableDependencyDataProvider $dependency_data_provider): bool
+    {
+        return collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()))->filter()->isNotEmpty();
     }
 
     /**
@@ -162,7 +168,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      */
     protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
-        $raw = collect($dependency_data_provider->getDependencyData($this)->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
+        $raw = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
 
         $values = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
             return $this->getAssignmentDefaultName();

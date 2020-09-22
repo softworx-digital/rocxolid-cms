@@ -40,14 +40,14 @@ return [
         ],
     ],
     /**
-     * List of implicit dependencies for given elementable.
+     * List of implicit data dependencies for given elementable.
      */
     'implicit-dependencies' => [
         'default' => [
         ],
     ],
     /**
-     * List of available dependencies for given elementable.
+     * List of available data dependencies for given elementable.
      */
     'available-dependencies' => [
         'default' => [
@@ -55,7 +55,7 @@ return [
         ],
     ],
     /**
-     * List of available mutators for given elementable.
+     * List of available data mutators for given elementable.
      */
     'available-mutators' => [
         'default' => [

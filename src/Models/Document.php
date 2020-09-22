@@ -74,17 +74,17 @@ class Document extends AbstractElementable implements
     protected static $title_column = 'title';
 
     /**
-    * {@inheritDoc}
-    */
-   public function fillCustom(Collection $data): Crudable
-   {
+     * {@inheritDoc}
+     */
+    public function fillCustom(Collection $data): Crudable
+    {
         $this
             ->fillDependencies($data)
             ->fillDependenciesFilters($data)
             ->fillTriggers($data);
 
-       return parent::fillCustom($data);
-   }
+        return parent::fillCustom($data);
+    }
 
     /**
      * Relation to document type.
