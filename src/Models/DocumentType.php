@@ -38,14 +38,19 @@ class DocumentType extends AbstractCrudModel
     ];
 
     /**
-     * Releation to suitable documents.
+     * Relation to suitable documents.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents()
     {
-        return $this->hasMany(Document::class)
-            ->where('is_enabled', 1)
+        $query = $this->hasMany(Document::class);
+
+        if (!auth('rocXolid')->user()->isAdmin() && !auth('rocXolid')->user()->isRoot()) {
+            $query->where('is_enabled', 1);
+        }
+
+        return $query
             ->where(function ($query) {
                 $query
                     ->whereDate('valid_from', '<=', now())

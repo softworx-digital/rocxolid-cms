@@ -85,7 +85,7 @@ class BladeExtensionService
             try {
                 $content = ContentCompiler::init($element)->process($content, collect($content_part_assignments));
             } catch (\Exception $e) {
-                $content = sprintf('!! %s !!', $e->getMessage());
+                $content = printf('<p style="color: red; background: yellow;">!! %s !!</p>', $e->getMessage());
 
                 Log::error($e);
             }
@@ -100,7 +100,7 @@ class BladeExtensionService
                         ? $component->render($default_view_name, array_merge([ 'content_part_name' => $content_part_name ], $default_view_assignments))
                         : $element->getDefaultContent($content_part_name);
             } catch (\Exception $e) {
-                $content = sprintf('!! %s !!', $e->getMessage());
+                $content = sprintf('<p style="color: red; background: yellow;">!! %s !!</p>', $e->getMessage());
 
                 Log::error($e);
             }
@@ -141,7 +141,7 @@ class BladeExtensionService
         try {
             echo ContentCompiler::init($element)->process($content, collect($assignments));
         } catch (\Exception $e) {
-            echo sprintf('!! %s !!', $e->getMessage());
+            echo printf('<p style="color: red; background: yellow;">!! %s !!</p>', $e->getMessage());
         }
     }
 }
