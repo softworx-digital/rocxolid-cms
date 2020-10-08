@@ -82,6 +82,14 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        return $dependency_data_provider->getDependencyData()->get($this->getAssignmentDefaultName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provideDependencyDataPlaceholders(): Collection
     {
         return $this->elementable_dependency->provideDependencyDataPlaceholders();

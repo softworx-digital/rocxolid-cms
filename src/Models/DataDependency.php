@@ -273,6 +273,14 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        return $this->getTypeDecorator()->getDependencyViewValue($dependency_data_provider);;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function provideDependencyDataPlaceholders(): Collection
     {
         return collect([ new Placeholder($this, $this->getTitle(), [ 'token' => $this->getAssignmentDefaultName() ]) ]);

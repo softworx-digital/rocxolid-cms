@@ -73,6 +73,14 @@ interface ElementableDependency
     public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name);
 
     /**
+     * Retrieve the value of the dependency extracting it from the dependency data provider's values to be presented.
+     *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
+     * @return mixed
+     */
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider);
+
+    /**
      * Provide set of dependency data placeholders with their options that can be used in content composition.
      *
      * @return \Illuminate\Support\Collection

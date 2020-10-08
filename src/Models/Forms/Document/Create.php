@@ -8,6 +8,8 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 // rocXolid contracts
 use Softworx\RocXolid\Triggers\Contracts\Trigger;
+// rocXolid trigger rules
+use Softworx\RocXolid\Triggers\Rules\PassesTriggerValidation;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
@@ -286,6 +288,7 @@ class Create extends RocXolidAbstractCrudForm
                 $trigger->getTranslatedTitle($this->getController()),
             ];
         })->toAssoc();
+        $fields['triggers']['options']['validation']['rules'][] = new PassesTriggerValidation($this);
 
         return $fields;
     }

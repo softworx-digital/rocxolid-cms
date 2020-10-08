@@ -57,6 +57,11 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     /**
      * {@inheritDoc}
      */
+    abstract public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider);
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAssignmentDefaultName(): string
     {
         return Str::snake((new \ReflectionClass($this))->getShortName());
@@ -175,7 +180,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
         }) : $raw;
 
         return $values->transform(function ($value, $key) use ($dependency_data_provider) {
-            return $this->tranformDependencyValue($dependency_data_provider, $key, $value);
+            return $this->transformDependencyValue($dependency_data_provider, $key, $value);
         });
     }
 
@@ -187,7 +192,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      * @param mixed $value
      * @return mixed
      */
-    protected function tranformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
+    protected function transformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $value;
     }

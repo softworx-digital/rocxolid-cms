@@ -10,6 +10,7 @@ use Softworx\RocXolid\Models\Contracts\TriggersProvider;
 // rocXolid pdf generator contracts
 use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
 // rocXolid cms models
@@ -27,7 +28,8 @@ class Document extends AbstractElementable implements
     PdfDataProvider,
     TriggersProvider,
     ElementsDependenciesProvider,
-    ElementsMutatorsProvider
+    ElementsMutatorsProvider,
+    ViewThemeProvider
 {
     use Traits\HasHeader;
     use Traits\HasFooter;

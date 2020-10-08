@@ -32,6 +32,14 @@ interface ElementableDependencyDataProvider
     public function getDependencyData(): Collection;
 
     /**
+     * Retrieve dependencies set to the dependency data provider.
+     *
+     * @param array $except
+     * @return \Illuminate\Support\Collection
+     */
+    public function getDependencies(array $except = []): Collection;
+
+    /**
      * Check if the data provider is ready to provide dependency values.
      *
      * @return bool

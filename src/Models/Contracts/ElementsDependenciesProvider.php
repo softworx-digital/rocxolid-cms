@@ -26,11 +26,4 @@ interface ElementsDependenciesProvider
      * @return \Illuminate\Support\Collection
      */
     public function provideDependencies(): Collection;
-
-    /**
-     * Retrieve view theme for elements.
-     *
-     * @return string
-     */
-    public function provideViewTheme(): string;
 }

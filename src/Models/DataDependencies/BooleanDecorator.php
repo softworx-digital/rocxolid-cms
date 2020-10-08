@@ -48,6 +48,16 @@ class BooleanDecorator extends AbstractDataDependencyDecorator
     /**
      * {@inheritDoc}
      */
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        $val = $dependency_data_provider->getDependencyData()->get($this->getAssignmentDefaultName());
+
+        return ($val === $this->elementable_dependency->yes_title);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name): string
     {
         return (string)($data->get($field_name) ? $this->elementable_dependency->yes_title : $this->elementable_dependency->no_title);

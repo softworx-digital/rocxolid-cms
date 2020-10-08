@@ -35,6 +35,14 @@ class FakerElementableDependencyDataProvider implements ElementableDependencyDat
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getDependencies(array $except = []): Collection
+    {
+        return collect();
+    }
+
+    /**
      * Check if the data provider is ready (has set dependency values).
      *
      * @return bool

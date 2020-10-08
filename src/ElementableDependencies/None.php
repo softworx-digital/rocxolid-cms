@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
 // rocXolid cms dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
+// rocXolid cms elementable dependency contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
  * Provide no dependency for elementable.
@@ -14,5 +16,8 @@ use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
  */
 class None extends AbstractElementableDependency
 {
-
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        return null;
+    }
 }

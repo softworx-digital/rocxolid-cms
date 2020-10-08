@@ -44,7 +44,15 @@ class General extends AbstractElementableDependency
     /**
      * {@inheritDoc}
      */
-    protected function tranformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
+    public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
+    {
+        return $dependency_data_provider->getDependencyData()->get($this->getAssignmentDefaultName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function transformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $this;
     }

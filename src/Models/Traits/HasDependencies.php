@@ -104,7 +104,7 @@ trait HasDependencies
             ->transform(function (string $dependency_type_id) {
                 list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
 
-                return filled($dependency_id) ? $dependency_type::findOrFail($dependency_id) : app($dependency_type);
+                return filled($dependency_id) ? $dependency_type::withTrashed()->findOrFail($dependency_id) : app($dependency_type);
             });
     }
 
