@@ -65,4 +65,11 @@ interface Mutator extends Paramable, Controllable, TranslationDiscoveryProvider,
      * @return bool
      */
     public function isAllowedPlaceholderSelection(): bool;
+
+    /**
+     * Check if mutator selection can be applied to a expression.
+     *
+     * @return bool
+     */
+    public function isAllowedExpressionSelection(): bool;
 }
