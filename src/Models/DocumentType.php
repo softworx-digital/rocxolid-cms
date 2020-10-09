@@ -5,6 +5,10 @@ namespace Softworx\RocXolid\CMS\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Sortable;
+// rocXolid model traits
+use Softworx\RocXolid\Models\Traits as rxTraits;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\Document;
 
@@ -15,9 +19,10 @@ use Softworx\RocXolid\CMS\Models\Document;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class DocumentType extends AbstractCrudModel
+class DocumentType extends AbstractCrudModel implements Sortable
 {
     use SoftDeletes;
+    use rxTraits\Sortable;
 
     protected $table = 'cms_document_types';
 
@@ -60,6 +65,16 @@ class DocumentType extends AbstractCrudModel
                 $query
                     ->whereDate('valid_to', '>=', now())
                     ->orWhereNull('valid_to');
-            });
+            })->orderBy('position');
+    }
+
+    /**
+     * Relation to all assigned documents.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allDocuments()
+    {
+        return $this->hasMany(Document::class)->orderBy('position');
     }
 }

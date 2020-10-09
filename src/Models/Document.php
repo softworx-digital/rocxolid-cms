@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\TriggersProvider;
+use Softworx\RocXolid\Models\Contracts\Sortable;
+// rocXolid model traits
+use Softworx\RocXolid\Models\Traits as rxTraits;
 // rocXolid pdf generator contracts
 use Softworx\RocXolid\Generators\Pdf\Contracts\PdfDataProvider;
 // rocXolid cms model contracts
@@ -25,12 +28,14 @@ use Softworx\RocXolid\CMS\Models\DocumentType;
  * @version 1.0.0
  */
 class Document extends AbstractElementable implements
+    Sortable,
     PdfDataProvider,
     TriggersProvider,
     ElementsDependenciesProvider,
     ElementsMutatorsProvider,
     ViewThemeProvider
 {
+    use rxTraits\Sortable;
     use Traits\HasHeader;
     use Traits\HasFooter;
     use Traits\HasTriggers;

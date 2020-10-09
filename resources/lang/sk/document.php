@@ -72,5 +72,6 @@ return [
         'header' => 'Hlavička',
         'body' => 'Telo',
         'footer' => 'Pätička',
+        'organization' => 'Organizácia',
     ]
 ];

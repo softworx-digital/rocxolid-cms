@@ -76,6 +76,15 @@ class RouteServiceProvider extends IlluminateServiceProvider
             ElementableRouterService::create('document', \Document\Controller::class);
             ElementableRouterService::create('document_header', \DocumentHeader\Controller::class);
             ElementableRouterService::create('document_footer', \DocumentFooter\Controller::class);
+
+            $router->group([
+                'namespace' => 'DocumentOrganizer',
+                'prefix' => 'document-organizer',
+                'as' => 'document-organizer.',
+            ], function ($router) {
+                $router->get('', 'Controller@index')->name('index');
+                $router->post('/save/position', 'Controller@savePosition')->name('save.position');
+            });
         });
 
         return $this;
