@@ -175,6 +175,8 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     {
         $raw = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
 
+        // @todo: causes problems when there's dependency that doesn't provide constant number of fields
+        // in a case when only one field is provided and has different name that getAssignmentDefaultName() returns
         $values = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
             return $this->getAssignmentDefaultName();
         }) : $raw;
