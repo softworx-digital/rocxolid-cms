@@ -58,8 +58,6 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     public function elementSnippets(CrudRequest $request, Elementable $model)
     {
-        // $model = $this->
-
         return $this->getModelViewerComponent($model)->render('snippets');
     }
 
