@@ -173,21 +173,26 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      */
     protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
-        $raw = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
+        // extract relevant values from data provider
+        $present = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
+        // offset dependency data that can be used by dependencies provider but is not present in provided data
+        $offset = $this->provideDependencyFieldsNames($dependency_data_provider)->flip()->diffKeys(collect($dependency_data_provider->getDependencyData()));
 
         // @todo: causes problems when there's dependency that doesn't provide constant number of fields
         // in a case when only one field is provided and has different name that getAssignmentDefaultName() returns
-        $values = ($raw->count() === 1) ? $raw->keyBy(function ($item) {
+        $present = ($present->count() === 1) ? $present->keyBy(function ($item) {
             return $this->getAssignmentDefaultName();
-        }) : $raw;
+        }) : $present;
 
-        return $values->transform(function ($value, $key) use ($dependency_data_provider) {
+        return $present->transform(function ($value, $key) use ($dependency_data_provider) {
             return $this->transformDependencyValue($dependency_data_provider, $key, $value);
-        });
+        })->merge($offset->transform(function ($i, $key) use ($dependency_data_provider) {
+            return $this->fillDependencyOffsetValue($dependency_data_provider, $key);
+        }));
     }
 
     /**
-     * Transform the dependency value specifically for the dependency.
+     * Transform the dependency key/field value specifically for the dependency.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @param string $key
@@ -197,6 +202,18 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     protected function transformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $value;
+    }
+
+    /**
+     * Fill the dependency field value if not present in data provider.
+     *
+     * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
+     * @param string $key
+     * @return mixed
+     */
+    protected function fillDependencyOffsetValue(ElementableDependencyDataProvider $dependency_data_provider, string $key)
+    {
+        return null;
     }
 
     /**

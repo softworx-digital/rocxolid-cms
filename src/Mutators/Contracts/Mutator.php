@@ -72,4 +72,18 @@ interface Mutator extends Paramable, Controllable, TranslationDiscoveryProvider,
      * @return bool
      */
     public function isAllowedExpressionSelection(): bool;
+
+    /**
+     * Check if mutator can be applied only to a single.
+     *
+     * @return bool
+     */
+    public function isSinglePlaceholderSelection(): bool;
+
+    /**
+     * Check if mutator selection can be applied only to multiple placeholders.
+     *
+     * @return bool
+     */
+    public function isMultiplePlaceholderSelection(): bool;
 }

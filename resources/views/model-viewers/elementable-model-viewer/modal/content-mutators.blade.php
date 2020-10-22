@@ -17,6 +17,7 @@
                                 @if ($mutator->hasAllowedTextSelectionRegex()) data-mutator-allowed-selection-regex="{{ $mutator->getAllowedTextSelectionRegex() }}" @endif
                                 @if ($mutator->isAllowedPlaceholderSelection()) data-mutator-allowed-placeholder="true" @endif
                                 @if ($mutator->isAllowedExpressionSelection()) data-mutator-allowed-expression="true" @endif
+                                @if ($mutator->isSinglePlaceholderSelection()) data-mutator-single-placeholder="true" @endif
                                 @if ($mutator->isMultiplePlaceholderSelection()) data-mutator-multiple-placeholder="true" @endif
                                 data-dismiss="modal"
                                 data-title="{{ $mutator->getTranslatedTitle($component->getController()) }}">
