@@ -265,6 +265,14 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function provideDependencyFieldValuesFilterFieldsDefinition(AbstractCrudForm $form): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name)
     {
         return $this->getTypeDecorator()->getDataProviderFieldValue($dependency_data_provider, $data, $field_name);

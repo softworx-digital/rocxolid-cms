@@ -24,8 +24,9 @@ return [
         '_dependencies' => [
             'title' => 'Závislosť',
             'hint' => 'Na jej základe budú od používateľa požadované dodatočné údaje potrebné k vygenerovaniu dokumentu',
-            'filter' => [
-                'estate_type_id' => 'Typ nehnuteľnosti pre výber z hodnôt závislosti', // @todo: this doesn't belong here
+            'filter' => [ // @todo: this doesn't belong here
+                'estate_type_id' => 'Typ nehnuteľnosti pre výber z hodnôt',
+                'leasing_status' => 'Stav nájomného pomeru pre výber z hodnôt'
             ],
         ],
         '_triggers' => [

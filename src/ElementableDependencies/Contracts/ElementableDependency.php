@@ -46,7 +46,7 @@ interface ElementableDependency
     public function addAssignment(Collection &$assignments, ElementableDependencyDataProvider $data_provider, ?string $key = null): ElementableDependency;
 
     /**
-     * Provide dependency field names.
+     * Provide dependency fields names.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return \Illuminate\Support\Collection
@@ -54,7 +54,7 @@ interface ElementableDependency
     public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
 
     /**
-     * Provide dependency field definition.
+     * Provide dependency fields definition.
      *
      * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
@@ -63,7 +63,15 @@ interface ElementableDependency
     public function provideDependencyFieldsDefinition(AbstractCrudForm $form, ElementableDependencyDataProvider $dependency_data_provider): array;
 
     /**
-     * Provide dependency field definition.
+     * Provide fields definition for dependency value filters.
+     *
+     * @param \Softworx\RocXolid\Forms\AbstractCrudForm $form
+     * @return array
+     */
+    public function provideDependencyFieldValuesFilterFieldsDefinition(AbstractCrudForm $form): array;
+
+    /**
+     * Provide dependency field value.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @param \Illuminate\Support\Collection $data

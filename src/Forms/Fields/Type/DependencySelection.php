@@ -54,7 +54,7 @@ class DependencySelection extends CollectionSelect
 
         list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
 
-        return blank($dependency_id) && collect(app($dependency_type)->provideDependencyFieldValuesFilterFieldsDefinition())->isNotEmpty();
+        return blank($dependency_id) && collect(app($dependency_type)->provideDependencyFieldValuesFilterFieldsDefinition($this->getForm()))->isNotEmpty();
     }
 
     public function getDependencyFieldValuesFilterFieldsComponents(FormFieldComponent $parent_component, int $index): Collection
@@ -73,8 +73,10 @@ class DependencySelection extends CollectionSelect
             return collect();
         }
 
-        return collect(app($dependency_type)->provideDependencyFieldValuesFilterFieldsDefinition())
-            ->transform(function ($definition, $name) use ($form, $parent_component) {
+        $dependency = app($dependency_type);
+
+        return collect($dependency->provideDependencyFieldValuesFilterFieldsDefinition($form))
+            ->transform(function ($definition, $name) use ($dependency, $form, $parent_component) {
                 $form_field = $form->getFormFieldFactory()->makeField($form, $form, $definition['type'], $name, $definition['options']);
 
                 if ($form->wasSubmitted()) {

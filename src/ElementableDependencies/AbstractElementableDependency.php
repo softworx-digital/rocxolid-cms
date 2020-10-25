@@ -109,7 +109,10 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
         return $this->dependency_fields_definition;
     }
 
-    public function provideDependencyFieldValuesFilterFieldsDefinition()
+    /**
+     * {@inheritDoc}
+     */
+    public function provideDependencyFieldValuesFilterFieldsDefinition(AbstractCrudForm $form): array
     {
         return $this->dependency_fields_values_filter_definition;
     }
