@@ -50,6 +50,14 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function provideDependencyFieldValuesFilterFieldsDefinition(AbstractCrudForm $form): array
+    {
+        return $this->elementable_dependency->provideDependencyFieldValuesFilterFieldsDefinition($form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAssignmentDefaultName(): string
     {
         return $this->elementable_dependency->getAssignmentDefaultName();
