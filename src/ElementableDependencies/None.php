@@ -2,10 +2,13 @@
 
 namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
-// rocXolid cms dependency contracts
-use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
+use Illuminate\Support\Collection;
+// rocXolid contracts
+use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
+// rocXolid cms elementable dependencies
+use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
 
 /**
  * Provide no dependency for elementable.
@@ -19,5 +22,21 @@ class None extends AbstractElementableDependency
     public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
     {
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateAssignmentData(Collection $data, string $attribute): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string
+    {
+        return '';
     }
 }

@@ -6,7 +6,7 @@ namespace Softworx\RocXolid\CMS\Models\Tables\DataDependency;
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 // rocXolid table buttons
 use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
-// rocXolid CMS tables
+// rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
 
 /**

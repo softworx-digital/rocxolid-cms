@@ -23,7 +23,8 @@ interface ElementsDependenciesProvider
     /**
      * Obtain all dependencies assigned to the model.
      *
+     * @param bool $sub
      * @return \Illuminate\Support\Collection
      */
-    public function provideDependencies(): Collection;
+    public function provideDependencies(bool $sub = false): Collection;
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
-// rocXolid cms dependencies contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**
@@ -19,6 +19,20 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  */
 interface ElementableDependency
 {
+    /**
+     * Check if the dependency has some subdependencies.
+     *
+     * @return boolean
+     */
+    public function hasSubdependencies(): bool;
+
+    /**
+     * Obtain subdependencies.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function provideSubDependencies(): Collection;
+
     /**
      * Obtain default property name this dependency sets (to a view).
      *
@@ -102,4 +116,22 @@ interface ElementableDependency
      * @return string
      */
     public function getTranslatedTitle(TranslationPackageProvider $controller): string;
+
+    /**
+     * Validate form data in dependency assignment rules.
+     *
+     * @param \Illuminate\Support\Collection $data
+     * @param string $attribute
+     * @return bool
+     */
+    public function validateAssignmentData(Collection $data, string $attribute): bool;
+
+    /**
+     * Obtain error message for validation process.
+     *
+     * @param \Softworx\RocXolid\Contracts\TranslationPackageProvider $controller
+     * @param \Illuminate\Support\Collection $data
+     * @return string
+     */
+    public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string;
 }

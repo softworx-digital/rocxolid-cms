@@ -11,7 +11,7 @@ use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
 use Softworx\RocXolid\Tables\Buttons\Type\ButtonAnchor;
 // cms columns
 use Softworx\RocXolid\CMS\Models\Tables\Columns\Type\PageRelation;
-// rocXolid CMS tables
+// rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
 
 /**

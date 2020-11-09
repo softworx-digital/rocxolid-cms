@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use OCI_Collection;
 // rocXolid cms models contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
-// rocXolid cms dependencies contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
 /**

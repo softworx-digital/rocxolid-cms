@@ -20,6 +20,8 @@ use Softworx\RocXolid\CMS\Facades\ThemeManager;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\DocumentType;
 use Softworx\RocXolid\CMS\Models\DataDependency;
+// rocXolid cms elementable dependency rules
+use Softworx\RocXolid\CMS\ElementableDependencies\Rules\PassesDependenciesValidation;
 // filters
 // use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 // use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
@@ -281,6 +283,7 @@ class Create extends RocXolidAbstractCrudForm
             ];
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        $fields['dependencies']['options']['validation']['rules'][] = new PassesDependenciesValidation($this);
         //
         $fields['triggers']['options']['collection'] = $this->getModel()->getAvailableTriggers()->map(function (Trigger $trigger) {
             return [

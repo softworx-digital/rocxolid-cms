@@ -8,7 +8,7 @@ use Softworx\RocXolid\Contracts\TranslationProvider;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid traits
 use Softworx\RocXolid\Traits\MethodOptionable;
-// rocXolid cms dependency contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 
 /**

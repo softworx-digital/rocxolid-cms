@@ -60,7 +60,7 @@ class PageTemplate extends AbstractElementable // implements Cloneable
     /**
     * {@inheritDoc}
     */
-    public function provideDependencies(): Collection
+    public function provideDependencies(bool $sub = false): Collection
     {
         dd('@todo', __METHOD__);
 

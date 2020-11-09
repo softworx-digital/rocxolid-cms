@@ -217,6 +217,22 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
+    public function hasSubdependencies(): bool
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideSubDependencies(): Collection
+    {
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAssignmentDefaultName(): string
     {
         return sprintf('%s_%s', Str::snake((new \ReflectionClass($this))->getShortName()), $this->getKey());
@@ -300,6 +316,22 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     public function getTranslatedTitle(TranslationPackageProvider $controller): string
     {
         return $this->getTitle();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateAssignmentData(Collection $data, string $attribute): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string
+    {
+        return '';
     }
 
     /**

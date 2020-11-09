@@ -6,7 +6,7 @@
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }}@if (false) <small>{{ $component->translate(sprintf('action.%s', $route_method)) }}</small>@endif</h4>
             </div>
             <div class="modal-body">
-            @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies() as $dependency)
+            @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies(true) as $dependency)
                 <div class="panel panel-primary">
                     <div class="panel-heading" data-toggle="collapse" href="{{ $component->getDomIdHash($dependency->getAssignmentDefaultName()) }}" style="cursor: pointer;">
                         <span>{{ $dependency->getTranslatedTitle($component->getController()) }}</span>

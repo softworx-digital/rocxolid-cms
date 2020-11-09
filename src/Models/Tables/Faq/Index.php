@@ -6,7 +6,7 @@ namespace Softworx\RocXolid\CMS\Models\Tables\Faq;
 use Softworx\RocXolid\Tables\Columns\Type\Text;
 use Softworx\RocXolid\Tables\Columns\Type\Flag;
 use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
-// rocXolid CMS tables
+// rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
 
 /**

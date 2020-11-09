@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
 use Illuminate\Support\Collection;
+// rocXolid trigger contracts
+use Softworx\RocXolid\Triggers\Contracts\Trigger;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 
@@ -56,6 +58,29 @@ trait HasTriggers
         return $this->triggers->transform(function (string $type) {
             return app($type);
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function containsTriggerTypes(Collection $required_trigger_types): bool
+    {
+        // @todo: any other (non O(n^2)) way to do this w/support for subtypes?
+        return $required_trigger_types->reduce(function (bool $carry, string $required_trigger_type) {
+            return $carry && $this->triggers->reduce(function (bool $carry, string $trigger_type) use ($required_trigger_type) {
+                return $carry || is_a($trigger_type, $required_trigger_type, true);
+            }, false);
+        }, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function allTriggersFireable(...$arguments): bool
+    {
+        return $this->provideTriggers()->reduce(function (bool $carry, Trigger $trigger) use ($arguments) {
+            return $carry && $trigger->isFireable($this, ...$arguments);
+        }, true);
     }
 
     /**

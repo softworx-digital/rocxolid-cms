@@ -4,9 +4,11 @@ namespace Softworx\RocXolid\CMS\ElementableDependencies;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+// rocXolid contracts
+use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
-// rocXolid cms dependency contracts
+// rocXolid cms elementable dependencies
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
 
 /**
@@ -55,5 +57,21 @@ class General extends AbstractElementableDependency
     protected function transformDependencyValue(ElementableDependencyDataProvider $dependency_data_provider, string $key, $value)
     {
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateAssignmentData(Collection $data, string $attribute): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string
+    {
+        return '';
     }
 }

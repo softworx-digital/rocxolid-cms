@@ -96,16 +96,22 @@ trait HasDependencies
     /**
      * {@inheritDoc}
      */
-    public function provideDependencies(): Collection
+    public function provideDependencies(bool $sub = false): Collection
     {
         return $this
             ->getImplicitDependencyTypes()
             ->merge($this->dependencies)
-            ->transform(function (string $dependency_type_id) {
+            ->transform(function (string $dependency_type_id) use ($sub) {
                 list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
-
-                return filled($dependency_id) ? $dependency_type::withTrashed()->findOrFail($dependency_id) : app($dependency_type);
-            });
+                // @todo: ugly or not?
+                if (filled($dependency_id)) {
+                    return $dependency_type::withTrashed()->findOrFail($dependency_id);
+                } else {
+                    return (($dependency = app($dependency_type))->hasSubdependencies() && $sub)
+                        ? [ $dependency, $dependency->provideSubDependencies() ]
+                        : $dependency;
+                }
+            })->flatten();
     }
 
     /**

@@ -120,9 +120,9 @@ abstract class AbstractDocumentPart extends AbstractElementable
     /**
      * {@inheritDoc}
      */
-    public function provideDependencies(): Collection
+    public function provideDependencies(bool $sub = false): Collection
     {
-        return $this->getOwner()->provideDependencies();
+        return $this->getOwner()->provideDependencies($sub);
     }
 
     /**

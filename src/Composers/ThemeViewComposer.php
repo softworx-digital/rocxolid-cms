@@ -39,7 +39,7 @@ class ThemeViewComposer implements Composer
      */
     protected function setViewPropertiesFromDependencies(View &$view, ElementsDependenciesProviderable $element): Composer
     {
-        $dependencies = $element->getDependenciesProvider()->provideDependencies();
+        $dependencies = $element->getDependenciesProvider()->provideDependencies(); // @todo: not w/subdependencies?
 
         $assignments = collect();
 

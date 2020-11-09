@@ -35,6 +35,8 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     use Traits\TranslationParamProvider;
     use Traits\TranslationKeyProvider;
 
+    protected const SUBDEPENDENCIES = [];
+
     /**
      * {@inheritDoc}
      */
@@ -58,6 +60,34 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      * {@inheritDoc}
      */
     abstract public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider);
+
+    /**
+     * {@inheritDoc}
+     */
+    abstract public function validateAssignmentData(Collection $data, string $attribute): bool;
+
+    /**
+     * {@inheritDoc}
+     */
+    abstract public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasSubdependencies(): bool
+    {
+        return filled(static::SUBDEPENDENCIES);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideSubDependencies(): Collection
+    {
+        return collect(static::SUBDEPENDENCIES)->transform(function (string $dependency_type) {
+            return app($dependency_type);
+        });
+    }
 
     /**
      * {@inheritDoc}
@@ -173,6 +203,8 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
      * @return \Illuminate\Support\Collection
+     * @todo [RX-3]: !! this is being called suspiciously often (probably for each element) in document generation - subject to revise and optimize
+     * add some "caching" to ContentCompiler and ThemeViewComposer
      */
     protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {

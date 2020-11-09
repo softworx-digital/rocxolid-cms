@@ -21,6 +21,8 @@ use Softworx\RocXolid\CMS\Models\DataDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 // rocXolid cms form fields
 use Softworx\RocXolid\CMS\Forms\Fields\Type\DependencySelection;
+// rocXolid cms elementable dependency rules
+use Softworx\RocXolid\CMS\ElementableDependencies\Rules\PassesDependenciesValidation;
 
 /**
  *
@@ -308,6 +310,7 @@ class Update extends RocXolidAbstractCrudForm
             ];
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        $fields['dependencies']['options']['validation']['rules'][] = new PassesDependenciesValidation($this);
         //
         $fields['triggers']['options']['collection'] = $this->getModel()->getAvailableTriggers()->map(function (Trigger $trigger) {
             return [

@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Mutators;
 
-// rocXolid cms dependency contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 // rocXolid cms mutators contracts
 use Softworx\RocXolid\CMS\Mutators\AbstractMutator;

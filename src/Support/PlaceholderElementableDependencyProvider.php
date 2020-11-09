@@ -27,7 +27,7 @@ class PlaceholderElementableDependencyProvider implements ElementsDependenciesPr
     /**
      * {@inheritDoc}
      */
-    public function provideDependencies(): Collection
+    public function provideDependencies(bool $sub = false): Collection
     {
         return collect();
     }

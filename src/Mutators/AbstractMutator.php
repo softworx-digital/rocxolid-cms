@@ -12,7 +12,7 @@ use Softworx\RocXolid\Traits\TranslationParamProvider;
 use Softworx\RocXolid\Traits\TranslationKeyProvider;
 // rocXolid components
 use Softworx\RocXolid\Components\General\Message;
-// rocXolid cms dependency contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 // rocXolid cms mutators contracts
 use Softworx\RocXolid\CMS\Mutators\Contracts\Mutator;

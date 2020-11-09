@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Contracts\TranslationPackageProvider;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
-// rocXolid cms dependencies contracts
+// rocXolid cms elementable dependency contracts
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider;
 
@@ -46,6 +46,22 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
      * {@inheritDoc}
      */
     abstract public function getDataProviderFieldValue(ElementableDependencyDataProvider $dependency_data_provider, Collection $data, string $field_name);
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasSubdependencies(): bool
+    {
+        return $this->elementable_dependency->hasSubdependencies();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideSubDependencies(): Collection
+    {
+        return $this->elementable_dependency->provideSubDependencies();
+    }
 
     /**
      * {@inheritDoc}
@@ -109,5 +125,21 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     public function getTranslatedTitle(TranslationPackageProvider $controller): string
     {
         return $this->elementable_dependency->getTranslatedTitle($controller);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validateAssignmentData(Collection $data, string $attribute): bool
+    {
+        return $this->elementable_dependency->validateAssignmentData($data, $attribute);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function assignmentValidationErrorMessage(TranslationPackageProvider $controller, Collection $data): string
+    {
+        return $this->elementable_dependency->assignmentValidationErrorMessage($controller, $data);
     }
 }

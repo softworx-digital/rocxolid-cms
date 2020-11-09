@@ -10,7 +10,7 @@ use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
 // rocXolid table buttons
 use Softworx\RocXolid\Tables\Buttons\Type\ButtonAnchor;
 use Softworx\RocXolid\CMS\Models\Tables\Columns\Type\PageRelation;
-// rocXolid CMS tables
+// rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
 
 /**
