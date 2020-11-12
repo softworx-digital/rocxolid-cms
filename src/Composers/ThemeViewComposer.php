@@ -17,6 +17,8 @@ use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProviderable;
  */
 class ThemeViewComposer implements Composer
 {
+    private static $assignments;
+
     /**
      * {@inheritdoc}
      */
@@ -39,15 +41,19 @@ class ThemeViewComposer implements Composer
      */
     protected function setViewPropertiesFromDependencies(View &$view, ElementsDependenciesProviderable $element): Composer
     {
-        $dependencies = $element->getDependenciesProvider()->provideDependencies(); // @todo: not w/subdependencies?
+        if (!isset(self::$assignments)) {
+            $dependencies = $element->getDependenciesProvider()->provideDependencies(); // @todo: not w/subdependencies?
 
-        $assignments = collect();
+            $assignments = collect();
 
-        $dependencies->each(function ($elementable_dependency) use (&$assignments, $element) {
-            $elementable_dependency->addAssignment($assignments, $element->getDependenciesDataProvider());
-        });
+            $dependencies->each(function ($elementable_dependency) use (&$assignments, $element) {
+                $elementable_dependency->addAssignment($assignments, $element->getDependenciesDataProvider());
+            });
 
-        $assignments->each(function ($value, $key) use (&$view) {
+            self::$assignments = $assignments;
+        }
+
+        self::$assignments->each(function ($value, $key) use (&$view) {
             $view->with($key, $value);
         });
 

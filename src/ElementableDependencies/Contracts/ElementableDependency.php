@@ -63,9 +63,10 @@ interface ElementableDependency
      * Provide dependency fields names.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $dependency_data_provider
+     * @param bool $with_subdependencies
      * @return \Illuminate\Support\Collection
      */
-    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection;
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider, bool $with_subdependencies = true): Collection;
 
     /**
      * Provide dependency fields definition.

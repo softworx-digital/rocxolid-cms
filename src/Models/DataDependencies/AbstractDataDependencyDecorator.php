@@ -98,9 +98,9 @@ abstract class AbstractDataDependencyDecorator implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider, bool $with_subdependencies = true): Collection
     {
-        return $this->elementable_dependency->provideDependencyFieldsNames($dependency_data_provider);
+        return $this->elementable_dependency->provideDependencyFieldsNames($dependency_data_provider, $with_subdependencies);
     }
 
     /**

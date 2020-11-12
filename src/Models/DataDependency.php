@@ -265,7 +265,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider, bool $with_subdependencies = true): Collection
     {
         return collect($this->getAssignmentDefaultName());
     }

@@ -102,7 +102,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
      */
     public function hasAssignment(ElementableDependencyDataProvider $dependency_data_provider): bool
     {
-        return collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()))->filter()->isNotEmpty();
+        return collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider, false)->toArray()))->filter()->isNotEmpty();
     }
 
     /**
@@ -126,9 +126,19 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     /**
      * {@inheritDoc}
      */
-    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider, bool $with_subdependencies = true): Collection
     {
-        return collect($this->dependency_fields_definition)->keys();
+        $field_names = collect($this->dependency_fields_definition)->keys();
+
+        return $with_subdependencies
+            ? $field_names
+            : $field_names->filter(function (string $key) use ($dependency_data_provider) {
+                $subdependencies_keys = $this->provideSubDependencies()->transform(function (ElementableDependency $subdepencency) use ($dependency_data_provider) {
+                    return $subdepencency->provideDependencyFieldsNames($dependency_data_provider);
+                })->flatten();
+
+                return !$subdependencies_keys->contains($key);
+            });
     }
 
     /**
@@ -209,9 +219,33 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
     {
         // extract relevant values from data provider
-        $present = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider)->toArray()));
+        $present = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider, false)->toArray()));
         // offset dependency data that can be used by dependencies provider but is not present in provided data
-        $offset = $this->provideDependencyFieldsNames($dependency_data_provider)->flip()->diffKeys(collect($dependency_data_provider->getDependencyData()));
+        $offset = $this->provideDependencyFieldsNames($dependency_data_provider, false)->flip()->diffKeys(collect($dependency_data_provider->getDependencyData()));
+/*
+logger(sprintf('>>>>>>>>>>>>>> %s::%s', get_class($this), 'getDependencyValues'));
+logger('------------------------------');
+logger('PRESENT');
+logger($present);
+logger('------------------------------');
+logger('OFFSET');
+logger($offset);
+*/
+        if ($this->hasSubdependencies()) {
+            $subdependencies_values = $this->provideSubDependencies()->transform(function (ElementableDependency $subdepencency) use ($dependency_data_provider) {
+                return $subdepencency->getDependencyValues($dependency_data_provider);
+            })->flatMap(function (Collection $values) {
+                return $values;
+            });;
+/*
+logger('------------------------------');
+logger(sprintf('%s::%s RESOLVED SUBDEPENDENCIES', get_class($this), 'getDependencyValues'));
+logger($subdependencies_values);
+logger('------------------------------');
+*/
+        } else {
+            $subdependencies_values = collect();
+        }
 
         // @todo: causes problems when there's dependency that doesn't provide constant number of fields
         // in a case when only one field is provided and has different name that getAssignmentDefaultName() returns
@@ -219,11 +253,20 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
             return $this->getAssignmentDefaultName();
         }) : $present;
 
-        return $present->transform(function ($value, $key) use ($dependency_data_provider) {
-            return $this->transformDependencyValue($dependency_data_provider, $key, $value);
-        })->merge($offset->transform(function ($i, $key) use ($dependency_data_provider) {
-            return $this->fillDependencyOffsetValue($dependency_data_provider, $key);
-        }));
+        $values = $present
+            ->transform(function ($value, string $key) use ($dependency_data_provider) {
+                return $this->transformDependencyValue($dependency_data_provider, $key, $value);
+            })
+            ->merge($subdependencies_values)
+            ->merge($offset->transform(function ($i, $key) use ($dependency_data_provider) {
+                return $this->fillDependencyOffsetValue($dependency_data_provider, $key);
+            }));
+/*
+logger('VALUES');
+logger($values->keys());
+logger('------------------------------');
+*/
+        return $values;
     }
 
     /**
