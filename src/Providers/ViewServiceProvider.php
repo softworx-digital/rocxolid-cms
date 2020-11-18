@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Providers;
 
-use View;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 // rocXolid cms rendering contracts
 use Softworx\RocXolid\CMS\Rendering\Contracts\Themeable;
