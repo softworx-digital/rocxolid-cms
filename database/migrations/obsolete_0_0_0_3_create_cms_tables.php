@@ -12,6 +12,7 @@ class CreateCmsTables extends Migration
      */
     public function up()
     {
+TODO: $table->index('order_number'); // indexy
         $this
             ->webFrontpageSettings()
             ->basic()

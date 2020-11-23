@@ -13,6 +13,7 @@ class DataDependency extends Migration
      */
     public function up()
     {
+TODO: $table->index('order_number'); // indexy
         Schema::create('cms_data_dependencies', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('is_enabled')->default(0);

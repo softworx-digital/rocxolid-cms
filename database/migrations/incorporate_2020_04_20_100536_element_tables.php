@@ -14,6 +14,7 @@ class ElementTables extends Migration
      */
     public function up()
     {
+TODO: $table->index('order_number'); // indexy
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         Schema::dropIfExists('cms_page_has_elements');
