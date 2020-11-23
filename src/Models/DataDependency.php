@@ -111,7 +111,6 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
      */
     public function fillCustom(Collection $data): Crudable
     {
-
         if ($data->has('values')) {
             $values = $data->get('values')->transform(function ($value, $index) use ($data) {
                 return [
@@ -207,11 +206,11 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
      */
     public function getAssignedProviders(string $provider_type): Collection
     {
-         return $provider_type::all()->filter(function (ElementsDependenciesProvider $provider) {
-             return $provider->provideDependencies()->filter(function (ElementableDependency $dependency) {
+        return $provider_type::all()->filter(function (ElementsDependenciesProvider $provider) {
+            return $provider->provideDependencies()->filter(function (ElementableDependency $dependency) {
                 return ($dependency instanceof $this) && ($dependency->getKey() === $this->getKey());
-             })->isNotEmpty();
-         });
+            })->isNotEmpty();
+        });
     }
 
     /**
@@ -299,7 +298,8 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
      */
     public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
     {
-        return $this->getTypeDecorator()->getDependencyViewValue($dependency_data_provider);;
+        return $this->getTypeDecorator()->getDependencyViewValue($dependency_data_provider);
+        ;
     }
 
     /**

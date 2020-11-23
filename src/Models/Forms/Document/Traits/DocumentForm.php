@@ -12,7 +12,4 @@ use Softworx\RocXolid\Components\Forms\FormField as FormFieldComponent;
  */
 trait DocumentForm
 {
-
-
-
 }

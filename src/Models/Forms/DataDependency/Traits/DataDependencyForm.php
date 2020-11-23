@@ -312,7 +312,6 @@ trait DataDependencyForm
             if ($type === 'enum') {
                 $fields['is_default_value']['options']['attributes']['data-uncheck-group'] = 'is_default_value';
             }
-
         } elseif (isset($fields['values'])) {
             unset($fields['values']);
         }

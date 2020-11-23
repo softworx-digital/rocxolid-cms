@@ -298,7 +298,8 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
         if (!class_exists($element_type)) {
             throw new \RuntimeException(sprintf(
                 'Service [%s] guessed unexisting element type [%s] for param [%s], register the class within [%s].',
-                static::class, $element_type,
+                static::class,
+                $element_type,
                 $param,
                 $this->getConfigPath($param)
             ));

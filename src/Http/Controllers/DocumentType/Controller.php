@@ -6,5 +6,4 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
 
 class Controller extends AbstractCrudController
 {
-
 }

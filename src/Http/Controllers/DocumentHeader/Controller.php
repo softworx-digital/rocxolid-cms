@@ -14,5 +14,4 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementablePartController;
  */
 class Controller extends AbstractElementablePartController
 {
-
 }

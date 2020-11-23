@@ -104,7 +104,7 @@ abstract class AbstractElementable extends AbstractCrudModel implements
                     if (is_null($group) || $element->belongsToGroup($group)) {
                         $elements->push($element);
                     }
-                // multiple instance options
+                    // multiple instance options
                 } else {
                     $elements = $elements->merge($options->transform(function ($options) use ($group, $type, $template) {
                         $options = collect($options)->put('template', $template);

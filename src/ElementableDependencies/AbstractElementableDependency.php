@@ -222,27 +222,28 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
         $present = collect($dependency_data_provider->getDependencyData()->only($this->provideDependencyFieldsNames($dependency_data_provider, false)->toArray()));
         // offset dependency data that can be used by dependencies provider but is not present in provided data
         $offset = $this->provideDependencyFieldsNames($dependency_data_provider, false)->flip()->diffKeys(collect($dependency_data_provider->getDependencyData()));
-/*
-logger(sprintf('>>>>>>>>>>>>>> %s::%s', get_class($this), 'getDependencyValues'));
-logger('------------------------------');
-logger('PRESENT');
-logger($present);
-logger('------------------------------');
-logger('OFFSET');
-logger($offset);
-*/
+        /*
+        logger(sprintf('>>>>>>>>>>>>>> %s::%s', get_class($this), 'getDependencyValues'));
+        logger('------------------------------');
+        logger('PRESENT');
+        logger($present);
+        logger('------------------------------');
+        logger('OFFSET');
+        logger($offset);
+        */
         if ($this->hasSubdependencies()) {
             $subdependencies_values = $this->provideSubDependencies()->transform(function (ElementableDependency $subdepencency) use ($dependency_data_provider) {
                 return $subdepencency->getDependencyValues($dependency_data_provider);
             })->flatMap(function (Collection $values) {
                 return $values;
-            });;
-/*
-logger('------------------------------');
-logger(sprintf('%s::%s RESOLVED SUBDEPENDENCIES', get_class($this), 'getDependencyValues'));
-logger($subdependencies_values);
-logger('------------------------------');
-*/
+            });
+            ;
+        /*
+        logger('------------------------------');
+        logger(sprintf('%s::%s RESOLVED SUBDEPENDENCIES', get_class($this), 'getDependencyValues'));
+        logger($subdependencies_values);
+        logger('------------------------------');
+        */
         } else {
             $subdependencies_values = collect();
         }
@@ -261,11 +262,11 @@ logger('------------------------------');
             ->merge($offset->transform(function ($i, $key) use ($dependency_data_provider) {
                 return $this->fillDependencyOffsetValue($dependency_data_provider, $key);
             }));
-/*
-logger('VALUES');
-logger($values->keys());
-logger('------------------------------');
-*/
+        /*
+        logger('VALUES');
+        logger($values->keys());
+        logger('------------------------------');
+        */
         return $values;
     }
 

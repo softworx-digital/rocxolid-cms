@@ -7,5 +7,4 @@ use Softworx\RocXolid\CMS\Models\PageProxy;
 
 class Controller extends AbstractElementableController
 {
-
 }

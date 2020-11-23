@@ -45,7 +45,8 @@ class DependencySelection extends CollectionSelect
         ],
     ];
 
-    public function hasDependencyFieldValuesFilterFields(int $index) {
+    public function hasDependencyFieldValuesFilterFields(int $index)
+    {
         $dependency_type_id = $this->getFieldValue($index);
 
         if (blank($dependency_type_id)) {

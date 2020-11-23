@@ -7,5 +7,4 @@ use Softworx\RocXolid\CMS\Models\Page;
 
 class Controller extends AbstractElementableController
 {
-
 }
