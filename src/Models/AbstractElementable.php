@@ -28,6 +28,7 @@ use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
+ * @todo: use \Softworx\RocXolid\Models\Traits\Utils\Configurable trait
  */
 abstract class AbstractElementable extends AbstractCrudModel implements
     ElementsDependenciesProvider,

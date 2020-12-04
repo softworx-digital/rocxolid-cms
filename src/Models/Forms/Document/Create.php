@@ -282,7 +282,7 @@ class Create extends RocXolidAbstractCrudForm
                 sprintf('%s:%s', DataDependency::class, $dependency->getKey()),
                 $dependency->getTitle(),
             ];
-        }))->toAssoc();
+        }))->toAssoc(); // @todo: use mapWithKeys()
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         $fields['dependencies']['options']['validation']['rules'][] = new PassesDependenciesValidation($this);
         //
@@ -291,7 +291,7 @@ class Create extends RocXolidAbstractCrudForm
                 (new \ReflectionClass($trigger))->getName(),
                 $trigger->getTranslatedTitle($this->getController()),
             ];
-        })->toAssoc();
+        })->toAssoc(); // @todo: use mapWithKeys()
         $fields['triggers']['options']['validation']['rules'][] = new PassesTriggerValidation($this);
 
         return $fields;
