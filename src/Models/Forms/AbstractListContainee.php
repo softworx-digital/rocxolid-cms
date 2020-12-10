@@ -24,7 +24,7 @@ class AbstractListContainee extends RocXolidAbstractCrudForm
 
     protected $fields = [
         'containee_id' => [
-            'type' => CollectionCheckboxList::class, // tu bude checkbox list
+            'type' => CollectionCheckboxList::class,
             'options' => [
                 // 'collection' => ...adjusted
                 'label' => [

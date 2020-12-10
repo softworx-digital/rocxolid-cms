@@ -337,7 +337,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     /**
      * {@inheritDoc}
      */
-    protected function isDecimalAttribute(string $attribute): bool
+    public function isDecimalAttribute(string $attribute): bool
     {
         return collect($this->decimals)->contains($attribute) && ($this->type === 'decimal');
     }
