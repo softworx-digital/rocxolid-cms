@@ -51,7 +51,7 @@ class Controller extends AbstractElementableController
      */
     protected function onUpdateFormValid(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)//: Response
     {
-        // @todo: this doesn't belong here / find some other way
+        // @todo this doesn't belong here / find some other way
         if ($form instanceof UpdateHeader) {
             if ($form->getFormField('document_header_id')->isFieldValue(0)) {
                 $header = $model->header;
@@ -65,7 +65,7 @@ class Controller extends AbstractElementableController
             }
         }
 
-        // @todo: this doesn't belong here / find some other way
+        // @todo this doesn't belong here / find some other way
         if ($form instanceof UpdateFooter) {
             if ($form->getFormField('document_footer_id')->isFieldValue(0)) {
                 $footer = $model->footer;
@@ -110,7 +110,7 @@ class Controller extends AbstractElementableController
     {
         try {
             // $document = $this->elementableCompositionService()->composePreview($document, $this->validateCompositionData($request));
-            // @todo: temporary, not saving's causing troubles right now
+            // @todo temporary, not saving's causing troubles right now
             $document = $this->elementableCompositionService()->compose($document, $this->validateCompositionData($request));
 
             $html = $document->getModelViewerComponent()->setViewTheme($document->theme)->fetch('default');

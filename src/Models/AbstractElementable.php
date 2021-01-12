@@ -28,7 +28,7 @@ use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
- * @todo: use \Softworx\RocXolid\Models\Traits\Utils\Configurable trait
+ * @todo use \Softworx\RocXolid\Models\Traits\Utils\Configurable trait
  */
 abstract class AbstractElementable extends AbstractCrudModel implements
     ElementsDependenciesProvider,
@@ -82,7 +82,7 @@ abstract class AbstractElementable extends AbstractCrudModel implements
      * Obtain available element models that can be assigned to the model.
      *
      * @return \Illuminate\Support\Collection
-     * @todo: ugly, find nicer approach
+     * @todo ugly, find nicer approach
      */
     public function getAvailableElements(string $group = null): Collection
     {

@@ -20,11 +20,11 @@ return [
         'dependencies' => 'Závislosti',
         'dependencies_filters' => 'Závislosti - filtre',
         'triggers' => 'Akcie',
-        // @todo: nicer
+        // @todo nicer
         '_dependencies' => [
             'title' => 'Závislosť',
             'hint' => 'Na jej základe budú od používateľa požadované dodatočné údaje potrebné k vygenerovaniu dokumentu',
-            'filter' => [ // @todo: this doesn't belong here
+            'filter' => [ // @todo this doesn't belong here
                 'estate_type_id' => 'Typ nehnuteľnosti pre výber z hodnôt',
                 'leasing_state' => 'Stav nájomného pomeru pre výber z hodnôt'
             ],

@@ -86,7 +86,7 @@ class Controller extends AbstractController implements Repositoryable, Modellabl
      * Save the position of documents and document types.
      *
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
-     * @todo: quite ugly & put it some general trait
+     * @todo quite ugly & put it some general trait
      */
     public function savePosition(CrudRequest $request)
     {

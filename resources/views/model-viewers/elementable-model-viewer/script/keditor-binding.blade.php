@@ -131,7 +131,7 @@ $(document).ready(function($)
                 type: 'delete',
                 url: $element.data('element-destroy-url'),
                 data: {
-                    // @todo: ugly access method
+                    // @todo ugly access method
                     elementType: $(component[0].innerHTML).find('[data-element-type]').first().data('elementType'),
                     elementId: $(component[0].innerHTML).find('[data-element-type]').first().data('elementId'),
                 }

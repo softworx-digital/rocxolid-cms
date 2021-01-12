@@ -43,7 +43,7 @@ trait HasDependencies
     {
         $dependencies_filters = [];
 
-        // @todo: "hotfixed"
+        // @todo "hotfixed"
         if (collect(request()->input('_data'))->each(function ($value, $key) use (&$dependencies_filters) {
             if (Str::startsWith($key, 'filter:')) {
                 list($p, $dependency_field, $filter_field) = explode(':', $key);
@@ -103,7 +103,7 @@ trait HasDependencies
             ->merge($this->dependencies)
             ->transform(function (string $dependency_type_id) use ($sub) {
                 list($dependency_type, $dependency_id) = explode(':', sprintf('%s:', $dependency_type_id));
-                // @todo: ugly or not?
+                // @todo ugly or not?
                 if (filled($dependency_id)) {
                     return $dependency_type::withTrashed()->findOrFail($dependency_id);
                 } else {

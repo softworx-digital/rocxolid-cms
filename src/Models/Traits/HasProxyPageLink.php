@@ -14,7 +14,7 @@ use Softworx\RocXolid\Common\Filters\BelongsToWeb;
 // CMS models
 use Softworx\RocXolid\CMS\Models\PageProxy;
 
-// @todo: check occurences, document well to clarify the reason and what's going on here
+// @todo check occurences, document well to clarify the reason and what's going on here
 /**
  *
  */

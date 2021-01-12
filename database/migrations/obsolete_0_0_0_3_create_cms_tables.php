@@ -433,7 +433,7 @@ TODO: $table->index('order_number'); // indexy
             $table->string('name');
             $table->string('title')->nullable();
             $table->text('title_note')->nullable();
-            $table->string('default_template')->default('default'); // @todo: what for? check from code
+            $table->string('default_template')->default('default'); // @todo what for? check from code
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -572,7 +572,7 @@ TODO: $table->index('order_number'); // indexy
             $table->string('name')->nullable();
             $table->text('text')->nullable();
             $table->string('button')->nullable();
-            $table->string('is_right')->nullable(); // @todo: change to position select
+            $table->string('is_right')->nullable(); // @todo change to position select
             $table->string('background_color')->nullable();
             $table->string('name_color')->nullable();
             $table->string('text_color')->nullable();

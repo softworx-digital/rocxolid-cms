@@ -100,10 +100,10 @@ class Page extends AbstractElementable // implements Cloneable
         return sprintf('//%s/%s/%s', $this->web->domain, $this->localization->seo_url_slug, $this->seo_url_slug);
     }
 
-    // @todo: revise, find nicer approach
+    // @todo revise, find nicer approach
     public function onBeforeSave(Collection $data): Crudable
     {
-        // @todo: helper
+        // @todo helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);

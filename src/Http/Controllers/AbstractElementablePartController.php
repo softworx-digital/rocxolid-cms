@@ -16,7 +16,7 @@ use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPartViewer;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
-// @todo: be more abstract
+// @todo be more abstract
 use Softworx\RocXolid\CMS\Models\Document;
 
 /**
@@ -35,7 +35,7 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
 
     /**
      * {@inheritDoc}
-     * @todo: be more abstract
+     * @todo be more abstract
      */
     protected static $model_viewer_type = DocumentPartViewer::class;
 
@@ -82,7 +82,7 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
         $elementable_part_param = sprintf('compose-%s', $elementable_relation_name);
         $elementable_form_param = sprintf('update-%s', $elementable_relation_name);
 
-        // @todo: be more abstract (pass model_type as well)
+        // @todo be more abstract (pass model_type as well)
         $elementable = Document::find($request->input('_data.model_id'));
         $elementable_controller = $elementable->getCrudController();
         $elementable_form = $elementable_controller->getForm($request, $elementable, $elementable_form_param);

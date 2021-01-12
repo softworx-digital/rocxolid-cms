@@ -64,7 +64,7 @@ class SetDecorator extends AbstractDataDependencyDecorator
         return $data->get($field_name)->filter(function ($value) {
             return !is_null($value);
         })->transform(function ($value) {
-            // @todo: this is not quite reliable
+            // @todo this is not quite reliable
             return is_numeric($value)
                 ? $this->elementable_dependency->values->get($value)
                 : $value;

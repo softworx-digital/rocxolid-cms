@@ -65,7 +65,7 @@ class EnumDecorator extends AbstractDataDependencyDecorator
     {
         $value = $data->get($field_name);
 
-        // @todo: this is not quite reliable
+        // @todo this is not quite reliable
         return is_numeric($value)
             ? $this->elementable_dependency->values->get($value)
             : $value;

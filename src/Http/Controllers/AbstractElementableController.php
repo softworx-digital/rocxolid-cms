@@ -21,7 +21,7 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
- * @todo: return type hints
+ * @todo return type hints
  */
 abstract class AbstractElementableController extends AbstractCrudController
 {
@@ -165,7 +165,7 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     protected function validateCompositionData(CrudRequest $request): Collection
     {
-        // @todo: extend to validate complete structure
+        // @todo extend to validate complete structure
         return collect($request->validate([
             'composition' => [
                 'required',
@@ -182,7 +182,7 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     protected function validateElementData(CrudRequest $request): Collection
     {
-        // @todo: extend to validate complete structure
+        // @todo extend to validate complete structure
         return collect($request->validate([
             'elementType' => [
                 'required',

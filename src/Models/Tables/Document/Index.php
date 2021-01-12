@@ -225,7 +225,7 @@ class Index extends AbstractCrudCMSTable
 
     protected function adjustFiltersDefinition($filters)
     {
-        // @todo: hotfixed
+        // @todo hotfixed
         $filters['web_id']['options']['label']['title'] = $this->getController()->translate('field.web_id');
         $filters['localization_id']['options']['label']['title'] = $this->getController()->translate('field.localization_id');
         $filters['document_type_id']['options']['label']['title'] = $this->getController()->translate('field.document_type_id');

@@ -65,7 +65,7 @@ trait HasTriggers
      */
     public function containsTriggerTypes(Collection $required_trigger_types): bool
     {
-        // @todo: any other (non O(n^2)) way to do this w/support for subtypes?
+        // @todo any other (non O(n^2)) way to do this w/support for subtypes?
         return $required_trigger_types->reduce(function (bool $carry, string $required_trigger_type) {
             return $carry && $this->triggers->reduce(function (bool $carry, string $trigger_type) use ($required_trigger_type) {
                 return $carry || is_a($trigger_type, $required_trigger_type, true);

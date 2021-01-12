@@ -110,7 +110,7 @@ class Placeholder implements Optionable
      */
     public function getTranslatedTitle(TranslationPackageProvider $controller): string
     {
-        // @todo: hotfixed
+        // @todo hotfixed
         if ($this->getDependency() instanceof TranslationProvider) {
             return $this->getDependency()->setController($controller)->translate(sprintf(
                 'element-dependency.%s.placeholder.%s',

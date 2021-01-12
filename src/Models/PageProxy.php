@@ -144,10 +144,10 @@ class PageProxy extends AbstractElementable implements ProxyElementable //, Clon
         return $page;
     }
 
-    // @todo: revise, find nicer approach
+    // @todo revise, find nicer approach
     public function onBeforeSave(Collection $data): Crudable
     {
-        // @todo: helper
+        // @todo helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);

@@ -248,7 +248,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
             $subdependencies_values = collect();
         }
 
-        // @todo: causes problems when there's dependency that doesn't provide constant number of fields
+        // @todo causes problems when there's dependency that doesn't provide constant number of fields
         // in a case when only one field is provided and has different name that getAssignmentDefaultName() returns
         $present = ($present->count() === 1) ? $present->keyBy(function ($item) {
             return $this->getAssignmentDefaultName();

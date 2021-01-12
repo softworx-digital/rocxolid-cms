@@ -23,7 +23,7 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
- * @todo: delegate element retrieval & data manipulation to element repository (obtained from service consumer)
+ * @todo delegate element retrieval & data manipulation to element repository (obtained from service consumer)
  */
 class ElementableCompositionService implements Contracts\ElementableCompositionService
 {
@@ -285,7 +285,7 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
     protected function guessElementType(string $param): string
     {
         /*
-         * @todo: Laravel 7
+         * @todo Laravel 7
         $element_namespace = Str::of((new \ReflectionClass($this->consumer))->getNamespaceName())
             ->replace('Http\Controllers', 'Elements\Models')
             ->beforeLast($element_namespace, '\\');
