@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'filter' => [
+        'document_type_id' => 'Typ dokumentu',
+    ],
     'column' => [
         'document_type_id' => 'Kategória šablón',
         'title' => 'Názov',

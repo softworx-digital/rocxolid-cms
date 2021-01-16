@@ -21,6 +21,45 @@ use Softworx\RocXolid\Common\Models\Localization;
  */
 class Index extends AbstractCrudCMSTable
 {
+    protected $filters = [
+        'web_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => Web::class,
+                    'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'web_id'
+                ],
+            ],
+        ],
+        'localization_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => Localization::class,
+                    'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'localization_id'
+                ],
+            ],
+        ],
+        'document_type_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => DocumentType::class,
+                    'column' => 'title',
+                ],
+                'placeholder' => [
+                    'title' => 'document_type_id'
+                ],
+            ],
+        ],
+    ];
+
     protected $columns = [
         'is_enabled' => [
             'type' => ColumnType\SwitchFlag::class,
@@ -180,45 +219,6 @@ class Index extends AbstractCrudCMSTable
                 ],
                 'policy-ability' => 'delete',
                 'action' => 'destroyConfirm',
-            ],
-        ],
-    ];
-
-    protected $filters = [
-        'web_id' => [
-            'type' => FilterType\ModelRelation::class,
-            'options' => [
-                'label' => [
-                    'title' => 'web_id'
-                ],
-                'collection' => [
-                    'model' => Web::class,
-                    'column' => 'name',
-                ],
-            ],
-        ],
-        'localization_id' => [
-            'type' => FilterType\ModelRelation::class,
-            'options' => [
-                'label' => [
-                    'title' => 'localization_id'
-                ],
-                'collection' => [
-                    'model' => Localization::class,
-                    'column' => 'name',
-                ],
-            ],
-        ],
-        'document_type_id' => [
-            'type' => FilterType\ModelRelation::class,
-            'options' => [
-                'label' => [
-                    'title' => 'document_type_id'
-                ],
-                'collection' => [
-                    'model' => DocumentType::class,
-                    'column' => 'title',
-                ],
             ],
         ],
     ];

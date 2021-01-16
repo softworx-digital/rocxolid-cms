@@ -19,24 +19,24 @@ class AbstractCrudCMSTable extends AbstractCrudTable
         'web_id' => [
             'type' => FilterType\ModelRelation::class,
             'options' => [
-                'label' => [
-                    'title' => 'web_id'
-                ],
                 'collection' => [
                     'model' => Web::class,
                     'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'web_id'
                 ],
             ],
         ],
         'localization_id' => [
             'type' => FilterType\ModelRelation::class,
             'options' => [
-                'label' => [
-                    'title' => 'localization_id'
-                ],
                 'collection' => [
                     'model' => Localization::class,
                     'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'localization_id'
                 ],
             ],
         ],
