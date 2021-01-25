@@ -14,7 +14,7 @@ use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
  * Service to generate PDF files.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 class PdfGeneratorService implements ConsumerService

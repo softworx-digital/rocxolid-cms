@@ -23,6 +23,11 @@ class ThemeManagerService implements ConsumerService
 {
     use HasServiceConsumer;
 
+    /**
+     * Obtain available themes from directory structure.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getThemes(): Collection
     {
         $storage = Storage::disk('themes');
@@ -32,6 +37,13 @@ class ThemeManagerService implements ConsumerService
         });
     }
 
+    /**
+     * Obtain available templates for given component.
+     *
+     * @param string $theme
+     * @param Themeable $component
+     * @return \Illuminate\Support\Collection
+     */
     public function getComponentTemplates(string $theme, Themeable $component): Collection
     {
         $component->setViewTheme($theme);

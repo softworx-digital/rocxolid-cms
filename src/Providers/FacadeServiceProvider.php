@@ -10,7 +10,7 @@ use Softworx\RocXolid\CMS\Services\ThemeManagerService;
  * rocXolid CMS facades service provider.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\UserManagement
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 class FacadeServiceProvider extends IlluminateServiceProvider

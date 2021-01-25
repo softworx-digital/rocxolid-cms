@@ -15,7 +15,7 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  * Dependency data placeholder wrapper used in content composition.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 class Placeholder implements Optionable

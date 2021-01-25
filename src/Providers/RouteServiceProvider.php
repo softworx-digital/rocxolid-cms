@@ -47,20 +47,6 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'prefix' => sprintf('%s/cms', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.',
         ], function ($router) {
-            CrudRouterService::create('web-frontpage-settings', \WebFrontpageSettings\Controller::class, [
-                'parameters' => [
-                    'web-frontpage-settings' => 'web_frontpage_settings',
-                ],
-            ]);
-
-            $router->group([
-                'namespace' => 'WebFrontpageSettings',
-                'prefix' => 'web-frontpage-settings',
-            ], function ($router) {
-                $router->get('/{web_frontpage_settings}/clone-structure', 'Controller@cloneStructure');
-                $router->match(['PUT', 'PATCH'], '/{web_frontpage_settings}/clone-structure-submit', 'Controller@cloneStructureSubmit');
-            });
-
             ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
             ElementableRouterService::create('page', \Page\Controller::class);
             ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
@@ -98,8 +84,6 @@ class RouteServiceProvider extends IlluminateServiceProvider
      */
     private function mapRouteModels(Router $router): IlluminateServiceProvider
     {
-        $router->model('web_frontpage_settings', \Softworx\RocXolid\CMS\Models\WebFrontpageSettings::class);
-        //
         $router->model('page_template', \Softworx\RocXolid\CMS\Models\PageTemplate::class);
         $router->model('page', \Softworx\RocXolid\CMS\Models\Page::class);
         $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);

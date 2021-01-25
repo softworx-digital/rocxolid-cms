@@ -13,7 +13,7 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * Serves to be passed to a "not-found" view.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
 class InvalidStructureException extends Exception
