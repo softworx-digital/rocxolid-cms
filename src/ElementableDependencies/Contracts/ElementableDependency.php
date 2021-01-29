@@ -22,7 +22,7 @@ interface ElementableDependency
     /**
      * Check if the dependency has some subdependencies.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSubdependencies(): bool;
 
@@ -44,7 +44,7 @@ interface ElementableDependency
      * Decide if there is an assignment for the dependency in data provider dependency values.
      *
      * @param \Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependencyDataProvider $data_provider
-     * @return boolean
+     * @return bool
      */
     public function hasAssignment(ElementableDependencyDataProvider $data_provider): bool;
 

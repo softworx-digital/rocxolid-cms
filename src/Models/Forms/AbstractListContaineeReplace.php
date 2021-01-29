@@ -3,7 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Forms;
 
 use Illuminate\Support\Collection;
-// commerce forms
+// rocXolid commerce forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid fields
 use Softworx\RocXolid\Forms\Fields\Type\Input;

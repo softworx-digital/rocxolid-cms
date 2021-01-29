@@ -7,11 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-// commerce traits
+// rocXolid commerce traits
 use Softworx\RocXolid\Common\Http\Traits\DetectsWeb;
-// user management traits
+// rocXolid user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
-// cms models
+// rocXolid CMS models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
 
