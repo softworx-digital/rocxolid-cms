@@ -112,7 +112,7 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     public function detachElement(CrudRequest $request, Elementable $model)
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     public function preview(CrudRequest $request, Elementable $model)
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
     }
 
     /**

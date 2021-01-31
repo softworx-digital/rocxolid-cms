@@ -89,7 +89,7 @@ abstract class AbstractDocumentPart extends AbstractElementable
     /**
      * {@inheritDoc}
      */
-    protected function getDefaultControllerRouteParams(string $method): array
+    protected function getControllerRouteDefaultParams(string $method): array
     {
         return isset($this->document) ? [
             'document_id' => $this->document->getKey()

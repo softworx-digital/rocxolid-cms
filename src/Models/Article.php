@@ -90,7 +90,7 @@ class Article extends AbstractElementable
     */
     public function provideDependencies(bool $sub = false): Collection
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return collect();
     }
@@ -100,7 +100,7 @@ class Article extends AbstractElementable
      */
     public function provideViewTheme(): string
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return '';
     }

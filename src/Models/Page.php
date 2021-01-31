@@ -66,7 +66,7 @@ class Page extends AbstractElementable // implements Cloneable
     */
     public function provideDependencies(bool $sub = false): Collection
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return collect();
     }
@@ -76,7 +76,7 @@ class Page extends AbstractElementable // implements Cloneable
      */
     public function provideViewTheme(): string
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return '';
     }

@@ -57,7 +57,7 @@ class PageProxy extends AbstractElementable implements ProxyElementable //, Clon
     */
     public function provideDependencies(bool $sub = false): Collection
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return collect();
     }
@@ -67,7 +67,7 @@ class PageProxy extends AbstractElementable implements ProxyElementable //, Clon
      */
     public function provideViewTheme(): string
     {
-        dd('@todo', __METHOD__);
+        dd(__METHOD__, '@todo');
 
         return '';
     }

@@ -81,7 +81,7 @@ trait DetectsPage
                     }
                 }
             } catch (ModelNotFoundException $e) {
-                //dd(sprintf('--page pre web [%s] a slug [%s] nie je definovany--> 404', $web->getKey(), $slug));
+                // dd(__METHOD__, sprintf('--page pre web [%s] a slug [%s] nie je definovany--> 404', $web->getKey(), $slug));
                 return false;
             }
         }
