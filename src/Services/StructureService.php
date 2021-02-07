@@ -20,6 +20,7 @@ use Softworx\RocXolid\Services\Traits\HasServiceConsumer;
  */
 class StructureService implements ConsumerService
 {
+    use HasServiceConsumer;
     /*
     public $clone_log;
 
