@@ -58,6 +58,10 @@ class Controller extends AbstractController implements Repositoryable, Modellabl
      */
     public function __construct(AjaxResponse $response, Repository $repository)
     {
+        // @todo !!! find some way to pass attribute to CrudPolicy::before() check
+        // causes problems this way
+        $this->authorizeResource(static::getModelType(), static::getModelType()::getAuthorizationParameter());
+
         $this
             ->setResponse($response)
             ->setRepository($repository->init(static::getModelType()))
