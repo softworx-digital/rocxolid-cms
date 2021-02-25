@@ -2,9 +2,10 @@
 
 namespace Softworx\RocXolid\CMS\Models\Tables\DataDependency;
 
-// rocXolid table columns
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
-// rocXolid table buttons
 use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 // rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;

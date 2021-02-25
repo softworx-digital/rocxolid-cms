@@ -2,10 +2,11 @@
 
 namespace Softworx\RocXolid\CMS\Models\Tables;
 
-// rocXolid tables
+// rocXolid tables & types
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-// rocXolid table filters
 use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
