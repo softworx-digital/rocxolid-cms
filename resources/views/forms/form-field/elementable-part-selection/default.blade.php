@@ -13,7 +13,7 @@
     </label>
 @endforeach
 @can ('create', $component->getFormField()->getPartModel())
-    <a data-ajax-url="{{ $component->getFormField()->getPartModel()->getControllerRoute('create', [ '_data[document_id]' => $component->getFormField()->getForm()->getModel() ]) }}"  class="btn btn-primary text-wrap">
+    <a data-ajax-url="{{ $component->getFormField()->getPartModel()->getControllerRoute('create', [ sprintf('_data[%s]', $component->getFormField()->getForm()->getModel()->getForeignKey()) => $component->getFormField()->getForm()->getModel() ]) }}"  class="btn btn-primary text-wrap">
         <i class="fa fa-plus margin-right-5"></i>
         {{ $component->getFormField()->getPartModelComponent()->translate('button.create-new') }}
     </a>

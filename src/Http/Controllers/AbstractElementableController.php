@@ -8,6 +8,8 @@ use Illuminate\Validation\ValidationException;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractCrudController;
+// rocXolid controller traits
+use Softworx\RocXolid\Http\Controllers\Traits;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // rocXolid cms components
@@ -25,6 +27,8 @@ use Softworx\RocXolid\CMS\Services\ElementableCompositionService;
  */
 abstract class AbstractElementableController extends AbstractCrudController
 {
+    use Traits\Utils\HasSectionResponse;
+
     /**
      * {@inheritDoc}
      */
@@ -35,19 +39,6 @@ abstract class AbstractElementableController extends AbstractCrudController
      */
     protected $extra_services = [
         ElementableCompositionService::class,
-    ];
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $form_mapping = [
-        'create' => 'create',
-        'store' => 'create',
-        'edit' => 'update',
-        'edit.header' => 'update-header',
-        'edit.update' => 'update-header',
-        'edit.footer' => 'update-footer',
-        'edit.footer' => 'update-footer',
     ];
 
     /**
@@ -153,7 +144,7 @@ abstract class AbstractElementableController extends AbstractCrudController
 
         return $this->response
             ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->redirect($this->getRoute('show', $model)) // to reload with element ids for new elements
+            ->redirect($this->getRoute('show', $model, [ 'tab' => 'composition' ])) // to reload with element ids for new elements
             ->get();
     }
 

@@ -55,7 +55,9 @@ trait CanBeThemed
     public function composePackageViewPaths(string $view_package, string $view_dir, string $view_name): array
     {
         if ($this->hasViewTheme()) {
-            $with_model_name = sprintf(
+            $paths = [];
+
+            $paths['with_model_name'] = sprintf(
                 '%s::%s.%s.%s.%s',
                 $view_package,
                 $this->getViewTheme(),
@@ -64,7 +66,7 @@ trait CanBeThemed
                 $view_name
             );
 
-            $without_model_name = sprintf(
+            $paths['without_model_name'] = sprintf(
                 '%s::%s.%s.%s',
                 $view_package,
                 $this->getViewTheme(),
@@ -72,7 +74,22 @@ trait CanBeThemed
                 $view_name
             );
 
-            return [ $with_model_name, $without_model_name ];
+            $paths['with_model_name_without_theme'] = sprintf(
+                '%s::%s.%s.%s',
+                $view_package,
+                $view_dir,
+                $this->getModel()->getModelName(),
+                $view_name
+            );
+
+            $paths['without_model_name_without_theme'] = sprintf(
+                '%s::%s.%s',
+                $view_package,
+                $view_dir,
+                $view_name
+            );
+
+            return $paths;
         }
 
         return parent::composePackageViewPaths($view_package, $view_dir, $view_name);

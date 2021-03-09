@@ -2,7 +2,9 @@
 
 namespace Softworx\RocXolid\CMS\Models\Pivots;
 
-use Softworx\RocXolid\CMS\Models\Pivots\AbstractDocumentElement;
+// rocXolid cms model pivots
+use Softworx\RocXolid\CMS\Models\Pivots\AbstractElementableElement;
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\DocumentFooter;
 
 /**
@@ -12,7 +14,7 @@ use Softworx\RocXolid\CMS\Models\DocumentFooter;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class DocumentFooterElement extends AbstractDocumentElement
+class DocumentFooterElement extends AbstractElementableElement
 {
     public function parent()
     {

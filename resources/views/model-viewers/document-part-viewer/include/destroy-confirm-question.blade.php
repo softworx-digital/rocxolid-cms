@@ -1,9 +1,9 @@
-@if ($component->getModel()->documents->isNotEmpty())
+@if ($component->getModel()->elementables->isNotEmpty())
 <p class="text-center">{{ $component->translate('model.title.singular') }} <b>{!! $component->getModel()->getTitle() !!}</b> {{ $component->translate('text.following-documents') }}</p>
 <div class="text-center">
     <ul class="list-inline">
-    @foreach ($component->getModel()->documents as $document)
-            <li><a class="label label-info" href="{{ $document->getControllerRoute('show') }}" target="_blank">{{ $document->getTitle() }}</a></li>
+    @foreach ($component->getModel()->elementables as $elementable)
+            <li><a class="label label-info" href="{{ $elementable->getControllerRoute('show') }}" target="_blank">{{ $elementable->getTitle() }}</a></li>
     @endforeach
     </ul>
 </div>

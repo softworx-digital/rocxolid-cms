@@ -176,33 +176,22 @@ class Index extends AbstractCrudCMSTable
         ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $buttons = [
-        'compose' => [
+        'show' => [
             'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'label' => [
-                    'icon' => 'fa fa-object-group',
+                    'icon' => 'fa fa-eye',
                 ],
                 'attributes' => [
-                    'class' => 'btn btn-success btn-sm margin-right-no',
-                    'title-key' => 'compose',
+                    'class' => 'btn btn-info btn-sm margin-right-no',
+                    'title-key' => 'show',
                 ],
                 'policy-ability' => 'view',
                 'action' => 'show',
-            ],
-        ],
-        'edit' => [
-            'type' => ButtonType\ButtonAnchor::class,
-            'options' => [
-                'label' => [
-                    'icon' => 'fa fa-pencil',
-                ],
-                'attributes' => [
-                    'class' => 'btn btn-primary btn-sm margin-right-no',
-                    'title-key' => 'edit',
-                ],
-                'policy-ability' => 'update',
-                'action' => 'edit',
             ],
         ],
         'delete-ajax' => [

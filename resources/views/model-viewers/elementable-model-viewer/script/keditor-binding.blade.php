@@ -168,6 +168,9 @@ $(document).ready(function($)
         confirmDeleteContainerText: 'Naozaj vymazať? Zmeny budú permanentné!',
         confirmDeleteComponentText: 'Naozaj vymazať? Zmeny budú permanentné!',
         component: {
+            generic: {
+                settingsTitle: 'Nastavenie',
+            },
             text: {
                 settingsTitle: 'Nastavenie',
             }
@@ -193,6 +196,10 @@ $(document).ready(function($)
                 {
                     id: 'font-awesome',
                     href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                },
+                {
+                    id: 'font-awesome-5',
+                    href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.min.css"
                 }
             ],
             snippetsUrl: $element.data('snippets-url'),
@@ -323,8 +330,14 @@ $(document).ready(function($)
             onContentChanged: function (event, contentArea) {
                 window.isContentDirty = true;
             },
+            onBeforeInitContentArea: function (contentArea) {
+                contentArea.addClass('{{ $component->getModel()->getDocumentEditorContentAreaClass() }}');
+            },
+            onInitContainer: function (container, contentArea) {
+                // console.log('onInitContainer', container);
+            },
             onComponentReady: function (component) {
-                // console.log('onComponentReady', component);
+                console.log('onComponentReady', component);
             },
             onContainerSnippetAdded: function (event, newContainer, selectedSnippet, contentArea) {
                 console.log('onContainerSnippetAdded');

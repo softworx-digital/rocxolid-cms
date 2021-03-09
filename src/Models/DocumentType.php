@@ -49,9 +49,10 @@ class DocumentType extends AbstractCrudModel implements Sortable
      */
     public function documents()
     {
+        $user = auth('rocXolid')->user();
         $query = $this->hasMany(Document::class);
 
-        if (!auth('rocXolid')->user()->isAdmin() && !auth('rocXolid')->user()->isRoot()) {
+        if (!$user->can('viewAnyAll', Document::make())) {
             $query->where('is_enabled', 1);
         }
 

@@ -49,6 +49,24 @@ class Controller extends AbstractElementableController
     /**
      * {@inheritDoc}
      */
+    protected $form_mapping = [
+        'create' => 'create',
+        'store' => 'create',
+        'edit.general-data' => 'update-general',
+        'update.general-data' => 'update-general',
+        'edit.extended-data' => 'update-extended',
+        'update.extended-data' => 'update-extended',
+        'edit.description-data' => 'update-description',
+        'update.description-data' => 'update-description',
+        'edit.header' => 'update-header',
+        'edit.update' => 'update-header',
+        'edit.footer' => 'update-footer',
+        'edit.footer' => 'update-footer',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
     protected function onUpdateFormValid(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)//: Response
     {
         // @todo this doesn't belong here / find some other way

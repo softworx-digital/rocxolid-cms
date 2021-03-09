@@ -3,13 +3,11 @@
 namespace Softworx\RocXolid\CMS\Http\Traits;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
 // rocXolid CMS models
 use Softworx\RocXolid\CMS\Models\Page;
-use Softworx\RocXolid\CMS\Models\PageProxy;
 
 /**
  *
@@ -18,6 +16,30 @@ trait DetectsPage
 {
     private $_page = null;
 
+    public function detectPage(Web $web = null, Localization $localization = null, $path = null)
+    {
+        if (!is_null($this->_page)) {
+            return $page;
+        }
+
+        if (is_null($web)) {
+            throw new \InvalidArgumentException('Web is required for first-time page detection');
+        }
+
+        if (is_null($localization)) {
+            throw new \InvalidArgumentException('Localization is required for first-time page detection');
+        }
+
+        $this->_page = Page::where('is_enabled', true)
+            ->where('web_id', $web->getKey())
+            ->where('localization_id', $localization->getKey())
+            ->where('path', (string)$path)
+            ->first();
+
+        return $this->_page;
+    }
+
+    /*
     public function detectPage(Web $web = null, Localization $localization = null, $slug = null)
     {
         if (is_null($this->_page)) {
@@ -88,4 +110,5 @@ trait DetectsPage
 
         return $this->_page;
     }
+    */
 }

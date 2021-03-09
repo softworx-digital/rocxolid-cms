@@ -52,11 +52,14 @@ return [
     ],
     'action' => [
         'create' => 'Nová',
-        'show' => 'Kompozícia',
         'preview' => 'Náhľad',
         'pdf' => 'PDF',
         'edit-header' => 'Výber hlavičky',
         'edit-footer' => 'Výber pätičky',
+    ],
+    'tab' => [
+        'default' => 'Info',
+        'composition' => 'Kompozícia',
     ],
     'legend' => [
         'base' => 'Základné údaje',
@@ -73,9 +76,10 @@ return [
         ],
     ],
     'text' => [
+        'extended-data' => 'Rozšírené údaje',
         'header' => 'Hlavička',
         'body' => 'Telo',
         'footer' => 'Pätička',
         'organization' => 'Organizácia',
-    ]
+    ],
 ];

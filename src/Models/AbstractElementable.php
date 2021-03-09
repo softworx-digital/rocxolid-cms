@@ -79,6 +79,16 @@ abstract class AbstractElementable extends AbstractCrudModel implements
     }
 
     /**
+     * Obtain elementable's specific content area class for document editor.
+     *
+     * @return string
+     */
+    public function getDocumentEditorContentAreaClass(): string
+    {
+        return 'keditor-rx-content-area';
+    }
+
+    /**
      * Obtain available element models that can be assigned to the model.
      *
      * @return \Illuminate\Support\Collection

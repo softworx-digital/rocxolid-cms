@@ -7,8 +7,14 @@ use Illuminate\Support\Collection;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
+// rocXolid model traits
+use Softworx\RocXolid\Models\Traits as rxTraits;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
+// rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
@@ -20,21 +26,49 @@ use Softworx\RocXolid\CMS\Models\PageTemplate;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class Page extends AbstractElementable // implements Cloneable
+class Page extends AbstractElementable implements
+    ElementsDependenciesProvider,
+    ElementsMutatorsProvider,
+    ViewThemeProvider
 {
+    use rxTraits\Attributes\HasGeneralDataAttributes;
+    use Traits\HasPageHeader;
+    use Traits\HasPageFooter;
     use Traits\HasDependencies;
     use Traits\HasMutators;
+    use Traits\ProvidesViewTheme;
 
-    protected $table = 'cms_pages';
-
-    protected $fillable = [
+    const GENERAL_DATA_ATTRIBUTES = [
+        'is_enabled',
         'web_id',
         'localization_id',
-        'page_template_id',
+        // 'page_template_id',
         'name',
-        //'css_class',
-        'seo_url_slug',
-        //'is_enabled',
+        'path',
+    ];
+
+    const META_DATA_ATTRIBUTES = [
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $table = 'cms_pages';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $fillable = [
+        'is_enabled',
+        'web_id',
+        'localization_id',
+        // 'page_template_id',
+        'name',
+        'path',
+        'theme',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -47,12 +81,18 @@ class Page extends AbstractElementable // implements Cloneable
         'description'
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $relationships = [
         'web',
         'localization',
-        'pageTemplate',
+        // 'pageTemplate',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $image_sizes = [
         'openGraphImage' => [
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
@@ -62,23 +102,32 @@ class Page extends AbstractElementable // implements Cloneable
     ];
 
     /**
-    * {@inheritDoc}
-    */
-    public function provideDependencies(bool $sub = false): Collection
+     * {@inheritDoc}
+     */
+    public function fillCustom(Collection $data): Crudable
     {
-        dd(__METHOD__, '@todo');
+        $this
+            ->fillDependencies($data);
 
-        return collect();
+        return parent::fillCustom($data);
+    }
+
+    // @todo quick'n'dirty
+    public function getMetaDataAttributes(bool $keys = false): Collection
+    {
+        return $keys
+            ? collect(static::META_DATA_ATTRIBUTES)
+            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
+                return array_search($field, static::META_DATA_ATTRIBUTES);
+            });
     }
 
     /**
      * {@inheritDoc}
      */
-    public function provideViewTheme(): string
+    public function getDocumentEditorContentAreaClass(): string
     {
-        dd(__METHOD__, '@todo');
-
-        return '';
+        return 'keditor-rx-page-content-area';
     }
 
 

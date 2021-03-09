@@ -47,9 +47,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'prefix' => sprintf('%s/cms', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.',
         ], function ($router) {
-            ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
-            ElementableRouterService::create('page', \Page\Controller::class);
-            ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
+            // ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
+
+            // ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
 
             ElementableRouterService::create('article', \Article\Controller::class);
 
@@ -60,8 +60,16 @@ class RouteServiceProvider extends IlluminateServiceProvider
             CrudRouterService::create('document-type', \DocumentType\Controller::class);
 
             ElementableRouterService::create('document', \Document\Controller::class);
-            ElementableRouterService::create('document_header', \DocumentHeader\Controller::class);
-            ElementableRouterService::create('document_footer', \DocumentFooter\Controller::class);
+            ElementableRouterService::create('document-header', \DocumentHeader\Controller::class);
+            ElementableRouterService::create('document-footer', \DocumentFooter\Controller::class);
+
+            $router->group([
+                'namespace' => 'Document',
+                'prefix' => 'document',
+                'as' => 'document.'
+            ], function (Router $router) {
+                $router->get('/{document}/{tab?}', 'Controller@show')->name('show');
+            });
 
             $router->group([
                 'namespace' => 'DocumentOrganizer',
@@ -70,6 +78,18 @@ class RouteServiceProvider extends IlluminateServiceProvider
             ], function ($router) {
                 $router->get('', 'Controller@index')->name('index');
                 $router->post('/save/position', 'Controller@savePosition')->name('save.position');
+            });
+
+            ElementableRouterService::create('page', \Page\Controller::class);
+            ElementableRouterService::create('page-header', \PageHeader\Controller::class);
+            ElementableRouterService::create('page-footer', \PageFooter\Controller::class);
+
+            $router->group([
+                'namespace' => 'Page',
+                'prefix' => 'page',
+                'as' => 'page.'
+            ], function (Router $router) {
+                $router->get('/{page}/{tab?}', 'Controller@show')->name('show');
             });
         });
 
@@ -84,9 +104,11 @@ class RouteServiceProvider extends IlluminateServiceProvider
      */
     private function mapRouteModels(Router $router): IlluminateServiceProvider
     {
-        $router->model('page_template', \Softworx\RocXolid\CMS\Models\PageTemplate::class);
+        // $router->model('page_template', \Softworx\RocXolid\CMS\Models\PageTemplate::class);
         $router->model('page', \Softworx\RocXolid\CMS\Models\Page::class);
-        $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
+        $router->model('page_header', \Softworx\RocXolid\CMS\Models\PageHeader::class);
+        $router->model('page_footer', \Softworx\RocXolid\CMS\Models\PageFooter::class);
+        // $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
         //
         $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
         $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);

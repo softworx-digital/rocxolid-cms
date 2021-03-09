@@ -15,7 +15,7 @@ use Softworx\RocXolid\CMS\Elements\Models\Contracts\Element;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-abstract class AbstractDocumentElement extends AbstractElementableElementPivot
+abstract class AbstractElementableElement extends AbstractElementableElementPivot
 {
     /**
      * {@inheritDoc}

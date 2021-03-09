@@ -13,7 +13,7 @@ use Softworx\RocXolid\CMS\Models\DocumentHeader;
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-trait HasHeader
+trait HasDocumentHeader
 {
     /**
      * Relation to document header.

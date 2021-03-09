@@ -36,12 +36,24 @@ class Document extends AbstractElementable implements
     ViewThemeProvider
 {
     use rxTraits\Sortable;
-    use Traits\HasHeader;
-    use Traits\HasFooter;
+    use rxTraits\Attributes\HasGeneralDataAttributes;
+    use Traits\HasDocumentHeader;
+    use Traits\HasDocumentFooter;
     use Traits\HasTriggers;
     use Traits\HasDependencies;
     use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
+
+    const GENERAL_DATA_ATTRIBUTES = [
+        'is_enabled',
+        'web_id',
+        'localization_id',
+        'document_type_id',
+        'title',
+        'theme',
+        'valid_from',
+        'valid_to',
+    ];
 
     /**
      * {@inheritDoc}
@@ -73,6 +85,14 @@ class Document extends AbstractElementable implements
         'web',
         'localization',
         'documentType'
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $dates = [
+        'valid_from',
+        'valid_to',
     ];
 
     /**

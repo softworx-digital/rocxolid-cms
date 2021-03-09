@@ -58,7 +58,7 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
 
         return $this->response
             ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->redirect($model->getOwner()->getControllerRoute('show')) // to reload with element ids for new elements
+            ->redirect($model->getOwner()->getControllerRoute('show', [ 'tab' => 'composition' ])) // to reload with element ids for new elements
             ->get();
     }
 
@@ -68,7 +68,7 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
     protected function successAjaxStoreResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)
     {
         return $this->response
-            ->redirect($model->getOwner()->getControllerRoute('show'))
+            ->redirect($model->getOwner()->getControllerRoute('show', [ 'tab' => 'composition' ]))
             ->get();
     }
 
