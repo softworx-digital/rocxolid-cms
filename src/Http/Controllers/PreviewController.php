@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Softworx\RocXolid\Common\Http\Traits\DetectsWeb;
 // rocXolid user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
-// rocXolid CMS models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
 

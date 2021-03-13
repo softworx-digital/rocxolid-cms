@@ -114,7 +114,7 @@ class UpdateExtended extends RocXolidAbstractCrudForm
         ])->get()->map(function ($dependency) {
             return [
                 sprintf('%s:%s', DataDependency::class, $dependency->getKey()),
-                $dependency->getTitle(),
+                sprintf('&bull;&nbsp; %s', $dependency->getTitle()),
             ];
         }))->toAssoc();
         $fields['dependencies']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());

@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models\Traits;
 
-// rocXolid CMS models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\PageProxy;
 

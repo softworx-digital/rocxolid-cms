@@ -93,6 +93,7 @@ TODO: $table->index('order_number'); // indexy
             $table->string('google_plus_page_url')->nullable();
             $table->string('youtube_page_url')->nullable();
             $table->string('google_analytics_tracking_code')->nullable();
+            $table->string('google_measurement_id')->nullable();
             $table->string('google_tag_manager_container_id')->nullable();
             $table->string('livechatoo_account')->nullable();
             $table->string('livechatoo_language')->nullable();

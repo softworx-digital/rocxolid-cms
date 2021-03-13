@@ -2,32 +2,132 @@
 
 namespace Softworx\RocXolid\CMS\Models\Tables\Article;
 
-// rocXolid table columns
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\Flag;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
-use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
-// rocXolid table buttons
-use Softworx\RocXolid\Tables\Buttons\Type\ButtonAnchor;
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 // rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Web;
+use Softworx\RocXolid\Common\Models\Localization;
 
 /**
  *
  */
 class Index extends AbstractCrudCMSTable
 {
+    protected $filters = [
+        'web_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => Web::class,
+                    'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'web_id',
+                ],
+            ],
+        ],
+        'localization_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => Localization::class,
+                    'column' => 'name',
+                ],
+                'placeholder' => [
+                    'title' => 'localization_id',
+                ],
+            ],
+        ],
+        'title' => [
+            'type' => FilterType\Text::class,
+            'options' => [
+                'placeholder' => [
+                    'title' => 'title',
+                ],
+            ],
+        ],
+    ];
+
     protected $columns = [
         'is_enabled' => [
-            'type' => Flag::class,
+            'type' => ColumnType\SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'
                 ],
             ],
         ],
+        'image' => [
+            'type' => ColumnType\ImageRelation::class,
+            'options' => [
+                'label' => [
+                    'title' => 'image'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+                'size' => 'thumb',
+                'relation' => [
+                    'name' => 'image',
+                ],
+                'width' => 64,
+            ],
+        ],
+        'title' => [
+            'type' => ColumnType\Text::class,
+            'options' => [
+                'orderable' => true,
+                'label' => [
+                    'title' => 'title'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
+        'date' => [
+            'type' => ColumnType\Date::class,
+            'options' => [
+                'orderable' => true,
+                'label' => [
+                    'title' => 'date'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
+        'author_id' => [
+            'type' => ColumnType\ModelRelation::class,
+            'options' => [
+                'ajax' => true,
+                'label' => [
+                    'title' => 'author_id'
+                ],
+                'relation' => [
+                    'name' => 'author',
+                    'column' => 'title',
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
         'web_id' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -45,7 +145,7 @@ class Index extends AbstractCrudCMSTable
             ],
         ],
         'localization_id' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -62,91 +162,28 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
-        'image' => [
-            'type' => ImageRelation::class,
-            'options' => [
-                'label' => [
-                    'title' => 'image'
-                ],
-                'size' => 'small',
-                'relation' => [
-                    'name' => 'image',
-                ],
-                'width' => 64,
-            ],
-        ],
-        'date' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'date'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],
-        'name' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'name'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],
-        'perex' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'perex'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $buttons = [
-        'compose' => [
-            'type' => ButtonAnchor::class,
+        'show' => [
+            'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'label' => [
-                    'icon' => 'fa fa-object-group',
+                    'icon' => 'fa fa-eye',
                 ],
                 'attributes' => [
-                    'class' => 'btn btn-success btn-sm margin-right-no',
-                    'title-key' => 'compose',
+                    'class' => 'btn btn-info btn-sm margin-right-no',
+                    'title-key' => 'show',
                 ],
                 'policy-ability' => 'view',
                 'action' => 'show',
             ],
         ],
-        'edit' => [
-            'type' => ButtonAnchor::class,
-            'options' => [
-                'label' => [
-                    'icon' => 'fa fa-pencil',
-                ],
-                'attributes' => [
-                    'class' => 'btn btn-primary btn-sm margin-right-no',
-                    'title-key' => 'edit',
-                ],
-                'policy-ability' => 'update',
-                'action' => 'edit',
-            ],
-        ],
         'delete-ajax' => [
-            'type' => ButtonAnchor::class,
+            'type' => ButtonType\ButtonAnchor::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

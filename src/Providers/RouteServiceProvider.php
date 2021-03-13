@@ -53,6 +53,14 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
             ElementableRouterService::create('article', \Article\Controller::class);
 
+            $router->group([
+                'namespace' => 'Article',
+                'prefix' => 'article',
+                'as' => 'article.'
+            ], function (Router $router) {
+                $router->get('/{article}/{tab?}', 'Controller@show')->name('show');
+            });
+
             CrudRouterService::create('faq', \Faq\Controller::class);
 
             CrudRouterService::create('data-dependency', \DataDependency\Controller::class);

@@ -26,8 +26,10 @@
                         </h3></div>
                     @if (filled($document_type->description))
                         <div class="panel-body">
-                            <div class="col-xs-1"><i class="fa fa-info-circle fa-2x text-vertical-align-middle margin-right-5"></i></div>
-                            <div class="col-xs-11">{!! $document_type->getAttributeViewValue('description') !!}</div>
+                            <div class="row vertical-align-center padding-top-10">
+                                <div class="col-xs-1 text-center"><p><i class="fa fa-info-circle fa-2x text-primary"></i></p></div>
+                                <div class="col-xs-11">{!! $document_type->getAttributeViewValue('description') !!}</div>
+                            </div>
                         </div>
                     @endif
 

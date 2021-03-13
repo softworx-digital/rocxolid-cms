@@ -1,6 +1,6 @@
 <?php
 
-namespace Softworx\RocXolid\CMS\Models\Forms\Page;
+namespace Softworx\RocXolid\CMS\Models\Forms\Document;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +9,7 @@ use Softworx\RocXolid\Filters\Closurable;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\CMS\Forms\Fields\Type\ElementablePartSelection;
 // models
-use Softworx\RocXolid\CMS\Models\PageFooter;
+use Softworx\RocXolid\CMS\Models\DocumentFooter;
 
 /**
  *
@@ -25,7 +25,7 @@ class UpdateFooter extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
-        'page_footer_id' => [
+        'document_footer_id' => [
             'type' => ElementablePartSelection::class,
             'options' => [
                 'part' => 'footer',
@@ -33,7 +33,7 @@ class UpdateFooter extends RocXolidAbstractCrudForm
                     'rules' => [
                         'nullable',
                         // 'required',
-                        // 'exists:cms_page_footers,id'
+                        // 'exists:cms_document_footers,id'
                     ],
                 ],
             ],
@@ -42,12 +42,12 @@ class UpdateFooter extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $fields['page_footer_id']['options']['collection']['model'] = PageFooter::class;
-        $fields['page_footer_id']['options']['collection']['filters'] = [[
+        $fields['document_footer_id']['options']['collection']['model'] = DocumentFooter::class;
+        $fields['document_footer_id']['options']['collection']['filters'] = [[
             'class' => Closurable::class,
             'data' => function (Builder $query, Model $model) {
                 return $query
-                    ->where('is_bound_to_page', 0)
+                    ->where('is_bound_to_document', 0)
                     ->where('web_id', $this->getModel()->web->getKey())
                     ->where('localization_id', $this->getModel()->localization->getKey());
             }

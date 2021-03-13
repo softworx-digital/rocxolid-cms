@@ -12,13 +12,13 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
 use Softworx\RocXolid\CMS\ElementableDependencies\AbstractElementableDependency;
 
 /**
- * Provide General dependency for elementable.
+ * Provide Article dependency for elementable.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
  */
-class General extends AbstractElementableDependency
+class Article extends AbstractElementableDependency
 {
     /**
      * {@inheritDoc}
@@ -26,21 +26,11 @@ class General extends AbstractElementableDependency
     protected $translation_package = 'app';
 
     /**
-     * Return localized current date.
-     *
-     * @return string
-     */
-    public function getCurrentDate(): string
-    {
-        return Carbon::now()->locale(app()->getLocale())->isoFormat('l');
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function provideDependencyFieldsNames(ElementableDependencyDataProvider $dependency_data_provider, bool $with_subdependencies = true): Collection
     {
-        return collect('general');
+        return collect('article');
     }
 
     /**

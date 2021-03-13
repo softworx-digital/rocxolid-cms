@@ -4,17 +4,18 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits as rxTraits;
-// rocXolid common models
-use Softworx\RocXolid\Common\Models\Image;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
+// rocXolid cms elementable dependency contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\PathRegexProvider;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
@@ -109,6 +110,10 @@ class Page extends AbstractElementable implements
         $this
             ->fillDependencies($data);
 
+        $this->provideDependencies()->each(function (PathRegexProvider $path_regex_provider) {
+            $path_regex_provider->addRegexPathParameter($this);
+        });
+// dd($this);
         return parent::fillCustom($data);
     }
 
@@ -130,7 +135,20 @@ class Page extends AbstractElementable implements
         return 'keditor-rx-page-content-area';
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isReady(): bool
+    {
+dd(__METHOD__);
+        return $this->isPresenting();
+    }
 
+    public function registerRoute()
+    {
+dd(__METHOD__);
+        Route::get($this->path_regex, dd(__FILE__));
+    }
 
     /*
     public function pageTemplate()

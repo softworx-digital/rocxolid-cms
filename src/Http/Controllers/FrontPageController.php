@@ -13,9 +13,11 @@ use Softworx\RocXolid\Common\Http\Traits as CommonTraits;
 use Softworx\RocXolid\CMS\Http\Traits as CMSTraits;
 // rocXolid user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
-// rocXolid CMS models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
+// rocXolid cms dependency data providers
+use Softworx\RocXolid\CMS\Support\RequestElementableDependencyDataProvider;
 
 /**
  *
@@ -26,6 +28,7 @@ class FrontPageController extends Controller
     use CMSTraits\DetectsPage;
 
     // @todo kinda quick'n'dirty
+    // @todo make custom request class for identifying web,...
     public function __invoke(Request $request, $path = null)
     {
         $web = $this->detectOnlyWeb($request);
@@ -33,10 +36,12 @@ class FrontPageController extends Controller
         $localization = $web->defaultLocalization;
         $page = $this->detectPage($web, $localization, $path);
 
-        app()->setLocale($localization->language->iso_639_1);
+        app()->setLocale($localization->language->iso_639_1); // @todo as Localization's (service?) method
 
         if ($page) {
             return $page
+                ->setPresenting()
+                ->setDependenciesDataProvider(app(RequestElementableDependencyDataProvider::class, [ 'request' => $request ]))
                 ->getModelViewerComponent()
                     ->setViewTheme($page->theme)
                     ->render('default', [

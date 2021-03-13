@@ -11,14 +11,11 @@ use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid common traits
 use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
 // rocXolid cms models contracts
-use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
-use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProviderable;
-use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
-use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProviderable;
+use Softworx\RocXolid\CMS\Models\Contracts;
 // rocXolid cms elements models contracts
-use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
+use Softworx\RocXolid\CMS\Elements\Models\Contracts as ElementsContracts;
 // rocXolid cms elements models traits
-use Softworx\RocXolid\CMS\Elements\Models\Traits\HasElements;
+use Softworx\RocXolid\CMS\Elements\Models\Traits as ElementsTraits;
 // rocXolid cms elements builders
 use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
 
@@ -31,14 +28,16 @@ use Softworx\RocXolid\CMS\Elements\Builders\ElementBuilder;
  * @todo use \Softworx\RocXolid\Models\Traits\Utils\Configurable trait
  */
 abstract class AbstractElementable extends AbstractCrudModel implements
-    ElementsDependenciesProvider,
-    ElementsDependenciesProviderable,
-    ElementsMutatorsProvider,
-    ElementsMutatorsProviderable,
-    Elementable
+    ElementsContracts\Elementable,
+    ElementsContracts\PresentationModeProvider,
+    Contracts\ElementsDependenciesProvider,
+    Contracts\ElementsDependenciesProviderable,
+    Contracts\ElementsMutatorsProvider,
+    Contracts\ElementsMutatorsProviderable
 {
     use SoftDeletes;
-    use HasElements;
+    use ElementsTraits\HasElements;
+    use ElementsTraits\ProvidesPresentationMode;
     use CommonTraits\HasWeb;
     // use CommonTraits\UserGroupAssociatedWeb;
     use CommonTraits\HasLocalization;
