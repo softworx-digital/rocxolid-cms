@@ -95,13 +95,6 @@ class Article extends AbstractElementable
         ],
     ];
 
-    public function getFrontpageUrl($params = [])
-    {
-        $pattern = (substr($this->slug, 0, 1) === '/') ? '//%s%s' : '//%s/%s';
-
-        return sprintf($pattern, $this->web->domain, $this->seo_url_slug);
-    }
-
     /**
      * {@inheritDoc}
      */

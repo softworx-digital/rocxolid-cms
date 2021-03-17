@@ -199,7 +199,7 @@ $(document).ready(function($)
                 },
                 {
                     id: 'font-awesome-5',
-                    href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.min.css"
+                    href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
                 }
             ],
             snippetsUrl: $element.data('snippets-url'),

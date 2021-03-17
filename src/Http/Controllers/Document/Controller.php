@@ -111,7 +111,7 @@ class Controller extends AbstractElementableController
             return $this->response
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
                 ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
-                ->redirect($model->getControllerRoute('show'))
+                ->redirect($model->getControllerRoute('show', [ 'tab' => 'composition' ]))
                 ->get();
         }
 

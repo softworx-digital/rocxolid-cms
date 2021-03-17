@@ -3,7 +3,9 @@
     <label class="btn btn-default has-controls text-wrap @if ($component->getFormField()->isFieldValue($item->getKey())) active @endif">
         {!! Form::radio($component->getFormField()->getFieldName(), $item->getKey(), $component->getFormField()->isFieldValue($item->getKey()), $component->getOption('attributes')) !!}
         <h4>{!! $item->getTitle() !!}</h4>
+    @if (false)
         {!! $item->getModelViewerComponent()->render($component->getOption('collection-item-template'), [ 'no_elements_content' => sprintf('<p>(%s)</p>', $item->getModelViewerComponent()->translate('text.no_elements_content')) ]) !!}
+    @endif
 
         <div class="btn-group btn-group-sm center-block hidden-xs show-up show-up-right" role="group">
         @can ('delete', [ $item ])

@@ -3,32 +3,57 @@
 namespace Softworx\RocXolid\CMS\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-// rocXolid common traits
-use Softworx\RocXolid\Common\Http\Traits as CommonTraits;
-// rocXolid cms traits
-use Softworx\RocXolid\CMS\Http\Traits as CMSTraits;
-// rocXolid user management traits
-use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
+// rocXolid models
+use Softworx\RocXolid\Models\Contracts\Crudable;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Web;
 // rocXolid cms models
-use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
+// rocXolid cms components
+use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPartViewer;
 // rocXolid cms dependency data providers
-use Softworx\RocXolid\CMS\Support\RequestElementableDependencyDataProvider;
+use Softworx\RocXolid\CMS\Support\RouteElementableDependencyDataProvider;
 
 /**
  *
  */
 class FrontPageController extends Controller
 {
-    use CommonTraits\DetectsWeb;
-    use CMSTraits\DetectsPage;
+    public function __invoke(Request $request, Web $web, Page $page, ?Crudable $model = null, ?string $slug = null)
+    {
+        // dd(__METHOD__, $request->route(), $web, $page, $model);
+        return $page->setPresenting()
+            ->setDependenciesDataProvider(app(RouteElementableDependencyDataProvider::class, [ 'route' => $request->route() ]))
+            ->getModelViewerComponent()
+                ->setViewTheme($page->theme)
+                ->render('default', $this->pageAssignments($web, $page));
+    }
+
+    private function pageAssignments(Web $web, Page $page): array
+    {
+        return [
+            'rxUser' => auth('rocXolid')->user(),
+            'web' => $web,
+            'page' => $page,
+            'header_component_viewer' => $this->pageHeaderComponent($page),
+            'footer_component_viewer' => $this->pageFooterComponent($page),
+        ];
+    }
+
+    private function pageHeaderComponent(Page $page): ?DocumentPartViewer
+    {
+        return optional(optional($page->getHeader())->getModelViewerComponent())->setViewTheme($page->provideViewTheme());
+    }
+
+    private function pageFooterComponent(Page $page): ?DocumentPartViewer
+    {
+        return optional(optional($page->getFooter())->getModelViewerComponent())->setViewTheme($page->provideViewTheme());
+    }
 
     // @todo kinda quick'n'dirty
     // @todo make custom request class for identifying web,...
+    /*
     public function __invoke(Request $request, $path = null)
     {
         $web = $this->detectOnlyWeb($request);
@@ -65,4 +90,5 @@ class FrontPageController extends Controller
             abort(404);
         }
     }
+    */
 }

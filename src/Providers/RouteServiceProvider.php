@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Softworx\RocXolid\Services\CrudRouterService;
 // rocXolid cms services
 use Softworx\RocXolid\CMS\Services\ElementableRouterService;
+use Softworx\RocXolid\CMS\Services\FrontpageRouterService;
 
 /**
  * rocXolid routes service provider.
@@ -27,6 +28,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
     {
         $this
             ->load($this->app->router)
+            ->loadFrontpage($this->app->router)
             ->mapRouteModels($this->app->router);
 
         return $this;
@@ -100,6 +102,13 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 $router->get('/{page}/{tab?}', 'Controller@show')->name('show');
             });
         });
+
+        return $this;
+    }
+
+    private function loadFrontpage(Router $router): IlluminateServiceProvider
+    {
+        FrontpageRouterService::register($this->app->router);
 
         return $this;
     }

@@ -15,7 +15,7 @@ use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
 // rocXolid cms elementable dependency contracts
-use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\PathRegexProvider;
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\RoutePathParamsProvider;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
@@ -108,12 +108,13 @@ class Page extends AbstractElementable implements
     public function fillCustom(Collection $data): Crudable
     {
         $this
+            ->fillRoutePath($data)
             ->fillDependencies($data);
 
-        $this->provideDependencies()->each(function (PathRegexProvider $path_regex_provider) {
-            $path_regex_provider->addRegexPathParameter($this);
+        $this->provideDependencies()->each(function (RoutePathParamsProvider $route_path_params_provider) {
+            $route_path_params_provider->addRoutePathParameter($this);
         });
-// dd($this);
+
         return parent::fillCustom($data);
     }
 
@@ -133,6 +134,13 @@ class Page extends AbstractElementable implements
     public function getDocumentEditorContentAreaClass(): string
     {
         return 'keditor-rx-page-content-area';
+    }
+
+    protected function fillRoutePath(Collection $data): Crudable
+    {
+        $this->route_path = sprintf('/%s', $this->path);
+
+        return $this;
     }
 
     /**

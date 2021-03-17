@@ -23,6 +23,13 @@ return [
         'open_graph_site_name' => '<meta property="og:site_name">',
         'page_element' => 'Element',
     ],
+    'button' => [
+        'create-new' => 'Vytvoriť novú hlavičku',
+        'detach' => 'Bez hlavičky',
+        'add-placeholder' => 'Pridať',
+        'add-placeholder-close' => 'Pridať a zavrieť',
+        'add-mutator-close' => 'Pridať a zavrieť',
+    ],
     'model' => [
         'title' => [
             'singular' => 'Stránka',
