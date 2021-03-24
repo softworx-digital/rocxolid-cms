@@ -108,7 +108,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
     private function loadFrontpage(Router $router): IlluminateServiceProvider
     {
-        FrontpageRouterService::register($this->app->router);
+        if (config('rocXolid.cms.general.register-frontpage-routes', false)) {
+            FrontpageRouterService::register($this->app->router);
+        }
 
         return $this;
     }

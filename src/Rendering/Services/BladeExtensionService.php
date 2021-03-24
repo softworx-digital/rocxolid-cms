@@ -121,7 +121,7 @@ class BladeExtensionService
      * @param \Softworx\RocXolid\Rendering\Contracts\Renderable $component
      * @param string $dependency
      * @param string $title
-     * @param boolean $remove
+     * @param bool $remove
      */
     public static function placeholder(
         Renderable $component,

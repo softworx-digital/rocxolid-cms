@@ -48,6 +48,7 @@ return [
         'composition' => 'Kompozícia',
     ],
     'text' => [
+        'extended-data' => 'Rozšírené údaje',
         'meta-data' => 'Meta údaje',
         'header' => 'Hlavička',
         'body' => 'Telo',

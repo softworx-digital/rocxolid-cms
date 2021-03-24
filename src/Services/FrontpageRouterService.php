@@ -5,9 +5,6 @@ namespace Softworx\RocXolid\CMS\Services;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Route;
-// rocXolid models
-use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid common traits
 use Softworx\RocXolid\Common\Http\Traits as CommonTraits;
 // rocXolid common models
@@ -15,6 +12,8 @@ use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
 // rocXolid cms controller
 use Softworx\RocXolid\CMS\Http\Controllers\FrontPageController;
+// rocXolid cms contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependency;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\Page;
 
@@ -45,11 +44,7 @@ class FrontpageRouterService
     // @todo kinda quick'n'dirty
     private function registerPageRoutes(Router $router)
     {
-        try {
-            $web = $this->detectOnlyWeb(request());
-        } catch (\Exception $e) {
-
-        }
+        $web = $this->detectOnlyWeb(request());
 
         if (isset($web) && $web) {
             // $localization = ($slug === '/') ? $web->defaultLocalization : $this->detectLocalization($web, $slug);
@@ -71,9 +66,17 @@ class FrontpageRouterService
 
     private function registerPageRoute(Router $router, Web $web, Page $page): self
     {
-        $router->get($page->route_path, function (Request $request, ?Crudable $model = null, string $slug = null) use ($web, $page) {
-            return ($this->controller)($request, $web, $page, $model, $slug);
-        });
+        $dependencies = $page->provideDependencies();
+
+        if ($dependencies->isEmpty()) {
+            $router->get($page->route_path, function (Request $request) use ($web, $page) {
+                return ($this->controller)($request, $web, $page);
+            });
+        } else {
+            $dependencies->each(function (ElementableDependency $dependency) use ($router, $web, $page) {
+                $dependency->registerPageRoute($router, $this->controller, $web, $page);
+            });
+        }
 
         return $this;
     }

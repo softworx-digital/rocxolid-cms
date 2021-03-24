@@ -13,6 +13,11 @@ return [
         'themes::*' => \Softworx\RocXolid\CMS\Composers\ThemeViewComposer::class, // binds variables to themes templates
     ],
     /**
+     * Flag if the frontpage routes should be registered.
+     * Requires Web instance presence.
+     */
+    'register-frontpage-routes' => true,
+    /**
      * Page configuration.
      */
     'page' => [

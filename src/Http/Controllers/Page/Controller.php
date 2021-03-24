@@ -41,6 +41,8 @@ class Controller extends AbstractElementableController
         'store' => 'create',
         'edit.general-data' => 'update-general',
         'update.general-data' => 'update-general',
+        'edit.extended-data' => 'update-extended',
+        'update.extended-data' => 'update-extended',
         'edit.meta-data' => 'update-meta',
         'update.meta-data' => 'update-meta',
         'edit.description-data' => 'update-description',

@@ -50,45 +50,4 @@ class FrontPageController extends Controller
     {
         return optional(optional($page->getFooter())->getModelViewerComponent())->setViewTheme($page->provideViewTheme());
     }
-
-    // @todo kinda quick'n'dirty
-    // @todo make custom request class for identifying web,...
-    /*
-    public function __invoke(Request $request, $path = null)
-    {
-        $web = $this->detectOnlyWeb($request);
-        // $localization = ($slug === '/') ? $web->defaultLocalization : $this->detectLocalization($web, $slug);
-        $localization = $web->defaultLocalization;
-        $page = $this->detectPage($web, $localization, $path);
-
-        app()->setLocale($localization->language->iso_639_1); // @todo as Localization's (service?) method
-
-        if ($page) {
-            return $page
-                ->setPresenting()
-                ->setDependenciesDataProvider(app(RequestElementableDependencyDataProvider::class, [ 'request' => $request ]))
-                ->getModelViewerComponent()
-                    ->setViewTheme($page->theme)
-                    ->render('default', [
-                        'rxUser' => auth('rocXolid')->user(),
-                        'web' => $web,
-                        'page' => $page,
-                        'header_component_viewer' => $page->hasHeader()
-                            ? $page->getHeader()
-                                // ->setDependenciesDataProvider($estate_document)
-                                ->getModelViewerComponent()
-                                    ->setViewTheme($page->provideViewTheme())
-                            : null,
-                        'footer_component_viewer' => $page->hasFooter()
-                            ? $page->getFooter()
-                                // ->setDependenciesDataProvider($estate_document)
-                                ->getModelViewerComponent()
-                                    ->setViewTheme($page->provideViewTheme())
-                            : null,
-                    ]);
-        } else {
-            abort(404);
-        }
-    }
-    */
 }

@@ -128,6 +128,20 @@ class Page extends AbstractElementable implements
             });
     }
 
+    // @todo extremely hotfixed
+    public function getMetaTitle()
+    {
+        if ($this->getDependenciesDataProvider()) {
+            foreach ($this->getDependenciesDataProvider()->getDependencyData() as $dependency) {
+                if ($dependency instanceof Crudable) {
+                    return sprintf('%s | %s', $dependency->getMetaTitle(), $this->meta_title);
+                }
+            }
+        }
+
+        return $this->meta_title;
+    }
+
     /**
      * {@inheritDoc}
      */

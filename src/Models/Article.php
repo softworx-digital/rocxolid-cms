@@ -164,4 +164,9 @@ class Article extends AbstractElementable
                 return array_search($field, static::META_DATA_ATTRIBUTES);
             });
     }
+
+    public function getMetaTitle()
+    {
+        return $this->getTitle();
+    }
 }
