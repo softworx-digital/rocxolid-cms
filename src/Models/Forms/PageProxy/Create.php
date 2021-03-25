@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
-// fields
+// rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 
 /**

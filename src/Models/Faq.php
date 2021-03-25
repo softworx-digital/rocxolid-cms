@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\CMS\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 //
 use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
+// rocXolid common traits
 use Softworx\RocXolid\Common\Models\Traits\HasWeb;
 use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
 

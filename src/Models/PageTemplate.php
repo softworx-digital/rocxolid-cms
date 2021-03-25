@@ -3,32 +3,25 @@
 namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
+use Illuminate\Support\Collection;
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
+ * Page template model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class PageTemplate extends AbstractCrudModel implements PageElementable, Cloneable
+class PageTemplate extends AbstractElementable // implements Cloneable
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
+    use Traits\HasDependencies;
+    use Traits\HasMutators;
 
-    protected $table = 'cms_page_template';
+    protected $table = 'cms_page_templates';
 
     protected $fillable = [
         'web_id',
@@ -49,21 +42,38 @@ class PageTemplate extends AbstractCrudModel implements PageElementable, Cloneab
         'description'
     ];
 
-    protected $relationships = [
-        'web',
-        'localization',
-    ];
-
+    /*
     protected $pivot_extra = [
         'position',
         'is_clone_page_element_instance',
         //'is_visible',
     ];
+    */
 
     public function beforeSave($data, $action = null)
     {
         $this->seo_url_slug = Str::slug($this->seo_url_slug);
 
         return $this;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(bool $sub = false): Collection
+    {
+        dd(__METHOD__, '@todo');
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd(__METHOD__, '@todo');
+
+        return '';
     }
 }

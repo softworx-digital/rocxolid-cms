@@ -1,11 +1,11 @@
-<div id="{{ $component->getDomId('modal-clone-structure') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="{{ $component->getDomId('modal-clone-structure') }}" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
         <div class="modal-content ajax-overlay">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }} {{ $component->getModel()->getTitle() }} <small>{{ $component->translate('action.cloneStructure') }}</small></h4>
             </div>
-        @if ($component->getModel()->userCan('write'))
+        @can ('create', $component->getModel())
             {{ Form::open([ 'id' => $component->getDomId('clone-structure'), 'url' => $component->getController()->getRoute('cloneStructureSubmit', $component->getModel()) ]) }}
                 {{ Form::hidden('_method', 'PUT') }}
                 {{ Form::hidden('_submit-action', 'submit-show') }}
@@ -42,7 +42,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.close') }}</button>
             </div>
-        @endif
+        @endcan
         </div>
     </div>
 </div>

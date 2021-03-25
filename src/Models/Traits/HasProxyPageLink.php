@@ -11,10 +11,10 @@ use Softworx\RocXolid\Forms\Contracts\FormField;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 // filters
 use Softworx\RocXolid\Common\Filters\BelongsToWeb;
-// CMS models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\PageProxy;
 
-// @todo: check occurences, document well to clarify the reason and what's going on here
+// @todo check occurences, document well to clarify the reason and what's going on here
 /**
  *
  */

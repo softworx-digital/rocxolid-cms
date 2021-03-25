@@ -4,21 +4,21 @@ namespace Softworx\RocXolid\CMS\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-// commerce traits
+// rocXolid commerce traits
 use Softworx\RocXolid\Common\Http\Traits\DetectsWeb;
-// user management traits
+// rocXolid user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\DetectsUser as DetectsRocXolidUser;
-// cms models
+// rocXolid cms models
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 use Softworx\RocXolid\CMS\Models\Page;
 
 /**
  *
  */
-class PreviewController extends BaseController
+class PreviewController extends Controller
 {
     use AuthorizesRequests;
     use DispatchesJobs;

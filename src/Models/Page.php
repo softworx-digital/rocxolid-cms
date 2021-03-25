@@ -4,45 +4,72 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
+use Illuminate\Support\Facades\Route;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common models
-use Softworx\RocXolid\Common\Models\Image;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
-// cms models
+// rocXolid model traits
+use Softworx\RocXolid\Models\Traits as rxTraits;
+// rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
+use Softworx\RocXolid\CMS\Models\Contracts\ElementsMutatorsProvider;
+// rocXolid cms elementable dependency contracts
+use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\RoutePathParamsProvider;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
+ * Page model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class Page extends AbstractCrudModel implements PageElementable, Cloneable
+class Page extends AbstractElementable implements
+    ElementsDependenciesProvider,
+    ElementsMutatorsProvider,
+    ViewThemeProvider
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
+    use rxTraits\Attributes\HasGeneralDataAttributes;
+    use Traits\HasPageHeader;
+    use Traits\HasPageFooter;
+    use Traits\HasDependencies;
+    use Traits\HasMutators;
+    use Traits\ProvidesViewTheme;
 
-    protected $table = 'cms_page';
-
-    protected $fillable = [
+    const GENERAL_DATA_ATTRIBUTES = [
+        'is_enabled',
         'web_id',
         'localization_id',
-        'page_template_id',
+        // 'page_template_id',
         'name',
-        //'css_class',
-        'seo_url_slug',
-        //'is_enabled',
+        'path',
+    ];
+
+    const META_DATA_ATTRIBUTES = [
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $table = 'cms_pages';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $fillable = [
+        'is_enabled',
+        'web_id',
+        'localization_id',
+        // 'page_template_id',
+        'name',
+        'path',
+        'theme',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -55,17 +82,18 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
         'description'
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $relationships = [
         'web',
         'localization',
-        'pageTemplate',
+        // 'pageTemplate',
     ];
 
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $image_sizes = [
         'openGraphImage' => [
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
@@ -74,6 +102,77 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
         ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
+    public function fillCustom(Collection $data): Crudable
+    {
+        $this
+            ->fillRoutePath($data)
+            ->fillDependencies($data);
+
+        $this->provideDependencies()->each(function (RoutePathParamsProvider $route_path_params_provider) {
+            $route_path_params_provider->addRoutePathParameter($this);
+        });
+
+        return parent::fillCustom($data);
+    }
+
+    // @todo quick'n'dirty
+    public function getMetaDataAttributes(bool $keys = false): Collection
+    {
+        return $keys
+            ? collect(static::META_DATA_ATTRIBUTES)
+            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
+                return array_search($field, static::META_DATA_ATTRIBUTES);
+            });
+    }
+
+    // @todo extremely hotfixed
+    public function getMetaTitle()
+    {
+        if ($this->getDependenciesDataProvider()) {
+            foreach ($this->getDependenciesDataProvider()->getDependencyData() as $dependency) {
+                if ($dependency instanceof Crudable) {
+                    return sprintf('%s | %s', $dependency->getMetaTitle(), $this->meta_title);
+                }
+            }
+        }
+
+        return $this->meta_title;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDocumentEditorContentAreaClass(): string
+    {
+        return 'keditor-rx-page-content-area';
+    }
+
+    protected function fillRoutePath(Collection $data): Crudable
+    {
+        $this->route_path = sprintf('/%s', $this->path);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isReady(): bool
+    {
+dd(__METHOD__);
+        return $this->isPresenting();
+    }
+
+    public function registerRoute()
+    {
+dd(__METHOD__);
+        Route::get($this->path_regex, dd(__FILE__));
+    }
+
+    /*
     public function pageTemplate()
     {
         return $this->belongsTo(PageTemplate::class);
@@ -90,29 +189,29 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
         return sprintf('//%s/%s/%s', $this->web->domain, $this->localization->seo_url_slug, $this->seo_url_slug);
     }
 
-    public function beforeSave($data, $action = null)
+    // @todo revise, find nicer approach
+    public function onBeforeSave(Collection $data): Crudable
     {
+        // @todo helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
 
-        return $this;
+        return parent::onBeforeSave($data);
     }
 
-    public function afterSave($data, $action = null)
+    public function onCreateAfterSave(Collection $data): Crudable
     {
-        if ($action == 'create') {
-            $this->assignTemplatePageElements();
-        }
+        $this->assignTemplatePageElements();
 
-        return $this;
+        return parent::onCreateAfterSave($data);
     }
 
     protected function assignTemplatePageElements()
     {
-        $clone_log = new Collection();
+        $clone_log = collect();
 
         if ($this->pageTemplate()->exists()) {
             foreach ($this->pageTemplate->pageElements() as $page_element) {
@@ -133,4 +232,5 @@ class Page extends AbstractCrudModel implements PageElementable, Cloneable
     {
         return $this->morphOne(Image::class, 'model')->where(sprintf('%s.model_attribute', (new Image())->getTable()), 'openGraphImage')->orderBy(sprintf('%s.model_attribute_position', (new Image())->getTable()));
     }
+    */
 }

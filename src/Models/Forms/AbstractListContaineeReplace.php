@@ -3,7 +3,7 @@
 namespace Softworx\RocXolid\CMS\Models\Forms;
 
 use Illuminate\Support\Collection;
-// commerce forms
+// rocXolid commerce forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid fields
 use Softworx\RocXolid\Forms\Fields\Type\Input;
@@ -65,9 +65,10 @@ class AbstractListContaineeReplace extends RocXolidAbstractCrudForm
             throw new \RuntimeException(sprintf('Class [%s] does not contain property [%s]', $containee_class, 'list_sortable_attributes'));
         }
 
+        // @todo refactor
         $containee_model_viewer_component = (new $containee_class())->getModelViewerComponent();
 
-        $collection = new Collection();
+        $collection = collect();
 
         foreach ($containee_class::$list_sortable_attributes as $attribute) {
             $collection->put($attribute, $containee_model_viewer_component->translate(sprintf('field.%s', $attribute)));

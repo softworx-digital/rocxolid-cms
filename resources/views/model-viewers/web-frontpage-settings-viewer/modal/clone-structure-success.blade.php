@@ -1,8 +1,8 @@
-<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
         <div class="modal-content ajax-overlay">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
                 <h4 class="modal-title">{{ $component->translate('model.title.singular') }} {{ $component->getModel()->getTitle() }} <small>{{ $component->translate('action.cloneStructure') }}</small></h4>
             </div>
 

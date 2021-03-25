@@ -4,7 +4,11 @@ namespace Softworx\RocXolid\CMS\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+// rocXolid services
 use Softworx\RocXolid\Services\CrudRouterService;
+// rocXolid cms services
+use Softworx\RocXolid\CMS\Services\ElementableRouterService;
+use Softworx\RocXolid\CMS\Services\FrontpageRouterService;
 
 /**
  * rocXolid routes service provider.
@@ -23,7 +27,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
     public function boot()
     {
         $this
-            ->load($this->app->router);
+            ->load($this->app->router)
+            ->loadFrontpage($this->app->router)
+            ->mapRouteModels($this->app->router);
 
         return $this;
     }
@@ -31,31 +37,11 @@ class RouteServiceProvider extends IlluminateServiceProvider
     /**
      * Define the routes for the package.
      *
-     * @param  \Illuminate\Routing\Router $router Router to be used for routing.
+     * @param \Illuminate\Routing\Router $router Router to be used for routing.
      * @return \Illuminate\Support\ServiceProvider
      */
     private function load(Router $router): IlluminateServiceProvider
     {
-        // previews
-        $router->group([
-            'module' => 'rocXolid-cms',
-            'middleware' => [ 'web' ],
-            'namespace' => 'Softworx\RocXolid\CMS\Http\Controllers',
-            'prefix' => sprintf('%s/cms/preview', config('rocXolid.admin.general.routes.root', 'rocXolid')),
-            'as' => 'rocXolid.cms.frontpage.preview.'
-        ], function ($router) {
-            $router->group([
-                'prefix' => '/page-template',
-            ], function ($router) {
-                $router->get('/{page_template}', 'PreviewController@pageTemplate')->name('page-template');
-            });
-            $router->group([
-                'prefix' => '/page',
-            ], function ($router) {
-                $router->get('{page}', 'PreviewController@page')->name('page');
-            });
-        });
-
         $router->group([
             'module' => 'rocXolid-cms',
             'middleware' => [ 'web', 'rocXolid.auth' ],
@@ -63,125 +49,95 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'prefix' => sprintf('%s/cms', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.cms.',
         ], function ($router) {
-            CrudRouterService::create('web-frontpage-settings', \WebFrontpageSettings\Controller::class);
+            // ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
 
-            $router->group([
-                'namespace' => 'WebFrontpageSettings',
-                'prefix' => 'web-frontpage-settings',
-            ], function ($router) {
-                $router->get('/{web_frontpage_settings}/clone-structure', 'Controller@cloneStructure');
-                $router->match(['PUT', 'PATCH'], '/{web_frontpage_settings}/clone-structure-submit', 'Controller@cloneStructureSubmit');
-            });
+            // ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
 
-            CrudRouterService::create('page-template', \PageTemplate\Controller::class);
-            CrudRouterService::create('page', \Page\Controller::class);
-            CrudRouterService::create('page-proxy', \PageProxy\Controller::class);
-
-            // @todo: create router helper (such as CrudRouterService)
-            $router->group([
-                'namespace' => 'PageTemplate',
-                'prefix' => 'page-template',
-            ], function ($router) {
-                $router->get('/{page_template}/select-page-element-class/{page_element_class_action}', 'Controller@selectPageElementClass');
-                $router->get('/{page_template}/page-element-choice/{page_element_short_class}', 'Controller@listPageElement');
-                $router->match(['PUT', 'PATCH'], '/{page_template}/page-element-choice/{page_element_short_class}', 'Controller@selectPageElement');
-                $router->post('/{page_template}/update-page-elements-order', 'Controller@updatePageElementsOrder');
-                $router->post('/{page}/update-pivot-data/{page_elementable_type}/{page_elementable_id}', 'Controller@setPivotData');
-                $router->get('/{page_template}/preview', 'Controller@preview');
-            });
-
-            $router->group([
-                'namespace' => 'Page',
-                'prefix' => 'page',
-            ], function ($router) {
-                $router->get('/{page}/select-page-element-class/{page_element_class_action}', 'Controller@selectPageElementClass');
-                $router->get('/{page}/page-element-choice/{page_element_short_class}', 'Controller@listPageElement');
-                $router->match(['PUT', 'PATCH'], '/{page}/page-element-choice/{page_element_short_class}', 'Controller@selectPageElement');
-                $router->post('/{page}/update-page-elements-order', 'Controller@updatePageElementsOrder');
-                $router->post('/{page}/update-pivot-data/{page_elementable_type}/{page_elementable_id}', 'Controller@setPivotData');
-                $router->get('/{page}/preview', 'Controller@preview');
-            });
-
-            $router->group([
-                'namespace' => 'PageProxy',
-                'prefix' => 'page-proxy',
-            ], function ($router) {
-                $router->get('/{page_proxy}/select-page-element-class/{page_element_class_action}', 'Controller@selectPageElementClass');
-                $router->get('/{page_proxy}/page-element-choice/{page_element_short_class}', 'Controller@listPageElement');
-                $router->match(['PUT', 'PATCH'], '/{page_proxy}/page-element-choice/{page_element_short_class}', 'Controller@selectPageElement');
-                $router->post('/{page_proxy}/update-page-elements-order', 'Controller@updatePageElementsOrder');
-                $router->post('/{page_proxy}/update-pivot-data/{page_elementable_type}/{page_elementable_id}', 'Controller@setPivotData');
-                $router->get('/{page_proxy}/preview', 'Controller@preview');
-            });
-
-            $router->group([
-                'as' => 'page-element.',
-                'prefix' => 'page-element',
-            ], function ($router) {
-                // general page elements - (usually) cloned from template
-                CrudRouterService::create('text', \Text\Controller::class);
-                CrudRouterService::create('link', \Link\Controller::class);
-                CrudRouterService::create('gallery', \Gallery\Controller::class);
-                CrudRouterService::create('iframe-video', \IframeVideo\Controller::class);
-                // panels
-                CrudRouterService::create('html-wrapper', \HtmlWrapper\Controller::class);
-                CrudRouterService::create('cookie-consent', \CookieConsent\Controller::class);
-                CrudRouterService::create('footer-navigation', \FooterNavigation\Controller::class);
-                CrudRouterService::create('footer-note', \FooterNote\Controller::class);
-                CrudRouterService::create('stats-panel', \StatsPanel\Controller::class);
-                CrudRouterService::create('top-panel', \TopPanel\Controller::class);
-                // specials (forms)
-                CrudRouterService::create('newsletter', \Newsletter\Controller::class);
-                CrudRouterService::create('search-engine', \SearchEngine\Controller::class);
-                CrudRouterService::create('login-registration', \LoginRegistration\Controller::class);
-                CrudRouterService::create('forgot-password', \ForgotPassword\Controller::class);
-                CrudRouterService::create('user-profile', \UserProfile\Controller::class);
-                CrudRouterService::create('contact', \Contact\Controller::class);
-                // containers (for page elements)
-                CrudRouterService::create('main-navigation', \MainNavigation\Controller::class);
-                CrudRouterService::create('row-navigation', \RowNavigation\Controller::class);
-                CrudRouterService::create('main-slider', \MainSlider\Controller::class);
-                // containers (for other models)
-                CrudRouterService::create('article-list', \ArticleList\Controller::class);
-                // containees
-                CrudRouterService::create('navigation-item', \NavigationItem\Controller::class);
-                CrudRouterService::create('slider-item', \SliderItem\Controller::class);
-            });
-
-            CrudRouterService::create('article', \Article\Controller::class);
+            ElementableRouterService::create('article', \Article\Controller::class);
 
             $router->group([
                 'namespace' => 'Article',
                 'prefix' => 'article',
-            ], function ($router) {
-                $router->get('/{article}/select-page-element-class/{page_element_class_action}', 'Controller@selectPageElementClass');
-                $router->get('/{article}/page-element-choice/{page_element_short_class}', 'Controller@listPageElement');
-                $router->match(['PUT', 'PATCH'], '/{article}/page-element-choice/{page_element_short_class}', 'Controller@selectPageElement');
-                $router->post('/{article}/update-page-elements-order', 'Controller@updatePageElementsOrder');
-                $router->post('/{article}/update-pivot-data/{page_elementable_type}/{page_elementable_id}', 'Controller@setPivotData');
-                $router->get('/{article}/preview', 'Controller@preview');
+                'as' => 'article.'
+            ], function (Router $router) {
+                $router->get('/{article}/{tab?}', 'Controller@show')->name('show');
             });
 
             CrudRouterService::create('faq', \Faq\Controller::class);
 
+            CrudRouterService::create('data-dependency', \DataDependency\Controller::class);
+
+            CrudRouterService::create('document-type', \DocumentType\Controller::class);
+
+            ElementableRouterService::create('document', \Document\Controller::class);
+            ElementableRouterService::create('document-header', \DocumentHeader\Controller::class);
+            ElementableRouterService::create('document-footer', \DocumentFooter\Controller::class);
+
             $router->group([
-                'namespace' => 'Gallery',
-                'prefix' => 'gallery',
-            ], function ($router) {
-                $router->get('/{gallery}/regenerate', 'Controller@regenerateConfirmation');
-                $router->post('/{gallery}/regenerate', 'Controller@regenerate');
-                $router->get('/{gallery}/clear', 'Controller@clearConfirmation');
-                $router->post('/{gallery}/clear', 'Controller@clear');
+                'namespace' => 'Document',
+                'prefix' => 'document',
+                'as' => 'document.'
+            ], function (Router $router) {
+                $router->get('/{document}/{tab?}', 'Controller@show')->name('show');
             });
 
             $router->group([
-                'as' => 'page-proxy-element.',
-                'prefix' => 'page-proxy-element',
+                'namespace' => 'DocumentOrganizer',
+                'prefix' => 'document-organizer',
+                'as' => 'document-organizer.',
             ], function ($router) {
-                CrudRouterService::create('article', \ProxyArticle\Controller::class);
-                CrudRouterService::create('product', \ProxyProduct\Controller::class);
+                $router->get('', 'Controller@index')->name('index');
+                $router->post('/save/position', 'Controller@savePosition')->name('save.position');
+            });
+
+            ElementableRouterService::create('page', \Page\Controller::class);
+            ElementableRouterService::create('page-header', \PageHeader\Controller::class);
+            ElementableRouterService::create('page-footer', \PageFooter\Controller::class);
+
+            $router->group([
+                'namespace' => 'Page',
+                'prefix' => 'page',
+                'as' => 'page.'
+            ], function (Router $router) {
+                $router->get('/{page}/{tab?}', 'Controller@show')->name('show');
             });
         });
+
+        return $this;
+    }
+
+    private function loadFrontpage(Router $router): IlluminateServiceProvider
+    {
+        if (config('rocXolid.cms.general.register-frontpage-routes', false)) {
+            FrontpageRouterService::register($this->app->router);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Define the route bindings for URL params.
+     *
+     * @param \Illuminate\Routing\Router $router Router to be used for routing.
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    private function mapRouteModels(Router $router): IlluminateServiceProvider
+    {
+        // $router->model('page_template', \Softworx\RocXolid\CMS\Models\PageTemplate::class);
+        $router->model('page', \Softworx\RocXolid\CMS\Models\Page::class);
+        $router->model('page_header', \Softworx\RocXolid\CMS\Models\PageHeader::class);
+        $router->model('page_footer', \Softworx\RocXolid\CMS\Models\PageFooter::class);
+        // $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
+        //
+        $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
+        $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);
+        //
+        $router->model('data_dependency', \Softworx\RocXolid\CMS\Models\DataDependency::class);
+        //
+        $router->model('document_type', \Softworx\RocXolid\CMS\Models\DocumentType::class);
+        $router->model('document', \Softworx\RocXolid\CMS\Models\Document::class);
+        $router->model('document_header', \Softworx\RocXolid\CMS\Models\DocumentHeader::class);
+        $router->model('document_footer', \Softworx\RocXolid\CMS\Models\DocumentFooter::class);
 
         return $this;
     }

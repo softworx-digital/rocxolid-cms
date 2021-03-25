@@ -24,7 +24,7 @@ class AbstractListContainee extends RocXolidAbstractCrudForm
 
     protected $fields = [
         'containee_id' => [
-            'type' => CollectionCheckboxList::class, // tu bude checkbox list
+            'type' => CollectionCheckboxList::class,
             'options' => [
                 // 'collection' => ...adjusted
                 'label' => [
@@ -93,29 +93,5 @@ class AbstractListContainee extends RocXolidAbstractCrudForm
     public function getContaineeModel()
     {
         return $this->containee_model;
-    }
-
-    protected function adjustFieldsDefinition($fields)
-    {
-
-/*
-        $fields = array_merge_recursive($fields, [
-            'page_element_id' => [
-                'options' => [
-                    'collection' => [
-                        'model' => Country::class,
-                        'column' => 'name',
-                        'filters' => [
-                            [
-                                'class' => BelongsToWeb::class,
-                                'data' => $this->getModel()->web
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-*/
-        return $fields;
     }
 }

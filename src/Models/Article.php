@@ -4,63 +4,75 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common models
-use Softworx\RocXolid\Common\Models\Image;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasImage;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageElementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
+// rocXolid model traits
+use Softworx\RocXolid\Models\Traits as rxTraits;
+// rocXolid common models
+use Softworx\RocXolid\UserManagement\Models\User;
+// rocXolid common model traits
+use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
+// rocXolid cms model traits
 use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
-// cms models
-use Softworx\RocXolid\CMS\Models\PageProxy;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 
 /**
+ * Article model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class Article extends AbstractCrudModel implements PageElementable
+class Article extends AbstractElementable
 {
-    use SoftDeletes;
-    use HasImage;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use UserGroupAssociatedWeb;
-    use IsProxyPaged;
+    use rxTraits\Attributes\HasGeneralDataAttributes;
+    use CommonTraits\HasImage;
+    use Traits\HasDependencies;
+    use Traits\HasMutators;
 
-    protected $table = 'cms_article';
+    const GENERAL_DATA_ATTRIBUTES = [
+        'is_enabled',
+        'web_id',
+        'localization_id',
+        // 'page_template_id',
+        'author_id',
+        'date',
+        'title',
+        // 'path',
+    ];
 
-    protected $is_page_element_template_choice_enabled = false;
+    const META_DATA_ATTRIBUTES = [
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static $title_column = 'title';
+
+    protected $table = 'cms_articles';
 
     protected $fillable = [
         'web_id',
         'localization_id',
+        // 'author_id',
         'date',
-        'name',
-        //'seo_url_slug',
+        'title',
+        //'slug',
         'meta_title',
         'meta_description',
         'meta_keywords',
         'perex',
+        'content',
         //'css_class',
         'is_enabled'
     ];
 
-    protected $relationships = [
-        'web',
-        'localization',
-    ];
-
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
+    protected $dates = [
+        'date',
     ];
 
     protected $image_sizes = [
@@ -68,40 +80,93 @@ class Article extends AbstractCrudModel implements PageElementable
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
+            'mid' => [ 'width' => 512, 'height' => 512, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'fb' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             '828x' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             '1920x' => [ 'width' => 1920, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
         ],
-        'openGraphImage' => [
+        'headerImage' => [
+            'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             'thumb' => [ 'width' => 64, 'height' => 64, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
-            'default' => [ 'width' => 1080, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
+            'fb' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
+            '828x' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
+            '1920x' => [ 'width' => 1920, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
         ],
     ];
 
-    public static $list_sortable_attributes = [
-        'date',
-        'id',
-        'title',
-    ];
-
-    public function getFrontpageUrl($params = [])
+    /**
+     * {@inheritDoc}
+     */
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
-        $pattern = (substr($this->seo_url_slug, 0, 1) === '/') ? '//%s%s' : '//%s/%s';
-
-        return sprintf($pattern, $this->web->domain, $this->seo_url_slug);
-    }
-
-    public function beforeSave($data, $action = null)
-    {
-        //$this->seo_url_slug = sprintf('%s/%s', $this->getKey(), Str::slug($this->name));
-        $this->seo_url_slug = Str::slug($this->name);
+        $this->author()->associate(auth('rocXolid')->user());
 
         return $this;
     }
 
-    public function openGraphImage()
+    /**
+     * {@inheritDoc}
+     */
+    public function onBeforeSave(Collection $data): Crudable
     {
-        return $this->morphOne(Image::class, 'model')->where(sprintf('%s.model_attribute', (new Image())->getTable()), 'openGraphImage')->orderBy(sprintf('%s.model_attribute_position', (new Image())->getTable()));
+        $this->slug = Str::slug($this->title);
+
+        /*
+        if (blank($this->meta_title)) {
+            $this->meta_title = $this->title;
+        }
+
+        if (blank($this->meta_description)) {
+            $this->meta_description = strip_tags($this->perex);
+        }
+        */
+
+        return $this;
+    }
+
+    public function headerImage()
+    {
+        return $this->image('headerImage');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(bool $sub = false): Collection
+    {
+        dd(__METHOD__, '@todo');
+
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd(__METHOD__, '@todo');
+
+        return '';
+    }
+
+    // @todo quick'n'dirty
+    public function getMetaDataAttributes(bool $keys = false): Collection
+    {
+        return $keys
+            ? collect(static::META_DATA_ATTRIBUTES)
+            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
+                return array_search($field, static::META_DATA_ATTRIBUTES);
+            });
+    }
+
+    public function getMetaTitle()
+    {
+        return $this->getTitle();
     }
 }

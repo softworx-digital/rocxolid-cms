@@ -4,38 +4,32 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
-// base contracts
-use Softworx\RocXolid\Contracts\Modellable;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// base traits
-use Softworx\RocXolid\Traits\Modellable as ModellableTrait;
-// base models
-use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasWeb;
-use Softworx\RocXolid\Common\Models\Traits\HasLocalization;
-use Softworx\RocXolid\Common\Models\Traits\UserGroupAssociatedWeb;
-// cms contracts
-use Softworx\RocXolid\CMS\Models\Contracts\PageProxyElementable;
-// cms traits
-use Softworx\RocXolid\CMS\Models\Traits\HasPageElements;
-// cms models
+// rocXolid traits
+use Softworx\RocXolid\Traits\Modellable;
+// rocXolid cms model contracts
+use Softworx\RocXolid\CMS\Elements\Models\Contracts\ProxyElementable;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
 
 /**
+ * Proxy page model.
+ * Serves as a 'placeholder' for real page after setting the model.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\CMS
+ * @version 1.0.0
  */
-class PageProxy extends AbstractCrudModel implements PageProxyElementable, Modellable, Cloneable
+class PageProxy extends AbstractElementable implements ProxyElementable //, Cloneable
 {
-    use SoftDeletes;
-    use HasWeb;
-    use HasLocalization;
-    use HasPageElements;
-    use ModellableTrait;
-    use UserGroupAssociatedWeb;
+    use Modellable;
+    use Traits\HasDependencies;
+    use Traits\HasMutators;
 
-    protected $table = 'cms_page_proxy';
+    protected $table = 'cms_page_proxies';
 
     protected $page_proxyable = [
     ];
@@ -58,11 +52,28 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         'pageTemplate',
     ];
 
-    protected $pivot_extra = [
-        'position',
-        'is_visible',
-    ];
+    /**
+    * {@inheritDoc}
+    */
+    public function provideDependencies(bool $sub = false): Collection
+    {
+        dd(__METHOD__, '@todo');
 
+        return collect();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function provideViewTheme(): string
+    {
+        dd(__METHOD__, '@todo');
+
+        return '';
+    }
+
+
+    /*
     public function pageTemplate()
     {
         return $this->belongsTo(PageTemplate::class);
@@ -99,7 +110,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     public function getPageProxyableModels(): Collection
     {
-        $models = new Collection();
+        $models = collect();
 
         $this->getPageProxyableModelClasses()->each(function ($class) use ($models) {
             $models->put($class, $class::make()->getModelViewerComponent()->translate('model.title.singular'));
@@ -133,24 +144,24 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
         return $page;
     }
 
-    public function beforeSave($data, $action = null)
+    // @todo revise, find nicer approach
+    public function onBeforeSave(Collection $data): Crudable
     {
+        // @todo helper
         if ($this->seo_url_slug !== '/') { // homepage
             $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
                 return Str::slug($slug);
             })->implode('/');
         }
 
-        return $this;
+        return parent::onBeforeSave($data);
     }
 
-    public function afterSave($data, $action = null)
+    public function onCreateAfterSave(Collection $data): Crudable
     {
-        if ($action == 'create') {
-            $this->assignTemplatePageElements();
-        }
+        $this->assignTemplatePageElements();
 
-        return $this;
+        return parent::onCreateAfterSave($data);
     }
 
     protected function getPageProxyableModelClasses(): Collection
@@ -160,7 +171,7 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
     protected function assignTemplatePageElements()
     {
-        $clone_log = new Collection();
+        $clone_log = collect();
 
         if ($this->pageTemplate()->exists()) {
             foreach ($this->pageTemplate->pageElements() as $page_element) {
@@ -176,4 +187,5 @@ class PageProxy extends AbstractCrudModel implements PageProxyElementable, Model
 
         return $this;
     }
+    */
 }
