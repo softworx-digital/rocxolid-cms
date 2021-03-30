@@ -8,9 +8,11 @@
         </h3>
     </div>
     <div class="panel-body">
-        <dl class="dl-horizontal">
-            <dt>{{ $component->translate('field.dependencies') }}</dt>
-            <dd>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{ $component->translate('field.dependencies') }}</h4>
+            </div>
+            <div class="panel-body">
                 <ul>
                 @foreach ($component->getModel()->provideDependencies() as $dependency)
                     <li>
@@ -26,18 +28,19 @@
                     </li>
                 @endforeach
                 </ul>
-            </dd>
-        </dl>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>{{ $component->translate('field.triggers') }}</dt>
-            <dd>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{ $component->translate('field.triggers') }}</h4>
+            </div>
+            <div class="panel-body">
                 <ul>
                 @foreach ($component->getModel()->provideTriggers() as $trigger)
                     <li><span>{{ $trigger->getTranslatedTitle($component->getController()) }}</span></li>
                 @endforeach
                 </ul>
-            </dd>
-        </dl>
+            </div>
+        </div>
     </div>
 </div>

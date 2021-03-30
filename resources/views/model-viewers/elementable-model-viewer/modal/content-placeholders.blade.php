@@ -9,7 +9,12 @@
             @foreach ($component->getModel()->getDependenciesProvider()->provideDependencies(true) as $dependency)
                 <div class="panel panel-primary">
                     <div class="panel-heading" data-toggle="collapse" href="{{ $component->getDomIdHash($dependency->getAssignmentDefaultName()) }}" style="cursor: pointer;">
+                    {{-- @todo ugly --}}
+                    @if (is_a($dependency, \Softworx\RocXolid\CMS\Models\DataDependency::class))
+                        <span>&bull; {{ $dependency->getTranslatedTitle($component->getController()) }}</span>
+                    @else
                         <span>{{ $dependency->getTranslatedTitle($component->getController()) }}</span>
+                    @endif
                     </div>
                     <div id="{{ $component->getDomId($dependency->getAssignmentDefaultName()) }}" class="panel-collapse collapse">
                         <div class="panel-body padding-0">
