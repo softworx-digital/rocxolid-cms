@@ -299,7 +299,6 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
     {
         return $this->getTypeDecorator()->getDependencyViewValue($dependency_data_provider);
-        ;
     }
 
     /**
