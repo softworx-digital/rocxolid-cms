@@ -1,4 +1,5 @@
 <div id="{{ $component->getDomId() }}" class="panel-group">
+@if (false)
     @if ($component->getModel()->headerImage()->exists())
         {!! $component->getModel()->headerImage->getModelViewerComponent()->render('related.show', [
             'attribute' => 'headerImage',
@@ -13,6 +14,7 @@
             'placeholder' => 'header-placeholder',
         ]) !!}
     @endif
+@endif
     {!! $component->render('include.perex-data') !!}
     {!! $component->render('include.content-data') !!}
 </div>
