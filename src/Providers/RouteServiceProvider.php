@@ -108,7 +108,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
     private function loadFrontpage(Router $router): IlluminateServiceProvider
     {
-        if (config('rocXolid.cms.general.register-frontpage-routes', false)) {
+        // IDE pings the site polluting the log since this will trigger an error without having a true request
+        if ((request()->header('User-Agent', false) !== 'Symfony')
+            && config('rocXolid.cms.general.register-frontpage-routes', false)) {
             FrontpageRouterService::register($this->app->router);
         }
 

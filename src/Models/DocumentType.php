@@ -9,6 +9,8 @@ use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\Models\Contracts\Sortable;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits as rxTraits;
+// rocXolid user management traits
+use Softworx\RocXolid\UserManagement\Models\Traits as UserManagementTraits;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\Document;
 
@@ -23,6 +25,7 @@ class DocumentType extends AbstractCrudModel implements Sortable
 {
     use SoftDeletes;
     use rxTraits\Sortable;
+    use UserManagementTraits\HasRoles;
 
     protected $table = 'cms_document_types';
 
@@ -40,6 +43,7 @@ class DocumentType extends AbstractCrudModel implements Sortable
     ];
 
     protected $relationships = [
+        'roles',
     ];
 
     /**
