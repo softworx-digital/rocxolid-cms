@@ -11,6 +11,7 @@ return [
      */
     'composers' => [
         'themes::*' => \Softworx\RocXolid\CMS\Composers\ThemeViewComposer::class, // binds variables to themes templates
+        'rocXolid:cms::*' => Softworx\RocXolid\CMS\Composers\ViewComposer::class,
     ],
     /**
      * Flag if the frontpage routes should be registered.

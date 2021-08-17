@@ -69,7 +69,7 @@ abstract class AbstractElementablePart extends AbstractElementable
     /**
      * {@inheritDoc}
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         $model = $this->where($this->getRouteKeyName(), $value)->first();
 
