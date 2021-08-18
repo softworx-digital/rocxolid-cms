@@ -4,7 +4,7 @@ return [
     'column' => [
     ],
     'field' => [
-        'is_bound_to_document' => 'Nepovoliť použitie tejto pätičky pre iné dokumenty',
+        'is_bound' => 'Nepovoliť použitie tejto pätičky pre iné dokumenty',
         'title' => 'Názov',
     ],
     'button' => [

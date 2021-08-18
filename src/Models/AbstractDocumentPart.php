@@ -28,7 +28,7 @@ abstract class AbstractDocumentPart extends AbstractElementablePart
         'is_enabled',
         'web_id',
         'localization_id',
-        'is_bound_to_document',
+        'is_bound',
         'title',
     ];
 
@@ -37,6 +37,6 @@ abstract class AbstractDocumentPart extends AbstractElementablePart
      */
     public function isBoundToElementable(): bool
     {
-        return $this->is_bound_to_document;
+        return $this->is_bound;
     }
 }

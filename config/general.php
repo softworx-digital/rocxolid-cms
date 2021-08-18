@@ -7,6 +7,10 @@
  */
 return [
     /**
+     * Prefix to be used for table names.
+     */
+    'table_prefix' => 'cms_',
+    /**
      * View composers.
      */
     'composers' => [

@@ -48,7 +48,7 @@ abstract class AbstractElementablePart extends AbstractElementable
         'is_enabled',
         'web_id',
         'localization_id',
-        'is_bound_to_document',
+        'is_bound',
         'title',
     ];
 

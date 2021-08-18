@@ -4,7 +4,7 @@ return [
     'column' => [
     ],
     'field' => [
-        'is_bound_to_page' => 'Nepovoliť použitie tejto hlavičky pre iné stránky',
+        'is_bound' => 'Nepovoliť použitie tejto hlavičky pre iné stránky',
         'title' => 'Názov',
     ],
     'button' => [

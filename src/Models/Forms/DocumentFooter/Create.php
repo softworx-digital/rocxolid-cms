@@ -42,11 +42,11 @@ class Create extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
-        'is_bound_to_document' => [
+        'is_bound' => [
             'type' => FieldType\CheckboxToggle::class,
             'options' => [
                 'label' => [
-                    'title' => 'is_bound_to_document',
+                    'title' => 'is_bound',
                 ],
                 'validation' => [
                     'rules' => [

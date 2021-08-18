@@ -46,7 +46,7 @@ class FrontpageRouterService
     {
         $web = $this->detectOnlyWeb(request());
 
-        if (isset($web) && $web) {
+        if ($web) {
             // $localization = ($slug === '/') ? $web->defaultLocalization : $this->detectLocalization($web, $slug);
             $localization = $web->defaultLocalization;
 

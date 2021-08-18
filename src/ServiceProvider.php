@@ -54,7 +54,7 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
         // config files
         // php artisan vendor:publish --provider="Softworx\RocXolid\CMS\ServiceProvider" --tag="config" (--force to overwrite)
         $this->publishes([
-            __DIR__ . '/../config/general.php' => config_path('rocXolid/cms/general.php'),
+            __DIR__ . '/../config' => config_path('rocXolid/cms'),
         ], 'config');
 
         // lang files
@@ -95,6 +95,11 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
      */
     private function bindContracts(): RocXolidAbstractServiceProvider
     {
+        $this->app->singleton(
+            \Softworx\RocXolid\Generators\Pdf\Contracts\PdfGenerator::class,
+            \Softworx\RocXolid\Generators\Pdf\MPdfGenerator::class
+        );
+
         return $this;
     }
 
