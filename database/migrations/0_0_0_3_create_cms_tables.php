@@ -36,6 +36,8 @@ class CreateCmsTables extends Migration
     {
         $this
             ->dataDependencies()
+            ->containerNavigations()
+            ->containerFooters()
             ->containerSections()
             ->containerGridRows()
             ->containerGridColumns()
@@ -50,7 +52,7 @@ class CreateCmsTables extends Migration
         $this
             ->documentTypes()
             ->documents()
-            ->pagesTemplates()
+            ->pageTemplates()
             ->pages()
             ->articleCategories()
             ->articles();
@@ -113,6 +115,60 @@ class CreateCmsTables extends Migration
         return $this;
     }
 
+    protected function containerNavigations(): self
+    {
+        Schema::create($this->prefixTable('container_navigations'), function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->unsignedInteger('web_id');
+
+            $table->string('name')->nullable();
+            $table->string('bookmark')->nullable();
+            $table->json('meta_data')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->foreign('web_id')
+                ->references('id')
+                ->on('webs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        return $this;
+    }
+
+    protected function containerFooters(): self
+    {
+        Schema::create($this->prefixTable('container_footers'), function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->unsignedInteger('web_id');
+
+            $table->string('name')->nullable();
+            $table->string('bookmark')->nullable();
+            $table->json('meta_data')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->foreign('web_id')
+                ->references('id')
+                ->on('webs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        return $this;
+    }
+
     protected function containerSections(): self
     {
         Schema::create($this->prefixTable('container_sections'), function (Blueprint $table) {
@@ -121,6 +177,7 @@ class CreateCmsTables extends Migration
             $table->unsignedInteger('web_id');
 
             $table->string('name')->nullable();
+            $table->string('bookmark')->nullable();
             $table->json('meta_data')->nullable();
 
             $table->timestamps();
@@ -270,13 +327,13 @@ class CreateCmsTables extends Migration
 
             $table->foreign('web_id')
                 ->references('id')
-                ->on($this->prefixTable('webs'))
+                ->on('webs')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreign('localization_id')
                 ->references('id')
-                ->on($this->prefixTable('localizations'))
+                ->on('localizations')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
@@ -345,13 +402,13 @@ class CreateCmsTables extends Migration
 
             $table->foreign('web_id')
                 ->references('id')
-                ->on($this->prefixTable('webs'))
+                ->on('webs')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreign('localization_id')
                 ->references('id')
-                ->on($this->prefixTable('localizations'))
+                ->on('localizations')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
@@ -420,13 +477,13 @@ class CreateCmsTables extends Migration
 
             $table->foreign('web_id')
                 ->references('id')
-                ->on($this->prefixTable('webs'))
+                ->on('webs')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreign('localization_id')
                 ->references('id')
-                ->on($this->prefixTable('localizations'))
+                ->on('localizations')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
@@ -504,13 +561,13 @@ class CreateCmsTables extends Migration
 
             $table->foreign('web_id')
                 ->references('id')
-                ->on($this->prefixTable('webs'))
+                ->on('webs')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreign('localization_id')
                 ->references('id')
-                ->on($this->prefixTable('localizations'))
+                ->on('localizations')
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
@@ -524,7 +581,7 @@ class CreateCmsTables extends Migration
 
     protected function blocks(string $param): self
     {
-        Schema::create($this->prefixTable(Str::plural($param)), function (Blueprint $table) use ($type) {
+        Schema::create($this->prefixTable(Str::plural($param)), function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger('web_id');
@@ -534,6 +591,12 @@ class CreateCmsTables extends Migration
             $table->boolean('is_bound')->default(0);
 
             $table->string('title');
+
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
 
             $table->foreign('web_id')
                 ->references('id')

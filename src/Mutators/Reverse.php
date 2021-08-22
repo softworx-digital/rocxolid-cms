@@ -19,7 +19,7 @@ class Reverse extends AbstractMutator
     /**
      * {@inheritDoc}
      */
-    protected $translation_package = 'rocXolid:cms';
+    protected $translation_package = 'rocXolid-cms';
 
     /**
      * {@inheritDoc}
