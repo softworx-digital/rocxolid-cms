@@ -284,15 +284,10 @@ class ElementableCompositionService implements Contracts\ElementableCompositionS
      */
     protected function guessElementType(string $param): string
     {
-        /*
-         * @todo Laravel 7
         $element_namespace = Str::of((new \ReflectionClass($this->consumer))->getNamespaceName())
             ->replace('Http\Controllers', 'Elements\Models')
-            ->beforeLast($element_namespace, '\\');
-        */
+            ->beforeLast('\\');
 
-        $element_namespace = str_replace('Http\Controllers', 'Elements\Models', (new \ReflectionClass($this->consumer))->getNamespaceName());
-        $element_namespace = Str::beforeLast($element_namespace, '\\');
         $element_type = sprintf('%s\%s', $element_namespace, Str::studly($param));
 
         if (!class_exists($element_type)) {

@@ -19,6 +19,9 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\RoutePathParamsProvi
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\PageTemplate;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Web;
+use Softworx\RocXolid\Common\Models\Localization;
 
 /**
  * Page model.
@@ -41,11 +44,13 @@ class Page extends AbstractElementable implements
 
     const GENERAL_DATA_ATTRIBUTES = [
         'is_enabled',
+        'is_web_localization_homepage',
         'web_id',
         'localization_id',
         // 'page_template_id',
         'name',
         'path',
+        'theme',
     ];
 
     const META_DATA_ATTRIBUTES = [
@@ -64,6 +69,7 @@ class Page extends AbstractElementable implements
      */
     protected $fillable = [
         'is_enabled',
+        'is_web_localization_homepage',
         'web_id',
         'localization_id',
         // 'page_template_id',
@@ -108,6 +114,7 @@ class Page extends AbstractElementable implements
     public function fillCustom(Collection $data): Crudable
     {
         $this
+            ->adjustPath($data)
             ->fillRoutePath($data)
             ->fillDependencies($data);
 
@@ -134,12 +141,12 @@ class Page extends AbstractElementable implements
         if ($this->getDependenciesDataProvider()) {
             foreach ($this->getDependenciesDataProvider()->getDependencyData() as $dependency) {
                 if ($dependency instanceof Crudable) {
-                    return sprintf('%s | %s', $dependency->getMetaTitle(), $this->meta_title);
+                    return sprintf('%s | %s | %s', $dependency->getMetaTitle(), $this->meta_title, $this->web->getTitle());
                 }
             }
         }
 
-        return $this->meta_title;
+        return sprintf('%s | %s', $this->meta_title, $this->web->getTitle());
     }
 
     /**
@@ -150,11 +157,28 @@ class Page extends AbstractElementable implements
         return 'keditor-rx-page-content-area';
     }
 
+    protected function adjustPath(Collection $data): Crudable
+    {
+        $this->path = $this->path ?? '';
+
+        return $this;
+    }
+
     protected function fillRoutePath(Collection $data): Crudable
     {
         $this->route_path = sprintf('/%s', $this->path);
 
         return $this;
+    }
+
+    /**
+     * Check if given Page is a home page for it's Web and Localization.
+     *
+     * @return bool
+     */
+    public function isHomePage(): bool
+    {
+        return (bool)$this->is_web_localization_homepage;
     }
 
     /**
@@ -170,6 +194,13 @@ dd(__METHOD__);
     {
 dd(__METHOD__);
         Route::get($this->path_regex, dd(__FILE__));
+    }
+
+    public function frontpageRoute(Web $web, Localization $localization): string
+    {
+        return (bool)$web->is_use_default_localization_url_path || !$localization->is($web->defaultLocalization)
+            ? sprintf('/%s%s', $localization->seo_url_slug, $this->route_path)
+            : $this->route_path;
     }
 
     /*

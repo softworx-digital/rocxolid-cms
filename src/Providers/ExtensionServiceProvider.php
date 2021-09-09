@@ -48,6 +48,11 @@ class ExtensionServiceProvider extends IlluminateServiceProvider
             return BladeExtensionService::compile('placeholder', $args);
         });
 
+        Blade::directive('frontroute', function (string $page_token) {
+            // return sprintf("<?php echo isset(\"\$web) ? \"\$web->pageUrl(\"\$localization, $page_token) : '#'")
+            return sprintf('<?php echo isset($web) ? $web->pageUrl($localization, %s) : \'#\'; ?>', $page_token);
+        });
+
         return $this;
     }
 }

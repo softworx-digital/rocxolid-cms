@@ -173,6 +173,9 @@ $(document).ready(function($)
             },
             text: {
                 settingsTitle: 'Nastavenie',
+            },
+            gallery: {
+                settingsTitle: 'Nastavenie',
             }
         }
     };
@@ -200,6 +203,12 @@ $(document).ready(function($)
                 {
                     id: 'font-awesome-5',
                     href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+                }
+            ],
+            contentScripts: [
+                {
+                    id: 'front',
+                    src: "{{ asset('js/front.js') }}"
                 }
             ],
             snippetsUrl: $element.data('snippets-url'),

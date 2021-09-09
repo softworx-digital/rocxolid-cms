@@ -2,13 +2,15 @@
 
 return [
     'column' => [
-        'name' => 'Meno',
+        'is_web_localization_homepage' => 'Domovská stránka pre web × lokalizáciu',
+        'name' => 'Názov',
         'path' => 'Cesta',
     ],
     'field' => [
+        'is_web_localization_homepage' => 'Domovská stránka pre web × lokalizáciu',
         'page_template_id' => 'Šablóna',
         'theme' => 'Téma',
-        'name' => 'Meno',
+        'name' => 'Názov',
         'path' => 'Cesta',
         'dependencies' => 'Závislosť',
         'meta_title' => '<title>',

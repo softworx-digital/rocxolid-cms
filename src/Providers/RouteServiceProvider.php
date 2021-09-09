@@ -2,6 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\Providers;
 
+use Illuminate\Support\Facades\Artisan;
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 // rocXolid services
@@ -52,6 +54,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
             // ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
 
             // ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
+
+            CrudRouterService::create('article-category', \ArticleCategory\Controller::class);
 
             ElementableRouterService::create('article', \Article\Controller::class);
 
@@ -131,6 +135,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
         $router->model('page_footer', \Softworx\RocXolid\CMS\Models\PageFooter::class);
         // $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
         //
+        $router->model('article_category', \Softworx\RocXolid\CMS\Models\ArticleCategory::class);
         $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
         $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);
         //

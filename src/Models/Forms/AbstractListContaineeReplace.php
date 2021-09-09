@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\CMS\Models\Forms;
 use Illuminate\Support\Collection;
 // rocXolid commerce forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid fields
+// rocXolid field types
 use Softworx\RocXolid\Forms\Fields\Type\Input;
 use Softworx\RocXolid\Forms\Fields\Type\Email;
 use Softworx\RocXolid\Forms\Fields\Type\ButtonSubmit;

@@ -64,6 +64,14 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
+        'is_web_localization_homepage' => [
+            'type' => ColumnType\Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_web_localization_homepage'
+                ],
+            ],
+        ],
         'name' => [
             'type' => ColumnType\Text::class,
             'options' => [

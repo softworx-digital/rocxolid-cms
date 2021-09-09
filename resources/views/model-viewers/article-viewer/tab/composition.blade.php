@@ -1,20 +1,9 @@
-<div id="{{ $component->getDomId() }}" class="panel-group">
+<div id="{{ $component->getDomId() }}" class="panel-group panel-group-collapsed">
+    {!! $component->render('compose.header') !!}
+    {!! $component->render('compose.body') !!}
 @if (false)
-    @if ($component->getModel()->headerImage()->exists())
-        {!! $component->getModel()->headerImage->getModelViewerComponent()->render('related.show', [
-            'attribute' => 'headerImage',
-            'relation' => 'parent',
-            'size' => '1920x',
-        ]) !!}
-    @else
-        {!! $component->getModel()->headerImage()->make()->getModelViewerComponent()->render('related.unavailable', [
-            'attribute' => 'headerImage',
-            'relation' => 'parent',
-            'related' => $component->getModel(),
-            'placeholder' => 'header-placeholder',
-        ]) !!}
-    @endif
-@endif
-    {!! $component->render('include.perex-data') !!}
     {!! $component->render('include.content-data') !!}
+@endif
 </div>
+
+{!! $component->render('script.keditor-binding') !!}

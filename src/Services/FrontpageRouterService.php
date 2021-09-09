@@ -5,6 +5,7 @@ namespace Softworx\RocXolid\CMS\Services;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 // rocXolid common traits
 use Softworx\RocXolid\Common\Http\Traits as CommonTraits;
 // rocXolid common models
@@ -46,11 +47,28 @@ class FrontpageRouterService
     {
         $web = $this->detectOnlyWeb(request());
 
+        $web->localizations->each(function (Localization $localization) use ($router, $web) {
+            $router
+                // ->domain(sprintf('{%s}', $web->domain)) // @todo doesn't work
+                ->group([
+                    'middleware' => [ 'web' ],
+                    'as' => sprintf('frontpage.%s.', $web->domain),
+                ], function (Router $router) use ($web, $localization) {
+                    // $router->any('/{path?}', FrontPageController::class)->where('path', '([A-Za-z0-9_\-\/]+)');
+                    $this->pages($web, $localization)->each(function(Page $page) use ($router, $web, $localization) {
+                        $this->registerPageRoute($router, $web, $localization, $page);
+                    });
+                });
+        });
+
+        /*
+        $web = $this->detectOnlyWeb(request());
+
         if ($web) {
             // $localization = ($slug === '/') ? $web->defaultLocalization : $this->detectLocalization($web, $slug);
-            $localization = $web->defaultLocalization;
+            // $localization = $web->defaultLocalization;
 
-            app()->setLocale($localization->language->iso_639_1); // @todo as Localization's (service?) method
+            // app()->setLocale($localization->language->iso_639_1); // @todo as Localization's (service?) method
 
             $router->group([
                 'middleware' => [ 'web' ],
@@ -61,20 +79,20 @@ class FrontpageRouterService
                     $this->registerPageRoute($router, $web, $page);
                 });
             });
-        }
+        }*/
     }
 
-    private function registerPageRoute(Router $router, Web $web, Page $page): self
+    private function registerPageRoute(Router $router, Web $web, Localization $localization, Page $page): self
     {
         $dependencies = $page->provideDependencies();
 
         if ($dependencies->isEmpty()) {
-            $router->get($page->route_path, function (Request $request) use ($web, $page) {
-                return ($this->controller)($request, $web, $page);
-            });
+            $router->get($page->frontpageRoute($web, $localization), function (Request $request) use ($web, $localization, $page) {
+                return ($this->controller)($request, $web, $localization, $page);
+            })->name(sprintf('page-%s', $page->getKey()));
         } else {
-            $dependencies->each(function (ElementableDependency $dependency) use ($router, $web, $page) {
-                $dependency->registerPageRoute($router, $this->controller, $web, $page);
+            $dependencies->each(function (ElementableDependency $dependency) use ($router, $web, $localization, $page) {
+                $dependency->registerPageRoute($router, $this->controller, $web, $localization, $page);
             });
         }
 

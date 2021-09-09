@@ -447,6 +447,7 @@ class CreateCmsTables extends Migration
 
             $table->unsignedInteger('position')->default(0);
             $table->boolean('is_enabled')->default(1);
+            $table->boolean('is_web_localization_homepage')->default(0);
 
             $table->string('name');
             $table->string('path');
@@ -541,6 +542,8 @@ class CreateCmsTables extends Migration
 
             $table->unsignedInteger('position')->default(0);
             $table->boolean('is_enabled')->default(1);
+            $table->boolean('is_featured')->default(0);
+            $table->boolean('is_newsflash')->default(0);
 
             $table->date('date');
             $table->string('title');

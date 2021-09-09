@@ -16,17 +16,24 @@
                 ]) !!}
             @endif
             </div>
-            <div class="col-md-4 col-xs-12">
-                {!! $component->render('include.general-data') !!}
+            <div class="col-md-9 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {!! $component->render('include.access-data') !!}
+                    </div>
+                    <div class="col-xs-12">
+                        {!! $component->render('include.general-data') !!}
+                    </div>
+                    <div class="col-xs-12">
+                        {!! $component->render('include.meta-data') !!}
+                    </div>
+                @if (false)
+                    <div class="col-md-6 col-xs-12">
+                        {!! $component->render('include.opengraph-data') !!}
+                    </div>
+                @endif
+                </div>
             </div>
-            <div class="col-md-5 col-xs-12">
-                {!! $component->render('include.meta-data') !!}
-            </div>
-        @if (false)
-            <div class="col-md-4 col-xs-12">
-                {!! $component->render('include.opengraph-data') !!}
-            </div>
-        @endif
         </div>
     </div>
 </div>

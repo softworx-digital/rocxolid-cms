@@ -35,7 +35,7 @@ class PreviewController extends Controller
         }
 
         return view('preview.page-template', [
-            'rxUser' => $this->detectRxUser(),
+            'rxuser' => $this->detectRxUser(),
             'web' => $web,
             'page_template' => $page_template,
             'user' => false,
@@ -51,7 +51,7 @@ class PreviewController extends Controller
         }
 
         return view('preview.page', [
-            'rxUser' => $this->detectRxUser(),
+            'rxuser' => $this->detectRxUser(),
             'web' => $web,
             'page' => $page,
             'user' => false,

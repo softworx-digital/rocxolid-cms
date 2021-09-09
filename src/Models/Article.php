@@ -4,18 +4,22 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits as rxTraits;
-// rocXolid common models
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Image;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
-// rocXolid cms model traits
-use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\ArticleCategory;
+// app traits
+use App\CMS\Elements\Models\Traits as AppTraits;
 
 /**
  * Article model.
@@ -30,15 +34,21 @@ class Article extends AbstractElementable
     use CommonTraits\HasImage;
     use Traits\HasDependencies;
     use Traits\HasMutators;
+    use Traits\ProvidesViewTheme;
+    // @todo !!! ugly hack, fix asap
+    use AppTraits\HasBlogRouting;
 
     const GENERAL_DATA_ATTRIBUTES = [
         'is_enabled',
+        'is_featured',
+        'is_newsflash',
         'web_id',
         'localization_id',
-        // 'page_template_id',
         'author_id',
+        'article_category_id',
         'date',
         'title',
+        'tags',
         // 'path',
     ];
 
@@ -56,11 +66,16 @@ class Article extends AbstractElementable
     protected $table = 'cms_articles';
 
     protected $fillable = [
+        'is_enabled',
+        'is_featured',
+        'is_newsflash',
         'web_id',
         'localization_id',
-        // 'author_id',
+        'author_id',
+        'article_category_id',
         'date',
         'title',
+        'tags',
         //'slug',
         'meta_title',
         'meta_description',
@@ -68,7 +83,10 @@ class Article extends AbstractElementable
         'perex',
         'content',
         //'css_class',
-        'is_enabled'
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
     ];
 
     protected $dates = [
@@ -91,7 +109,7 @@ class Article extends AbstractElementable
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'fb' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             '828x' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
-            '1920x' => [ 'width' => 1920, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
+            '1920x' => [ 'width' => 1920, 'height' => 900, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
         ],
     ];
 
@@ -112,7 +130,6 @@ class Article extends AbstractElementable
     {
         $this->slug = Str::slug($this->title);
 
-        /*
         if (blank($this->meta_title)) {
             $this->meta_title = $this->title;
         }
@@ -120,7 +137,6 @@ class Article extends AbstractElementable
         if (blank($this->meta_description)) {
             $this->meta_description = strip_tags($this->perex);
         }
-        */
 
         return $this;
     }
@@ -130,29 +146,24 @@ class Article extends AbstractElementable
         return $this->image('headerImage');
     }
 
-    public function author()
+    /**
+     * Relation to ArticleCategory.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function articleCategory(): Relations\BelongsTo
+    {
+        return $this->belongsTo(ArticleCategory::class);
+    }
+
+    /**
+     * Relation to User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author(): Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-    * {@inheritDoc}
-    */
-    public function provideDependencies(bool $sub = false): Collection
-    {
-        dd(__METHOD__, '@todo');
-
-        return collect();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function provideViewTheme(): string
-    {
-        dd(__METHOD__, '@todo');
-
-        return '';
     }
 
     // @todo quick'n'dirty
@@ -168,5 +179,45 @@ class Article extends AbstractElementable
     public function getMetaTitle()
     {
         return $this->getTitle();
+    }
+
+    public function availableLocalizations(): Collection
+    {
+        return $this->localization ? collect([ $this->localization ]) : $this->web->localizations;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getImageUploadTemplateAssignments(Image $image): array
+    {
+        switch ($image->model_attribute) {
+            case 'headerImage':
+                return [
+                    'size' => '1920x',
+                ];
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if Article is featured.
+     *
+     * @return boolean
+     */
+    public function isFeatured(): bool
+    {
+        return $this->is_featured;
+    }
+
+    /**
+     * Check if Article is a newsflash.
+     *
+     * @return boolean
+     */
+    public function isNewsflash(): bool
+    {
+        return $this->is_newsflash;
     }
 }
