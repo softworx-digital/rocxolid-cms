@@ -85,6 +85,15 @@ class Article extends AbstractElementable
         //'css_class',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
+    protected $relationships = [
+        'web',
+        'localization',
+        'related',
+    ];
+
     protected $casts = [
         'tags' => 'array',
     ];
@@ -141,7 +150,10 @@ class Article extends AbstractElementable
         return $this;
     }
 
-    public function headerImage()
+    /**
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation
+     */
+    public function headerImage(): Relations\MorphOne
     {
         return $this->image('headerImage');
     }
@@ -164,6 +176,22 @@ class Article extends AbstractElementable
     public function author(): Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relation to related articles.
+     *
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
+     * @return Relations\BelongsToMany
+     */
+    public function related(): Relations\BelongsToMany
+    {
+        return $this->belongsToMany(
+            self::class,
+            'cms_article_has_related_articles',
+            'article_id',
+            'related_id'
+        );
     }
 
     // @todo quick'n'dirty

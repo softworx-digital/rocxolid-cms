@@ -8,6 +8,7 @@ return [
         'subtitle' => 'Podtitulok',
         'description' => 'Popis',
         'roles' => 'Role',
+        'slug' => 'Slug',
     ],
     'field' => [
         'position' => 'Pozícia',
@@ -16,6 +17,7 @@ return [
         'subtitle' => 'Podtitulok',
         'description' => 'Popis',
         'roles' => 'Role',
+        'slug' => 'Slug',
     ],
     'model' => [
         'title' => [

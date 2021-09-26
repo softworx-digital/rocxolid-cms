@@ -33,6 +33,8 @@ class Controller extends AbstractElementableController
         'update.meta-data' => 'update-meta',
         'edit.perex-data' => 'update-perex',
         'update.perex-data' => 'update-perex',
+        'edit.related-data' => 'update-related',
+        'update.related-data' => 'update-related',
         'edit.content-data' => 'update-content',
         'update.content-data' => 'update-content',
     ];

@@ -31,11 +31,14 @@
                 data-update-url="{{ $component->getModel()->getControllerRoute('storeComposition') }}"
                 data-preview-pdf-url="{{ $component->getModel()->getControllerRoute('previewPdf') }}"
                 data-element-detach-url="{{ $component->getModel()->getControllerRoute('detachElement') }}"
-                data-element-destroy-url="{{ $component->getModel()->getControllerRoute('destroyElement') }}">
+                data-element-destroy-url="{{ $component->getModel()->getControllerRoute('destroyElement') }}"
+                data-content-area-selector=".article-body-composition">
 
                 <article class="section section-article-detail bg-white">
                     <section class="article-body container">
-                        {!! $component->render('include.elements') !!}
+                        <div class="article-body-composition">
+                            {!! $component->render('include.elements') !!}
+                        </div>
                     </section>
                 </article>
             </div>

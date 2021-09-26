@@ -234,6 +234,9 @@ $(document).ready(function($)
 
                 return extraItems;
             })($element),
+            contentAreasSelector: (function($container) {
+                return $container.attr('data-content-area-selector') || null;
+            })($element),
             containerForQuickAddComponent: `{!! $component->getModel()->getDocumentEditorContainerForQuickAddComponent() !!}`,
             containerSettingEnabled: function (keditor, container) {
                 return container.find('[data-element-type="grid-row"]').is('[data-element-settings-url]');

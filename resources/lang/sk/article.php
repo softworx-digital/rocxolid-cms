@@ -14,6 +14,7 @@ return [
         'slug' => 'Slug',
         //
         'image' => 'Obrázok v náhľade',
+        'related' => 'Súvisiace články',
     ],
     'field' => [
         'is_newsflash' => 'Novinka',
@@ -24,6 +25,7 @@ return [
         'title' => 'Titulok',
         'tags' => 'Tagy',
         'slug' => 'Slug',
+        'theme' => 'Téma',
         'meta_title' => '<title>',
         'meta_description' => '<meta name="description">',
         'meta_keywords' => '<meta name="keywords">',
@@ -32,6 +34,7 @@ return [
         //
         'image' => 'Obrázok v náhľade',
         'headerImage' => 'Obrázok v hlavičke',
+        'related' => 'Súvisiace články',
     ],
     'model' => [
         'title' => [

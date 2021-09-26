@@ -27,6 +27,9 @@
                     <div class="col-xs-12">
                         {!! $component->render('include.meta-data') !!}
                     </div>
+                    <div class="col-xs-12">
+                        {!! $component->render('include.related-data') !!}
+                    </div>
                 @if (false)
                     <div class="col-md-6 col-xs-12">
                         {!! $component->render('include.opengraph-data') !!}
