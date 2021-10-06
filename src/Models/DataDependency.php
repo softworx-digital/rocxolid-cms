@@ -5,6 +5,8 @@ namespace Softworx\RocXolid\CMS\Models;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
+// rocXolid utilities
+use Softworx\RocXolid\Casts;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm;
 // rocXolid contracts
@@ -93,12 +95,13 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected $decimals = [
-        'default_value_decimal',
-        'min',
-        'max',
+    protected $casts = [
+        'values' => 'json',
+        'default_value_decimal' => Casts\Decimal::class,
+        'min' => Casts\Decimal::class,
+        'max' => Casts\Decimal::class,
     ];
 
     public static function getTypeOptions()
@@ -119,25 +122,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
                 ];
             });
 
-            $this->values = json_encode($values);
-        }
-
-        // @todo ugly, use custom casts with Laravel 7
-        if ($data->has('min') && !is_null($this->min)) {
-            $this->min = str_replace(',', '.', $this->min);
-            $this->min = str_replace(' ', '', $this->min);
-        }
-
-        // @todo ugly, use custom casts with Laravel 7
-        if ($data->has('max') && !is_null($this->max)) {
-            $this->max = str_replace(',', '.', $this->max);
-            $this->max = str_replace(' ', '', $this->max);
-        }
-
-        // @todo ugly, use custom casts with Laravel 7
-        if ($data->has('default_value_decimal') && !is_null($this->default_value_decimal)) {
-            $this->default_value_decimal = str_replace(',', '.', $this->default_value_decimal);
-            $this->default_value_decimal = str_replace(' ', '', $this->default_value_decimal);
+            $this->values = $values;
         }
 
         return parent::fillCustom($data);
@@ -151,7 +136,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
      */
     public function getValuesAttribute($value): Collection
     {
-        return collect($value ? collect(json_decode($value))->pluck('title') : [])->filter();
+        return collect($value ? collect($value)->pluck('title') : [])->filter();
     }
 
     /**
@@ -184,7 +169,7 @@ class DataDependency extends AbstractCrudModel implements ElementableDependency
      */
     public function getIsDefaultValueAttribute($value): Collection
     {
-        return collect($this->getOriginal('values') ? collect(json_decode($this->getOriginal('values')))->pluck('is_default_value') : []);
+        return collect($this->getOriginal('values') ? $this->getOriginal('values')->pluck('is_default_value') : []);
     }
 
     /**

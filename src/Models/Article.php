@@ -18,8 +18,8 @@ use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
 use Softworx\RocXolid\CMS\Models\ArticleCategory;
-// app traits
-use App\CMS\Elements\Models\Traits as AppTraits;
+// rocXolid cms elements traits
+use Softworx\RocXolid\CMS\Elements\Models\Traits as ElementsTraits;
 
 /**
  * Article model.
@@ -35,8 +35,7 @@ class Article extends AbstractElementable
     use Traits\HasDependencies;
     use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
-    // @todo !!! ugly hack, fix asap
-    use AppTraits\HasBlogRouting;
+    use ElementsTraits\HasBlogRouting;
 
     const GENERAL_DATA_ATTRIBUTES = [
         'is_enabled',

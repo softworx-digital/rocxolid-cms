@@ -1,6 +1,6 @@
 <div class="x_panel ajax-overlay">
     <div class="x_content">
-        {!! $component->render('include.header-panel') !!}
+        {!! $component->render('include.header') !!}
 
         <div class="panel with-nav-tabs panel-default">
             <div class="panel-heading padding-bottom-0">
@@ -13,5 +13,5 @@
         </div>
     </div>
 
-    {!! $component->render('include.footer-panel') !!}
+    {!! $component->render('include.footer') !!}
 </div>

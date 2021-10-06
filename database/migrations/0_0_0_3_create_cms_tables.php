@@ -579,6 +579,23 @@ class CreateCmsTables extends Migration
                 ->on($this->prefixTable('users'));
         });
 
+        Schema::create($this->prefixTable('article_has_related_articles'), function (Blueprint $table) {
+            $table->unsignedInteger('article_id');
+            $table->unsignedInteger('related_id');
+
+            $table->foreign('article_id')
+                ->references('id')
+                ->on($this->prefixTable('articles'))
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('related_id')
+                ->references('id')
+                ->on($this->prefixTable('articles'))
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
         return $this;
     }
 
