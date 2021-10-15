@@ -16,7 +16,7 @@ use Softworx\RocXolid\Common\Filters\BelongsToLocalization;
  */
 abstract class AbstractInPageElementable extends RocXolidAbstractCrudForm
 {
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $page_elementable = $this->getController()->getPageElementable($this->getRequest());
 

@@ -180,7 +180,7 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $web = Web::find($this->getInputFieldValue('web_id'));
         $localization = Localization::find($this->getInputFieldValue('localization_id'));

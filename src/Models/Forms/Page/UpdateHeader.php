@@ -40,7 +40,7 @@ class UpdateHeader extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['page_header_id']['options']['collection']['model'] = PageHeader::class;
         $fields['page_header_id']['options']['collection']['filters'] = [[

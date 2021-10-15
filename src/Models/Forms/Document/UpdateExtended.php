@@ -101,7 +101,7 @@ class UpdateExtended extends RocXolidAbstractCrudForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['dependencies']['options']['collection'] = $this->getModel()->getAvailableDependencies()->map(function (ElementableDependency $dependency) {
             return [

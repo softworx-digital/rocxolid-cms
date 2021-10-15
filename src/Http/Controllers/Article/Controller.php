@@ -5,10 +5,10 @@ namespace Softworx\RocXolid\CMS\Http\Controllers\Article;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\ArticleViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\Article as ArticleModelViewer;
 
 /**
- * Article controller.
+ * Article model CRUD controller.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
@@ -19,7 +19,7 @@ class Controller extends AbstractElementableController
     /**
      * {@inheritDoc}
      */
-    protected static $model_viewer_type = ArticleViewer::class;
+    protected static $model_viewer_type = ArticleModelViewer::class;
 
     /**
      * {@inheritDoc}
@@ -27,15 +27,17 @@ class Controller extends AbstractElementableController
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
-        'edit.general-data' => 'update-general',
-        'update.general-data' => 'update-general',
-        'edit.meta-data' => 'update-meta',
-        'update.meta-data' => 'update-meta',
-        'edit.perex-data' => 'update-perex',
-        'update.perex-data' => 'update-perex',
-        'edit.related-data' => 'update-related',
-        'update.related-data' => 'update-related',
-        'edit.content-data' => 'update-content',
-        'update.content-data' => 'update-content',
+        //
+        'edit.panel.data.general' => 'update-general-data',
+        'update.panel.data.general' => 'update-general-data',
+        //
+        'edit.panel.data.meta' => 'update-meta-data',
+        'update.panel.data.meta' => 'update-meta-data',
+        //
+        'edit.panel:related.data.related' => 'update-related-data',
+        'update.panel:related.data.related' => 'update-related-data',
+        //
+        'edit.panel:single.data.perex' => 'update-perex-data',
+        'update.panel:single.data.perex' => 'update-perex-data',
     ];
 }

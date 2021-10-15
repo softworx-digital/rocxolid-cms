@@ -27,4 +27,12 @@ return [
             ],
         ],
     ],
+    /**
+     * List of dependency keys and their representative classes to identify appropriate connections.
+     */
+    'semantics' => [
+        'article' => \Softworx\RocXolid\CMS\ElementableDependencies\Page\Article::class,
+        'article-category' => \Softworx\RocXolid\CMS\ElementableDependencies\Page\ArticleCategory::class,
+        'article-tag' => \Softworx\RocXolid\CMS\ElementableDependencies\Page\ArticleTag::class,
+    ],
 ];

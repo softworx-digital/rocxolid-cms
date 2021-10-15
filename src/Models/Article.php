@@ -27,43 +27,29 @@ use Softworx\RocXolid\CMS\Elements\Models\Traits as ElementsTraits;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
+ * @todo revise & refactor & doc
  */
 class Article extends AbstractElementable
 {
-    use rxTraits\Attributes\HasGeneralDataAttributes;
     use CommonTraits\HasImage;
     use Traits\HasDependencies;
     use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
     use ElementsTraits\HasBlogRouting;
 
-    const GENERAL_DATA_ATTRIBUTES = [
-        'is_enabled',
-        'is_featured',
-        'is_newsflash',
-        'web_id',
-        'localization_id',
-        'author_id',
-        'article_category_id',
-        'date',
-        'title',
-        'tags',
-        // 'path',
-    ];
-
-    const META_DATA_ATTRIBUTES = [
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-    ];
-
     /**
      * {@inheritDoc}
      */
     protected static $title_column = 'title';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $table = 'cms_articles';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'is_enabled',
         'is_featured',
@@ -93,14 +79,23 @@ class Article extends AbstractElementable
         'related',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $casts = [
         'tags' => 'array',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $dates = [
         'date',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
@@ -191,16 +186,6 @@ class Article extends AbstractElementable
             'article_id',
             'related_id'
         );
-    }
-
-    // @todo quick'n'dirty
-    public function getMetaDataAttributes(bool $keys = false): Collection
-    {
-        return $keys
-            ? collect(static::META_DATA_ATTRIBUTES)
-            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
-                return array_search($field, static::META_DATA_ATTRIBUTES);
-            });
     }
 
     public function getMetaTitle()

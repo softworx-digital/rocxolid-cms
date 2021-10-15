@@ -13,7 +13,7 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPartViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPart as DocumentPartModelViewer;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Elements\Models\Contracts\Elementable;
 // @todo be more abstract
@@ -37,7 +37,7 @@ abstract class AbstractElementablePartController extends AbstractElementableCont
      * {@inheritDoc}
      * @todo be more abstract
      */
-    protected static $model_viewer_type = DocumentPartViewer::class;
+    protected static $model_viewer_type = DocumentPartModelViewer::class;
 
     /**
      * {@inheritDoc}

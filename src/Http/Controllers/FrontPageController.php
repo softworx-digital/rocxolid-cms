@@ -14,7 +14,7 @@ use Softworx\RocXolid\Common\Models\Localization;
 use Softworx\RocXolid\CMS\Models\Page;
 use Softworx\RocXolid\CMS\Models\AbstractPagePart;
 // rocXolid cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPartViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\DocumentPart as DocumentPartModelViewer;
 // rocXolid cms dependency data providers
 use Softworx\RocXolid\CMS\Support\RouteElementableDependencyDataProvider;
 
@@ -50,7 +50,7 @@ class FrontPageController extends Controller
         ];
     }
 
-    private function pageHeaderComponent(Page $page): ?DocumentPartViewer
+    private function pageHeaderComponent(Page $page): ?DocumentPartModelViewer
     {
         if (is_null($header = $page->getHeader())) {
             return null;
@@ -59,7 +59,7 @@ class FrontPageController extends Controller
         return $this->preparePartViewerComponent($page, $header);
     }
 
-    private function pageFooterComponent(Page $page): ?DocumentPartViewer
+    private function pageFooterComponent(Page $page): ?DocumentPartModelViewer
     {
         if (is_null($footer = $page->getFooter())) {
             return null;
@@ -68,7 +68,7 @@ class FrontPageController extends Controller
         return $this->preparePartViewerComponent($page, $footer);
     }
 
-    private function preparePartViewerComponent(Page $page, AbstractPagePart $part): DocumentPartViewer
+    private function preparePartViewerComponent(Page $page, AbstractPagePart $part): DocumentPartModelViewer
     {
         return $part
             ->setPresenting($page->isPresenting())

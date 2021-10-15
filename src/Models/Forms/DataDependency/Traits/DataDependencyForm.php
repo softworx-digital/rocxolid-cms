@@ -13,7 +13,7 @@ use Softworx\RocXolid\CMS\Models\DataDependency;
  */
 trait DataDependencyForm
 {
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         collect([ 'is_enabled', 'web_id', 'localization_id', 'localization_id', 'type', 'title' ])->each(function ($field_name) use (&$fields) {
             $fields[$field_name]['options']['group'] = 'base';

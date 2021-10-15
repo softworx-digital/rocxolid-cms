@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Route;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\Cloneable;
-// rocXolid model traits
-use Softworx\RocXolid\Models\Traits as rxTraits;
 // rocXolid cms model contracts
 use Softworx\RocXolid\CMS\Models\Contracts\ViewThemeProvider;
 use Softworx\RocXolid\CMS\Models\Contracts\ElementsDependenciesProvider;
@@ -35,29 +33,11 @@ class Page extends AbstractElementable implements
     ElementsMutatorsProvider,
     ViewThemeProvider
 {
-    use rxTraits\Attributes\HasGeneralDataAttributes;
     use Traits\HasPageHeader;
     use Traits\HasPageFooter;
     use Traits\HasDependencies;
     use Traits\HasMutators;
     use Traits\ProvidesViewTheme;
-
-    const GENERAL_DATA_ATTRIBUTES = [
-        'is_enabled',
-        'is_web_localization_homepage',
-        'web_id',
-        'localization_id',
-        // 'page_template_id',
-        'name',
-        'path',
-        'theme',
-    ];
-
-    const META_DATA_ATTRIBUTES = [
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-    ];
 
     /**
      * {@inheritDoc}
@@ -81,7 +61,6 @@ class Page extends AbstractElementable implements
         'meta_keywords',
         'open_graph_title',
         'open_graph_description',
-        //'open_graph_image', // relation
         'open_graph_type',
         'open_graph_url',
         'open_graph_site_name',
@@ -123,16 +102,6 @@ class Page extends AbstractElementable implements
         });
 
         return parent::fillCustom($data);
-    }
-
-    // @todo quick'n'dirty
-    public function getMetaDataAttributes(bool $keys = false): Collection
-    {
-        return $keys
-            ? collect(static::META_DATA_ATTRIBUTES)
-            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
-                return array_search($field, static::META_DATA_ATTRIBUTES);
-            });
     }
 
     // @todo extremely hotfixed
@@ -202,66 +171,4 @@ dd(__METHOD__);
             ? sprintf('/%s%s', $localization->seo_url_slug, $this->route_path)
             : $this->route_path;
     }
-
-    /*
-    public function pageTemplate()
-    {
-        return $this->belongsTo(PageTemplate::class);
-    }
-
-    public function getFrontpageUrl($params = [])
-    {
-        if ($this->seo_url_slug === '/') { // homepage
-            $pattern = $this->localization->is($this->web->defaultLocalization) ? '//%s' : '//%s/%s';
-
-            return sprintf($pattern, $this->web->domain, $this->localization->seo_url_slug);
-        }
-
-        return sprintf('//%s/%s/%s', $this->web->domain, $this->localization->seo_url_slug, $this->seo_url_slug);
-    }
-
-    // @todo revise, find nicer approach
-    public function onBeforeSave(Collection $data): Crudable
-    {
-        // @todo helper
-        if ($this->seo_url_slug !== '/') { // homepage
-            $this->seo_url_slug = collect(array_filter(explode('/', $this->seo_url_slug)))->map(function ($slug) {
-                return Str::slug($slug);
-            })->implode('/');
-        }
-
-        return parent::onBeforeSave($data);
-    }
-
-    public function onCreateAfterSave(Collection $data): Crudable
-    {
-        $this->assignTemplatePageElements();
-
-        return parent::onCreateAfterSave($data);
-    }
-
-    protected function assignTemplatePageElements()
-    {
-        $clone_log = collect();
-
-        if ($this->pageTemplate()->exists()) {
-            foreach ($this->pageTemplate->pageElements() as $page_element) {
-                if ($page_element->getPivotData()->get('is_clone_page_element_instance')) {
-                    $clone = $page_element->clone($clone_log);
-
-                    $this->addPageElement($clone);
-                } else {
-                    $this->addPageElement($page_element->cloneContaineeRelations($this->pageTemplate, $this));
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    public function openGraphImage()
-    {
-        return $this->morphOne(Image::class, 'model')->where(sprintf('%s.model_attribute', (new Image())->getTable()), 'openGraphImage')->orderBy(sprintf('%s.model_attribute_position', (new Image())->getTable()));
-    }
-    */
 }

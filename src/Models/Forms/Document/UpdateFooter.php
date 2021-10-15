@@ -40,7 +40,7 @@ class UpdateFooter extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['document_footer_id']['options']['collection']['model'] = DocumentFooter::class;
         $fields['document_footer_id']['options']['collection']['filters'] = [[

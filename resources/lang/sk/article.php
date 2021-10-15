@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'model' => [
+        'title' => [
+            'singular' => 'Článok',
+            'plural' => 'Články',
+        ],
+    ],
     'filter' => [
         'article_category_id' => 'Kategória',
     ],
@@ -36,19 +42,24 @@ return [
         'headerImage' => 'Obrázok v hlavičke',
         'related' => 'Súvisiace články',
     ],
-    'model' => [
-        'title' => [
-            'singular' => 'Článok',
-            'plural' => 'Články',
-        ],
-    ],
     'tab' => [
         'default' => 'Info',
         'composition' => 'Kompozícia',
     ],
+    'panel' => [
+        'data' => [
+            'related' => [
+                'heading' => 'Súvisiace články',
+            ],
+            'perex' => [
+                'heading' => 'Perex',
+            ],
+        ],
+        'access' => [
+            'heading' => 'Prístupové údaje',
+        ],
+    ],
     'text' => [
-        'access-data' => 'Prístupové údaje',
-        'meta-data' => 'Meta údaje',
         'header' => 'Hlavička',
         'body' => 'Obsah',
     ],

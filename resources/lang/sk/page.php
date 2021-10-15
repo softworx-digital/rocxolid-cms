@@ -1,17 +1,24 @@
 <?php
 
 return [
+    'model' => [
+        'title' => [
+            'singular' => 'Stránka',
+            'plural' => 'Stránky',
+        ],
+    ],
+    'filter' => [
+        'name' => 'Názov',
+    ],
     'column' => [
         'is_web_localization_homepage' => 'Domovská stránka pre web × lokalizáciu',
         'name' => 'Názov',
-        'path' => 'Cesta',
     ],
     'field' => [
         'is_web_localization_homepage' => 'Domovská stránka pre web × lokalizáciu',
         'page_template_id' => 'Šablóna',
         'theme' => 'Téma',
         'name' => 'Názov',
-        'path' => 'Cesta',
         'dependencies' => 'Závislosť',
         'meta_title' => '<title>',
         'meta_description' => '<meta name="description">',
@@ -32,12 +39,6 @@ return [
         'add-placeholder-close' => 'Pridať a zavrieť',
         'add-mutator-close' => 'Pridať a zavrieť',
     ],
-    'model' => [
-        'title' => [
-            'singular' => 'Stránka',
-            'plural' => 'Stránky',
-        ],
-    ],
     'action' => [
         'create' => 'Nová',
         'show' => 'Kompozícia',
@@ -49,16 +50,12 @@ return [
         'default' => 'Info',
         'composition' => 'Kompozícia',
     ],
-    'text' => [
-        'extended-data' => 'Rozšírené údaje',
-        'meta-data' => 'Meta údaje',
-        'header' => 'Hlavička',
-        'body' => 'Telo',
-        'footer' => 'Pätička',
-    ],
-    'legend' => [
-        'base' => 'Základné údaje',
-        'dependencies' => 'Závislosti',
+    'panel' => [
+        'data' => [
+            'extended' => [
+                'heading' => 'Rozšírené články',
+            ],
+        ],
     ],
     'element-dependency' => [
         'none' => 'Bez požiadaviek',
@@ -68,5 +65,10 @@ return [
             'title' => 'Obrátene',
             'hint' => 'Tento mutátor obráti vyznačený text',
         ],
+    ],
+    'text' => [
+        'header' => 'Hlavička',
+        'body' => 'Telo',
+        'footer' => 'Pätička',
     ],
 ];

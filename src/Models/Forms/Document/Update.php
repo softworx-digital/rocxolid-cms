@@ -280,7 +280,7 @@ class Update extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['web_id']['options']['collection'] = Web::all()->pluck('name', 'id');
         $fields['web_id']['options']['validation']['rules'][] = 'required';

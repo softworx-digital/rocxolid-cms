@@ -57,7 +57,7 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['document_id']['options']['value'] = $this->getInputFieldValue('document_id');
 
