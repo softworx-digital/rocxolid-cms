@@ -29,7 +29,7 @@
                 data-placeholders-url="{{ $component->getModel()->getControllerRoute('contentPlaceholders') }}"
                 data-mutators-url="{{ $component->getModel()->getControllerRoute('contentMutators') }}"
                 data-update-url="{{ $component->getModel()->getControllerRoute('storeComposition') }}"
-                data-preview-pdf-url="{{ $component->getModel()->getControllerRoute('previewPdf') }}"
+                {{-- data-preview-pdf-url="{{ $component->getModel()->getControllerRoute('previewPdf') }}" --}}
                 data-element-detach-url="{{ $component->getModel()->getControllerRoute('detachElement') }}"
                 data-element-destroy-url="{{ $component->getModel()->getControllerRoute('destroyElement') }}"
                 data-content-area-selector=".article-body-composition">

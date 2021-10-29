@@ -47,6 +47,10 @@ class FrontpageRouterService
     {
         $web = $this->detectOnlyWeb(request());
 
+        if (is_null($web)) {
+            throw new \RuntimeException('Register a Web instance first!');
+        }
+
         $web->localizations->each(function (Localization $localization) use ($router, $web) {
             $router
                 // ->domain(sprintf('{%s}', $web->domain)) // @todo doesn't work

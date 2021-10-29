@@ -230,6 +230,23 @@ class Index extends AbstractCrudCMSTable
                 'action' => 'show',
             ],
         ],
+        'compose' => [
+            'type' => ButtonType\ButtonAnchor::class,
+            'options' => [
+                'label' => [
+                    'icon' => 'fa fa-columns',
+                ],
+                'attributes' => [
+                    'class' => 'btn btn-info btn-sm margin-right-no',
+                    'title-key' => 'compose',
+                ],
+                'policy-ability' => 'update',
+                'action' => 'show',
+                'route-params' => [
+                    'tab' => 'composition',
+                ],
+            ],
+        ],
         'delete-ajax' => [
             'type' => ButtonType\ButtonAnchor::class,
             'options' => [
