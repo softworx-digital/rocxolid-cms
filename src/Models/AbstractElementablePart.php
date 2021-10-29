@@ -48,7 +48,7 @@ abstract class AbstractElementablePart extends AbstractElementable
         'is_enabled',
         'web_id',
         'localization_id',
-        'is_bound_to_document',
+        'is_bound',
         'title',
     ];
 
@@ -69,7 +69,7 @@ abstract class AbstractElementablePart extends AbstractElementable
     /**
      * {@inheritDoc}
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
     {
         $model = $this->where($this->getRouteKeyName(), $value)->first();
 

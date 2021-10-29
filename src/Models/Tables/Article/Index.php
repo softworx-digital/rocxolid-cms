@@ -9,6 +9,8 @@ use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 // rocXolid cms tables
 use Softworx\RocXolid\CMS\Models\Tables\AbstractCrudCMSTable;
+// rocXolid cms models
+use Softworx\RocXolid\CMS\Models\ArticleCategory;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
 use Softworx\RocXolid\Common\Models\Localization;
@@ -43,6 +45,18 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
+        'article_category_id' => [
+            'type' => FilterType\ModelRelation::class,
+            'options' => [
+                'collection' => [
+                    'model' => ArticleCategory::class,
+                    'column' => 'title',
+                ],
+                'placeholder' => [
+                    'title' => 'article_category_id',
+                ],
+            ],
+        ],
         'title' => [
             'type' => FilterType\Text::class,
             'options' => [
@@ -62,6 +76,22 @@ class Index extends AbstractCrudCMSTable
                 ],
             ],
         ],
+        'is_featured' => [
+            'type' => ColumnType\Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_featured'
+                ],
+            ],
+        ],
+        'is_newsflash' => [
+            'type' => ColumnType\Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_newsflash'
+                ],
+            ],
+        ],
         'image' => [
             'type' => ColumnType\ImageRelation::class,
             'options' => [
@@ -73,11 +103,11 @@ class Index extends AbstractCrudCMSTable
                         'class' => 'text-center',
                     ],
                 ],
-                'size' => 'thumb',
+                'size' => 'small',
                 'relation' => [
                     'name' => 'image',
                 ],
-                'width' => 64,
+                'width' => 140,
             ],
         ],
         'title' => [
@@ -117,6 +147,24 @@ class Index extends AbstractCrudCMSTable
                 ],
                 'relation' => [
                     'name' => 'author',
+                    'column' => 'title',
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+            ],
+        ],
+        'article_category_id' => [
+            'type' => ColumnType\ModelRelation::class,
+            'options' => [
+                'ajax' => true,
+                'label' => [
+                    'title' => 'article_category_id'
+                ],
+                'relation' => [
+                    'name' => 'articleCategory',
                     'column' => 'title',
                 ],
                 'wrapper' => [
@@ -180,6 +228,23 @@ class Index extends AbstractCrudCMSTable
                 ],
                 'policy-ability' => 'view',
                 'action' => 'show',
+            ],
+        ],
+        'compose' => [
+            'type' => ButtonType\ButtonAnchor::class,
+            'options' => [
+                'label' => [
+                    'icon' => 'fa fa-columns',
+                ],
+                'attributes' => [
+                    'class' => 'btn btn-info btn-sm margin-right-no',
+                    'title-key' => 'compose',
+                ],
+                'policy-ability' => 'update',
+                'action' => 'show',
+                'route-params' => [
+                    'tab' => 'composition',
+                ],
             ],
         ],
         'delete-ajax' => [

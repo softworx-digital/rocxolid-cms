@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\CMS\Providers;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+// rocXolid cms package provider
+use Softworx\RocXolid\CMS\ServiceProvider as PackageServiceProvider;
 // rocXolid cms rendering contracts
 use Softworx\RocXolid\CMS\Rendering\Contracts\Themeable;
 
@@ -38,9 +40,9 @@ class ViewServiceProvider extends IlluminateServiceProvider
     private function load(): IlluminateServiceProvider
     {
         // customized views preference
-        $this->loadViewsFrom(resource_path('views/vendor/rocXolid/cms'), 'rocXolid:cms');
+        $this->loadViewsFrom(PackageServiceProvider::viewsPublishPath(), 'rocXolid:cms');
         // pre-defined views fallback
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'rocXolid:cms');
+        $this->loadViewsFrom(PackageServiceProvider::viewsSourcePath(dirname(dirname(__DIR__))), 'rocXolid:cms');
         // app themes
         $this->loadViewsFrom(config('rocXolid.cms.themes.path'), Themeable::THEME_PACKAGE);
 

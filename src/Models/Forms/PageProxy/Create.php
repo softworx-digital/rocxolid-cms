@@ -21,17 +21,14 @@ class Create extends RocXolidAbstractCrudForm
         'class' => 'form-horizontal form-label-left',
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
-        // $fields['web_id']['options']['show-null-option'] = true;
         $fields['web_id']['options']['validation']['rules'][] = 'required';
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
-        // $fields['localization_id']['options']['show-null-option'] = true;
         $fields['localization_id']['options']['collection'] = $this->getModel()->detectWeb($this)->localizations->pluck('name', 'id');
         $fields['localization_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
-        // $fields['page_template_id']['options']['show-null-option'] = true;
         $fields['page_template_id']['options']['collection']['filters'][] = [
             'class' => BelongsToWeb::class,
             'data' => $this->getModel()->detectWeb($this),

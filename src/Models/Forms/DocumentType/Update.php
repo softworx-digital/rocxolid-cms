@@ -14,7 +14,7 @@ class Update extends RocXolidAbstractCrudForm
         'class' => 'form-horizontal form-label-left',
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['description']['type'] = WysiwygTextarea::class;
 

@@ -45,7 +45,7 @@ abstract class AbstractMutator implements Mutator
     /**
      * {@inheritDoc}
      */
-    // protected $translation_package = 'rocXolid:cms'; // will throw exception, cause this is defined in the trait
+    // protected $translation_package = 'rocXolid-cms'; // will throw exception, cause this is defined in the trait
 
     /**
      * {@inheritDoc}

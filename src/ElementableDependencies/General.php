@@ -46,6 +46,16 @@ class General extends AbstractElementableDependency
     /**
      * {@inheritDoc}
      */
+    protected function getDependencyValues(ElementableDependencyDataProvider $dependency_data_provider): Collection
+    {
+        return collect([
+            'general' => $this,
+        ]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDependencyViewValue(ElementableDependencyDataProvider $dependency_data_provider)
     {
         return $dependency_data_provider->getDependencyData()->get($this->getAssignmentDefaultName());

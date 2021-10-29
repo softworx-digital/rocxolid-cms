@@ -40,7 +40,7 @@ abstract class AbstractElementableDependency implements ElementableDependency, C
     /**
      * {@inheritDoc}
      */
-    // protected $translation_package = 'rocXolid:cms'; // will throw exception, cause this is defined in the trait
+    // protected $translation_package = 'rocXolid-cms'; // will throw exception, cause this is defined in the trait
 
     /**
      * Definition of the fields the dependency provides to dependency data provider form.

@@ -40,14 +40,14 @@ class UpdateHeader extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['page_header_id']['options']['collection']['model'] = PageHeader::class;
         $fields['page_header_id']['options']['collection']['filters'] = [[
             'class' => Closurable::class,
             'data' => function (Builder $query, Model $model) {
                 return $query
-                    ->where('is_bound_to_page', 0)
+                    ->where('is_bound', 0)
                     ->where('web_id', $this->getModel()->web->getKey())
                     ->where('localization_id', $this->getModel()->localization->getKey());
             }

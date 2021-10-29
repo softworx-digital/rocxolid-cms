@@ -21,7 +21,7 @@ class Update extends RocXolidAbstractCrudForm
         'class' => 'form-horizontal form-label-left',
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //

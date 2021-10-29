@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Composers;
 
 use Illuminate\Contracts\View\View;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid composer contracts
 use Softworx\RocXolid\Composers\Contracts\Composer;
 // rocXolid cms model contracts
@@ -41,6 +43,8 @@ class ThemeViewComposer implements Composer
      */
     protected function setViewPropertiesFromDependencies(View &$view, ElementsDependenciesProviderable $element): Composer
     {
+        $models = collect();
+
         if (!isset(self::$assignments)) { // caching
             $dependencies = $element->getDependenciesProvider()->provideDependencies(); // @todo not w/subdependencies?
 
@@ -53,9 +57,15 @@ class ThemeViewComposer implements Composer
             self::$assignments = $assignments;
         }
 
-        self::$assignments->each(function ($value, $key) use (&$view) {
+        self::$assignments->each(function ($value, $key) use (&$view, $models) {
             $view->with($key, $value);
+
+            if ($value instanceof CrudableModel) {
+                $models->put($key, $value);
+            }
         });
+
+        $view->with('__models', $models);
 
         return $this;
     }

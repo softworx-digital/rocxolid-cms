@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\CMS\Providers;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+// rocXolid cms package provider
+use Softworx\RocXolid\CMS\ServiceProvider as PackageServiceProvider;
 
 /**
  * rocXolid translation service provider.
@@ -33,7 +35,7 @@ class TranslationServiceProvider extends IlluminateServiceProvider
      */
     private function load()
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'rocXolid:cms');
+        $this->loadTranslationsFrom(PackageServiceProvider::translationsSourcePath(dirname(dirname(__DIR__))), 'rocXolid-cms');
 
         return $this;
     }

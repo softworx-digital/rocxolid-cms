@@ -4,18 +4,22 @@ namespace Softworx\RocXolid\CMS\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits as rxTraits;
-// rocXolid common models
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Image;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits as CommonTraits;
-// rocXolid cms model traits
-use Softworx\RocXolid\CMS\Models\Traits\IsProxyPaged;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\AbstractElementable;
+use Softworx\RocXolid\CMS\Models\ArticleCategory;
+// rocXolid cms elements traits
+use Softworx\RocXolid\CMS\Elements\Models\Traits as ElementsTraits;
 
 /**
  * Article model.
@@ -23,44 +27,40 @@ use Softworx\RocXolid\CMS\Models\AbstractElementable;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\CMS
  * @version 1.0.0
+ * @todo revise & refactor & doc
  */
 class Article extends AbstractElementable
 {
-    use rxTraits\Attributes\HasGeneralDataAttributes;
     use CommonTraits\HasImage;
     use Traits\HasDependencies;
     use Traits\HasMutators;
-
-    const GENERAL_DATA_ATTRIBUTES = [
-        'is_enabled',
-        'web_id',
-        'localization_id',
-        // 'page_template_id',
-        'author_id',
-        'date',
-        'title',
-        // 'path',
-    ];
-
-    const META_DATA_ATTRIBUTES = [
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-    ];
+    use Traits\ProvidesViewTheme;
+    use ElementsTraits\HasBlogRouting;
 
     /**
      * {@inheritDoc}
      */
     protected static $title_column = 'title';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $table = 'cms_articles';
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
+        'is_enabled',
+        'is_featured',
+        'is_newsflash',
         'web_id',
         'localization_id',
-        // 'author_id',
+        'author_id',
+        'article_category_id',
         'date',
         'title',
+        'tags',
         //'slug',
         'meta_title',
         'meta_description',
@@ -68,13 +68,34 @@ class Article extends AbstractElementable
         'perex',
         'content',
         //'css_class',
-        'is_enabled'
     ];
 
+    /**
+     * {@inheritDoc}
+     */
+    protected $relationships = [
+        'web',
+        'localization',
+        'related',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $casts = [
+        'tags' => 'array',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
     protected $dates = [
         'date',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $image_sizes = [
         'image' => [
             'icon' => [ 'width' => 70, 'height' => 70, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
@@ -91,7 +112,7 @@ class Article extends AbstractElementable
             'small' => [ 'width' => 256, 'height' => 256, 'method' => 'resize', 'constraints' => [ 'aspectRatio', 'upsize', ], ],
             'fb' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
             '828x' => [ 'width' => 828, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
-            '1920x' => [ 'width' => 1920, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
+            '1920x' => [ 'width' => 1920, 'height' => 900, 'method' => 'fit', 'constraints' => [ 'upsize', ], ],
         ],
     ];
 
@@ -112,7 +133,6 @@ class Article extends AbstractElementable
     {
         $this->slug = Str::slug($this->title);
 
-        /*
         if (blank($this->meta_title)) {
             $this->meta_title = $this->title;
         }
@@ -120,53 +140,96 @@ class Article extends AbstractElementable
         if (blank($this->meta_description)) {
             $this->meta_description = strip_tags($this->perex);
         }
-        */
 
         return $this;
     }
 
-    public function headerImage()
+    /**
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation
+     */
+    public function headerImage(): Relations\MorphOne
     {
         return $this->image('headerImage');
     }
 
-    public function author()
+    /**
+     * Relation to ArticleCategory.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function articleCategory(): Relations\BelongsTo
+    {
+        return $this->belongsTo(ArticleCategory::class);
+    }
+
+    /**
+     * Relation to User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author(): Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-    * {@inheritDoc}
-    */
-    public function provideDependencies(bool $sub = false): Collection
-    {
-        dd(__METHOD__, '@todo');
-
-        return collect();
-    }
-
-    /**
-     * {@inheritDoc}
+     * Relation to related articles.
+     *
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
+     * @return Relations\BelongsToMany
      */
-    public function provideViewTheme(): string
+    public function related(): Relations\BelongsToMany
     {
-        dd(__METHOD__, '@todo');
-
-        return '';
-    }
-
-    // @todo quick'n'dirty
-    public function getMetaDataAttributes(bool $keys = false): Collection
-    {
-        return $keys
-            ? collect(static::META_DATA_ATTRIBUTES)
-            : collect($this->getAttributes())->only(static::META_DATA_ATTRIBUTES)->sortBy(function ($value, string $field) {
-                return array_search($field, static::META_DATA_ATTRIBUTES);
-            });
+        return $this->belongsToMany(
+            self::class,
+            'cms_article_has_related_articles',
+            'article_id',
+            'related_id'
+        );
     }
 
     public function getMetaTitle()
     {
         return $this->getTitle();
+    }
+
+    public function availableLocalizations(): Collection
+    {
+        return $this->localization ? collect([ $this->localization ]) : $this->web->localizations;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getImageUploadTemplateAssignments(Image $image): array
+    {
+        switch ($image->model_attribute) {
+            case 'headerImage':
+                return [
+                    'size' => '1920x',
+                ];
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if Article is featured.
+     *
+     * @return boolean
+     */
+    public function isFeatured(): bool
+    {
+        return $this->is_featured;
+    }
+
+    /**
+     * Check if Article is a newsflash.
+     *
+     * @return boolean
+     */
+    public function isNewsflash(): bool
+    {
+        return $this->is_newsflash;
     }
 }

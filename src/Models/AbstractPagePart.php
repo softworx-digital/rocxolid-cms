@@ -28,7 +28,7 @@ abstract class AbstractPagePart extends AbstractElementablePart
         'is_enabled',
         'web_id',
         'localization_id',
-        'is_bound_to_page',
+        'is_bound',
         'title',
     ];
 
@@ -37,6 +37,6 @@ abstract class AbstractPagePart extends AbstractElementablePart
      */
     public function isBoundToElementable(): bool
     {
-        return $this->is_bound_to_page;
+        return $this->is_bound;
     }
 }

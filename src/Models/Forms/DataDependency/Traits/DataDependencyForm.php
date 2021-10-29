@@ -13,7 +13,7 @@ use Softworx\RocXolid\CMS\Models\DataDependency;
  */
 trait DataDependencyForm
 {
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         collect([ 'is_enabled', 'web_id', 'localization_id', 'localization_id', 'type', 'title' ])->each(function ($field_name) use (&$fields) {
             $fields[$field_name]['options']['group'] = 'base';
@@ -23,11 +23,9 @@ trait DataDependencyForm
             $fields[$field_name]['options']['group'] = 'additional';
         });
 
-        // $fields['web_id']['options']['show-null-option'] = true;
         $fields['web_id']['options']['validation']['rules'][] = 'required';
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
-        // $fields['localization_id']['options']['show-null-option'] = true;
         $fields['localization_id']['options']['validation']['rules'][] = 'required';
         $fields['localization_id']['options']['collection'] = $this->getModel()->detectWeb($this)->localizations->pluck('name', 'id');
         $fields['localization_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());

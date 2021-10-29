@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Web;
+use Softworx\RocXolid\Common\Models\Localization;
 // rocXolid cms controller
 use Softworx\RocXolid\CMS\Http\Controllers\FrontPageController;
 // rocXolid cms models
@@ -24,15 +25,19 @@ use Softworx\RocXolid\CMS\ElementableDependencies\Contracts\ElementableDependenc
  */
 trait RouteDependency
 {
-    public function registerPageRoute(Router $router, FrontPageController $controller, Web $web, Page $page): self
+    public function registerPageRoute(Router $router, FrontPageController $controller, Web $web, Localization $localization, Page $page): self
     {
-        $router->get($page->route_path, function (Request $request, ?Crudable $model = null, string $slug = null) use ($controller, $web, $page) {
+        $router->get($page->frontpageRoute($web, $localization), function (Request $request, ?Crudable $model = null, string $slug = null) use ($controller, $web, $localization, $page) {
             if (is_null($model) || $this->isModelEnabled($model)) {
-                return ($controller)($request, $web, $page, $model, $slug);
+                if (!is_null($model)) {
+                    $this->prepareModelPresentation($request, $web, $localization, $page, $model, $slug);
+                }
+
+                return ($controller)($request, $web, $localization, $page, $model, $slug);
             } else {
                 return abort(404);
             }
-        });
+        })->name($this->getAssignmentDefaultName());
 
         return $this;
     }
@@ -64,6 +69,11 @@ trait RouteDependency
             $assignments = $assignments->merge($dependency_data_provider->getDependencyData());
         }
 
+        return $this;
+    }
+
+    protected function prepareModelPresentation(Request $request, Web $web, Localization $localization, Page $page, Crudable $model, string $slug = null): ElementableDependency
+    {
         return $this;
     }
 

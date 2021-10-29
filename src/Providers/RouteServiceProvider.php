@@ -2,6 +2,8 @@
 
 namespace Softworx\RocXolid\CMS\Providers;
 
+use Illuminate\Support\Facades\Artisan;
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 // rocXolid services
@@ -52,6 +54,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
             // ElementableRouterService::create('page-template', \PageTemplate\Controller::class);
 
             // ElementableRouterService::create('page-proxy', \PageProxy\Controller::class);
+
+            CrudRouterService::create('article-category', \ArticleCategory\Controller::class);
 
             ElementableRouterService::create('article', \Article\Controller::class);
 
@@ -108,7 +112,9 @@ class RouteServiceProvider extends IlluminateServiceProvider
 
     private function loadFrontpage(Router $router): IlluminateServiceProvider
     {
-        if (config('rocXolid.cms.general.register-frontpage-routes', false)) {
+        // IDE pings the site polluting the log since this will trigger an error without having a true request
+        if ((request()->header('User-Agent', false) !== 'Symfony')
+            && config('rocXolid.cms.general.register-frontpage-routes', false)) {
             FrontpageRouterService::register($this->app->router);
         }
 
@@ -129,6 +135,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
         $router->model('page_footer', \Softworx\RocXolid\CMS\Models\PageFooter::class);
         // $router->model('page_proxy', \Softworx\RocXolid\CMS\Models\PageProxy::class);
         //
+        $router->model('article_category', \Softworx\RocXolid\CMS\Models\ArticleCategory::class);
         $router->model('article', \Softworx\RocXolid\CMS\Models\Article::class);
         $router->model('faq', \Softworx\RocXolid\CMS\Models\Faq::class);
         //

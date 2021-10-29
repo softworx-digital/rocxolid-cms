@@ -11,7 +11,7 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid cms controllers
 use Softworx\RocXolid\CMS\Http\Controllers\AbstractElementableController;
 // rocXolid cms components
-use Softworx\RocXolid\CMS\Components\ModelViewers\PageViewer;
+use Softworx\RocXolid\CMS\Components\ModelViewers\Page as PageModelViewer;
 // rocXolid cms models
 use Softworx\RocXolid\CMS\Models\PageHeader;
 use Softworx\RocXolid\CMS\Models\PageFooter;
@@ -31,7 +31,7 @@ class Controller extends AbstractElementableController
     /**
      * {@inheritDoc}
      */
-    protected static $model_viewer_type = PageViewer::class;
+    protected static $model_viewer_type = PageModelViewer::class;
 
     /**
      * {@inheritDoc}
@@ -39,14 +39,21 @@ class Controller extends AbstractElementableController
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
-        'edit.general-data' => 'update-general',
-        'update.general-data' => 'update-general',
-        'edit.extended-data' => 'update-extended',
-        'update.extended-data' => 'update-extended',
-        'edit.meta-data' => 'update-meta',
-        'update.meta-data' => 'update-meta',
-        'edit.description-data' => 'update-description',
-        'update.description-data' => 'update-description',
+        //
+        'edit.panel.data.general' => 'update-general-data',
+        'update.panel.data.general' => 'update-general-data',
+        //
+        'edit.panel.data.meta' => 'update-meta-data',
+        'update.panel.data.meta' => 'update-meta-data',
+        //
+        'edit.panel:extended.data.extended' => 'update-extended-data',
+        'update.panel:extended.data.extended' => 'update-extended-data',
+        //
+        'edit.perex-data' => 'update-perex',
+        'update.perex-data' => 'update-perex',
+        'edit.content-data' => 'update-content',
+        'update.content-data' => 'update-content',
+        //
         'edit.header' => 'update-header',
         'edit.update' => 'update-header',
         'edit.footer' => 'update-footer',

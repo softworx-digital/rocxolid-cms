@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\CMS\Models\Forms\Page;
 
+use Illuminate\Validation\Rule;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid form fields
@@ -105,6 +106,15 @@ class Create extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
+        'is_web_localization_homepage' => [
+            'type' => FieldType\CheckboxToggle::class,
+            'options' => [
+                'group' => 'base',
+                'label' => [
+                    'title' => 'is_web_localization_homepage',
+                ],
+            ],
+        ],
         'path' => [
             'type' => FieldType\Input::class,
             'options' => [
@@ -112,7 +122,7 @@ class Create extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'path',
                 ],
-                'prefix' => '/',
+                // 'prefix' => '/',
                 'validation' => [
                     'rules' => [
                         'required',
@@ -140,7 +150,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'description' => [
-            'type' => FieldType\WysiwygTextarea::class,
+            'type' => FieldType\Textarea::class,
             'options' => [
                 'group' => 'base',
                 'label' => [
@@ -170,17 +180,33 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
-        // $fields['web_id']['options']['show-null-option'] = true;
+        $web = Web::find($this->getInputFieldValue('web_id'));
+        $localization = Localization::find($this->getInputFieldValue('localization_id'));
+        $is_homepage = (bool)($this->getInputFieldValue('is_web_localization_homepage') ?? $this->getModel()->isHomePage());
+
         $fields['web_id']['options']['collection'] = Web::all()->pluck('name', 'id');
-        $fields['web_id']['options']['validation']['rules'][] = 'required';
         $fields['web_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
         //
-        // $fields['localization_id']['options']['show-null-option'] = true;
-        // $fields['localization_id']['options']['collection'] = $this->getModel()->detectWeb($this)->localizations->pluck('name', 'id');
-        $fields['localization_id']['options']['collection'] = Localization::all()->pluck('name', 'id');
+        !$web ?: $fields['localization_id']['options']['collection'] = $web->localizations->pluck('name', 'id');
         $fields['localization_id']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        //
+        $fields['is_web_localization_homepage']['options']['validation']['rules'][] = Rule::unique($this->getModel()->getTable(), 'is_web_localization_homepage')->where(function ($query) {
+            return $query
+                ->where('web_id', $this->getInputFieldValue('web_id'))
+                ->where('localization_id', $this->getInputFieldValue('localization_id'))
+                ->where('is_web_localization_homepage', true);
+        });
+        $fields['is_web_localization_homepage']['options']['attributes']['data-change-action'] = $this->getController()->getRoute('formReload', $this->getModel());
+        //
+        !$web || !$localization ?: $fields['path']['options']['prefix'] = $web->localizeUrl($localization) . ($is_homepage ? '' : '/');
+
+        if ($is_homepage) {
+            $fields['path']['options']['validation']['rules'] = array_diff($fields['path']['options']['validation']['rules'], [ 'required' ]);
+            $fields['path']['options']['disabled'] = true;
+            $fields['path']['options']['force-value'] = '';
+        }
         //
         $fields['theme']['options']['choices'] = ThemeManager::getThemes();
         //

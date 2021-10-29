@@ -42,11 +42,11 @@ class Create extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
-        'is_bound_to_page' => [
+        'is_bound' => [
             'type' => FieldType\CheckboxToggle::class,
             'options' => [
                 'label' => [
-                    'title' => 'is_bound_to_page',
+                    'title' => 'is_bound',
                 ],
                 'validation' => [
                     'rules' => [
@@ -57,7 +57,7 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['page_id']['options']['value'] = $this->getInputFieldValue('page_id');
 

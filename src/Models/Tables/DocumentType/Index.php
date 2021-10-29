@@ -22,6 +22,24 @@ class Index extends AbstractCrudTable
                 ],
             ],
         ],
+        'roles' => [
+            'type' => ColumnType\ModelRelation::class,
+            'options' => [
+                'ajax' => true,
+                'label' => [
+                    'title' => 'roles'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+                'relation' => [
+                    'name' => 'roles',
+                    'column' => 'name',
+                ],
+            ],
+        ],
         'icon' => [
             'type' => ColumnType\Icon::class,
             'options' => [

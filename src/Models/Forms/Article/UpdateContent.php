@@ -50,7 +50,7 @@ class UpdateContent extends RocXolidAbstractCrudForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         return $fields;
     }
